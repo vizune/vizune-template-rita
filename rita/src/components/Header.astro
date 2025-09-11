@@ -1,0 +1,61 @@
+---
+import Mandala from './Mandala.astro';
+import { Image } from 'astro:assets';
+import Header2560 from '../assets/header-large.png';
+import Header1920 from '../assets/header.jpg';
+import Header1600 from '../assets/header-1600.png';
+import Header1200 from '../assets/header-1200.png';
+import Header768 from '../assets/header-768.png';
+---
+
+<header class="Header h-[43.75rem] w-full relative pt-1 pb-6">
+	<div class="text-center mt-2">
+		<span class="text-white font-extralight text-6xl uppercase tracking-widest">Vizune</span>
+			<div style="margin-top: -20rem; width: 1900px; position: absolute; left: 50%; transform: translateX(-50%);">
+				<Mandala />
+			</div>
+	</div>
+	<div class="absolute w-full top-2/4 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 border-black border-t-20 border-b-20">
+		<picture>
+			<source srcset={Header2560.src} media="(min-width: 2000px)" />
+			<source srcset={Header1920.src} media="(max-width: 1999px)" />
+			<source srcset={Header1600.src} media="(max-width: 1600px)" />
+			<source srcset={Header1200.src} media="(max-width: 1200px)" />
+			<source srcset={Header768.src} media="(max-width: 768px)" />
+			<Image
+				src={Header768}
+				alt="Vizune banner"
+				class="h-[500px] w-full object-cover"
+				sizes="100vw"
+				widths={[360,480,640,768]}
+			/>
+		</picture>
+	</div>
+</header>
+
+<style scoped>
+.Header:before {
+    content: '';
+    width: 750px;
+    height: 620px;
+    position: absolute;
+    display: block;
+    left: 50%;
+    border-radius: 50%;
+    background: linear-gradient(-23deg, rgb(80, 8, 255) 75%, rgb(233, 151, 255) 50%);
+    filter: blur(70px);
+    animation: gradient 3s linear infinite 1s;
+    pointer-events: none;
+}
+@keyframes gradient {
+	0% {
+		transform: translateX(-50%) scale(0.85);
+	}
+	50% {
+		transform: translateX(-50%) scale(1);
+	}
+	100% {
+		transform: translateX(-50%) scale(.85);
+	}
+}
+</style>
