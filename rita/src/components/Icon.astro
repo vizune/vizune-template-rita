@@ -1,0 +1,15 @@
+---
+const { name, title } = Astro.props;
+---
+
+<svg
+  width="32px"
+  height="32px"
+  viewBox="0 0 640 640"
+  fill="currentColor" 
+  aria-hidden="true"
+  role="img"
+>
+    {title && <title>{ title }</title>}
+    <use href={`#${name}`} xlink:href={`#${name}`} />
+</svg>

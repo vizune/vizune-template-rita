@@ -1,0 +1,79 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import SocialImage from '../assets/social.png';
+const { sub, heading } = Astro.props;
+
+const socials = [
+  { name: 'codepen', href: 'https://codepen.io/SRichardson', label: 'CodePen' },
+  { name: 'deviantart', href: 'https://www.deviantart.com/vizune', label: 'DeviantArt' },
+  { name: 'github', href: 'https://github.com/vizune', label: 'GitHub' },
+  { name: 'instagram', href: 'https://www.instagram.com/vizune_/', label: 'Instagram' },
+  { name: 'linkedin', href: 'https://www.linkedin.com/in/sasha-r-547a2b57', label: 'LinkedIn' },
+  { name: 'pinterest',  href: 'https://uk.pinterest.com/vizune/',   label: 'Pinterest' },
+  { name: 'spotify', href: 'https://open.spotify.com/user/1149827575', label: 'Spotify' },
+  { name: 'steam', href: 'https://steamcommunity.com/id/vizune/', label: 'Steam' }
+]
+---
+
+<div class="flex justify-center items-center relative w-[400px] h-[400px] my-6">
+  <ul>
+    {socials.map((s) => 
+      <li class="absolute">
+        <a
+          href={s.href}
+          target="_blank" rel="noopener noreferrer"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full ring-2 ring-[#646cff] transition-colors text-white hover:text-[#646cff]"
+          aria-label={s.label}
+          title={s.name}>
+          <Icon name={s.name} title={s.label} />
+        </a>
+      </li>
+    )}
+  </ul>
+  <Image
+      src={TitleImage}
+      alt=""
+      role="presentation"
+      class="h-[300px] w-[300px]"
+    />
+</div>
+
+<style>
+  li:first-child {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  li:nth-child(2) {
+    top: 15%;
+    left: 75%;
+  }
+  li:nth-child(3) {
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+  }
+  li:nth-child(4) {
+    top: 75%;
+    left: 75%;
+  }
+  li:nth-child(5) {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  li:nth-child(6) {
+    top: 75%;
+    right: 75%;
+  }
+  li:nth-child(7) {
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+  li:nth-child(8) {
+    top: 15%;
+    right: 75%;
+  }
+</style>
