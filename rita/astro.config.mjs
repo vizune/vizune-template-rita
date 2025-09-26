@@ -2,9 +2,15 @@
 import { defineConfig } from 'astro/config'
 import tailwind from '@tailwindcss/vite'
 
-// https://astro.build/config
 export default defineConfig({
   vite: {
     plugins: [tailwind()],
-  }
+    resolve: {
+      alias: {
+        '@components': '/src/components',
+        '@ui': '/src/components/ui',
+        '@sections': '/src/components/sections'
+      }
+    }
+  },
 })

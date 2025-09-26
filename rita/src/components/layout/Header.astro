@@ -1,11 +1,12 @@
 ---
-import Mandala from './Mandala.astro';
+import { Mandala } from '@/components';
+
 import { Image } from 'astro:assets';
-import Header2560 from '../assets/header-large.png';
-import Header1920 from '../assets/header.jpg';
-import Header1600 from '../assets/header-1600.png';
-import Header1200 from '../assets/header-1200.png';
-import Header768 from '../assets/header-768.png';
+import Header2560 from '@/assets/header-large.png';
+import Header1920 from '@/assets/header.jpg';
+import Header1600 from '@/assets/header-1600.png';
+import Header1200 from '@/assets/header-1200.png';
+import Header768 from '@/assets/header-768.png';
 ---
 
 <header class="Header h-[43.75rem] w-full relative pt-1 pb-6">
@@ -41,22 +42,18 @@ import Header768 from '../assets/header-768.png';
     height: 620px;
     position: absolute;
     display: block;
+	top: .75rem;
     left: 50%;
     border-radius: 50%;
     background: linear-gradient(-23deg, rgb(80, 8, 255) 75%, rgb(233, 151, 255) 50%);
     filter: blur(70px);
-    animation: gradient 3s linear infinite 1s;
+	transform: translateX(-50%) scale(0.85);
+    animation: pulseScale 3s linear infinite 1s;
     pointer-events: none;
 }
-@keyframes gradient {
-	0% {
-		transform: translateX(-50%) scale(0.85);
-	}
-	50% {
-		transform: translateX(-50%) scale(1);
-	}
-	100% {
-		transform: translateX(-50%) scale(.85);
-	}
+@keyframes pulseScale {
+  0%   { transform: translateX(-50%) scale(0.85); }
+  50%  { transform: translateX(-50%) scale(1); }
+  100% { transform: translateX(-50%) scale(0.85); }
 }
 </style>

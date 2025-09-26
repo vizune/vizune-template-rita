@@ -1,0 +1,37 @@
+---
+const { heading } = Astro.props;
+---
+
+<main
+  class="page py-[4rem] px-4
+         bg-[radial-gradient(1200px_680px_at_50%_120%,_rgba(59,47,99,0.95)_0%,_rgba(0,0,0,0.55)_45%,_transparent_75%),linear-gradient(to_bottom,_transparent,_rgba(0,0,0,0.55)_60%,_rgba(0,0,0,0.8))]"
+>
+  <section
+    class="container mx-auto
+           p-8
+           bg-[rgba(14,14,26,0.6)]
+           border border-[rgba(214,201,255,0.14)]
+           rounded-[22px]
+           backdrop-blur-[6px] backdrop-saturate-[1.2]
+           shadow-[0_10px_30px_rgba(0,0,0,0.45),_inset_0_1px_0_rgba(255,255,255,0.05)]"
+  >
+    <header
+      class="relative pt-4 pb-5 mb-6
+             border-b border-[rgba(214,201,255,0.12)]"
+    >
+      <h1
+        class="mt-6 mb-10
+               tracking-[.08em]
+               text-[#f1edff]
+               [text-shadow:0_0_18px_rgba(134,94,255,0.25)]
+               font-extralight text-4xl sm:text-5xl"
+      >
+        {heading}
+      </h1>
+    </header>
+
+    <div class="content text-xl">
+      <slot />
+    </div>
+  </section>
+</main>
