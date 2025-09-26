@@ -1,5 +1,6 @@
 ---
 const { heading } = Astro.props;
+import Divider from '@/assets/divider.svg';
 ---
 
 <main
@@ -15,12 +16,9 @@ const { heading } = Astro.props;
            backdrop-blur-[6px] backdrop-saturate-[1.2]
            shadow-[0_10px_30px_rgba(0,0,0,0.45),_inset_0_1px_0_rgba(255,255,255,0.05)]"
   >
-    <header
-      class="relative pt-4 pb-5 mb-6
-             border-b border-[rgba(214,201,255,0.12)]"
-    >
+    <header class="relative pt-4 pb-8 mb-6">
       <h1
-        class="mt-6 mb-10
+        class="mt-5 mb-10
                tracking-[.08em]
                text-[#f1edff]
                [text-shadow:0_0_18px_rgba(134,94,255,0.25)]
@@ -28,6 +26,16 @@ const { heading } = Astro.props;
       >
         {heading}
       </h1>
+      <img
+        src={Divider.src}
+        alt=""
+        aria-hidden="true"
+        class="pointer-events-none mx-auto mt-2
+               w-[min(55rem,88%)]
+               opacity-90
+               [filter:drop-shadow(0_0_10px_rgba(134,94,255,0.25))]"
+        loading="eager"
+      />
     </header>
 
     <div class="content text-xl">
