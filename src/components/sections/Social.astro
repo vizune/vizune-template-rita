@@ -32,11 +32,15 @@ const socials = [
     )}
   </ul>
   <Image
-      src={SocialImage}
-      alt=""
-      role="presentation"
-      class="h-[300px] w-[300px]"
-    />
+    src={SocialImage}
+    alt=""
+    role="presentation"
+    width={300}
+    height={300}
+    class="h-[300px] w-[300px]"
+    loading="lazy"
+    decoding="async"
+  />
 </div>
 
 <style>

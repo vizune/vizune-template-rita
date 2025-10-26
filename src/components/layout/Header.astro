@@ -1,12 +1,11 @@
 ---
 import { Mandala } from '@/components';
 
-import { Image } from 'astro:assets';
-import Header2560 from '@/assets/header-large.png';
-import Header1920 from '@/assets/header.jpg';
-import Header1600 from '@/assets/header-1600.png';
-import Header1200 from '@/assets/header-1200.png';
-import Header768 from '@/assets/header-768.png';
+import Header2560 from '@/assets/header-large.webp';
+import Header1920 from '@/assets/header.webp';
+import Header1600 from '@/assets/header-1600.webp';
+import Header1200 from '@/assets/header-1200.webp';
+import Header768 from '@/assets/header-768.webp';
 ---
 
 <header class="Header h-[43.75rem] w-full relative pt-1 pb-6">
@@ -24,12 +23,12 @@ import Header768 from '@/assets/header-768.png';
 			<source srcset={Header1600.src} media="(max-width: 1600px)" />
 			<source srcset={Header1200.src} media="(max-width: 1200px)" />
 			<source srcset={Header768.src} media="(max-width: 768px)" />
-			<Image
-				src={Header768}
+			<img
+				src={Header768.src}
 				alt="Vizune banner"
 				class="h-[500px] w-full object-cover"
-				sizes="100vw"
-				widths={[360,480,640,768]}
+				loading="lazy"
+				decoding="async"
 			/>
 		</picture>
 	</div>
