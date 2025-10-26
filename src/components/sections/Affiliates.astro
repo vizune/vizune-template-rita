@@ -29,28 +29,31 @@ const affiliates = [
 ];
 ---
 
-<div class="grid grid-cols-3 gap-2 sm:gap-4 my-4 lg:px-6">
-  {affiliates.map((link) => (
-    <a
-      href={link.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="group relative flex h-[39px] w-[96px] items-center justify-center border border-white text-center tracking-wide text-white transition-colors duration-300 ease-in-out hover:bg-[#646cff] hover:text-[#020007]"
-      aria-label={`Affiliate: ${link.name}`}
-    >
-      <span class="p-1 text-xs uppercase tracking-wider">{link.name}</span>
+<div>
+  <h2 class="mt-5 mb-10 tracking-[.08em] font-extralight text-2xl text-center">Affiliates</h2>
+  <div class="flex flex-wrap gap-4 my-4 lg:px-6">
+    {affiliates.map((link) => (
+      <a
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group relative flex h-[39px] w-[96px] items-center justify-center border border-white text-center tracking-wide text-white transition-colors duration-300 ease-in-out hover:bg-lavender hover:text-raven"
+        aria-label={`Affiliate: ${link.name}`}
+      >
+        <span class="p-1 text-xs uppercase tracking-wider">{link.name}</span>
 
-      {link.button && (
-        <Image
-          src={link.button}
-          alt={`Affiliate: ${link.name} button`}
-          width={88}
-          height={31}
-          class="absolute left-[3px] top-[3px] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
-          loading="lazy"
-          decoding="async"
-        />
-      )}
-    </a>
-  ))}
+        {link.button && (
+          <Image
+            src={link.button}
+            alt={`Affiliate: ${link.name} button`}
+            width={88}
+            height={31}
+            class="absolute left-[3px] top-[3px] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+            loading="lazy"
+            decoding="async"
+          />
+        )}
+      </a>
+    ))}
+  </div>
 </div>

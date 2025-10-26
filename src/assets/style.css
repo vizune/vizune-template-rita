@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* 
+  Colour name generator for funsies: 
+  https://colornamer.robertcooper.me/
+
+  Hex to oklch converter:
+  https://openreplay.com/tools/hex-to-oklch/ 
+*/
+@theme {
+  --color-hynacinth: oklch(54.75% 0.192 287.43); /* #6f55d8  */
+  --color-lavender: oklch(60.70% 0.215 275.60); /* #646cff */
+  --color-indigo: oklch(27.37% 0.158 282.00); /* #240470 */
+  --color-orchid: oklch(61.06% 0.227 289.34); /* #865eff */
+  --color-raven: oklch(7.08% 0.038 299.60); /* #020007 */
+  --color-clay: oklch(95.45% 0.024 296.12); /* #f1edff */
+}
 
 :root {
   font-family: 'Dosis', sans-serif;

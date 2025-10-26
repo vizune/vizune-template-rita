@@ -10,8 +10,8 @@ const nav = [
   { page: "Tutorials",  link: "/tutorials" },
 ];
 ---
-<div class="z-0 w-full bg-[#020007] -mt-20 md:border-[#24047099] md:border-b-2 flex flex-col md:flex-row items-center justify-center text-center">
+<nav class="z-0 w-full bg-raven -mt-20 md:border-indigo/60 md:border-b-2 md:border-opacity-25 flex flex-col md:flex-row items-center justify-center text-center">
   {nav.map((item) => (
     <NavigationLink page={item.page} link={item.link} />
   ))}
-</div>
+</nav>

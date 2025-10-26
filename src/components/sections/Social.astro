@@ -16,14 +16,14 @@ const socials = [
 ]
 ---
 
-<div class="flex justify-center items-center relative w-[400px] h-[400px] my-6">
+<div class="flex justify-center items-center relative w-[375px] h-[375px] sm:w-[400px] sm:h-[400px] my-6 mx-auto">
   <ul>
     {socials.map((s) => 
       <li class="absolute">
         <a
           href={s.href}
           target="_blank" rel="noopener noreferrer"
-          class="inline-flex h-10 w-10 items-center justify-center rounded-full ring-2 ring-[#646cff] transition-colors text-white hover:text-[#646cff]"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full sm:ring-2 sm:ring-lavender transition-colors text-white hover:text-lavender"
           aria-label={s.label}
           title={s.name}>
           <Icon name={s.name} title={s.label} />
