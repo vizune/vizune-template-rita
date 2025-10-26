@@ -1,11 +1,11 @@
 ---
 import { Mandala } from '@/components';
 
-import Header2560 from '@/assets/header-large.webp';
-import Header1920 from '@/assets/header.webp';
-import Header1600 from '@/assets/header-1600.webp';
-import Header1200 from '@/assets/header-1200.webp';
-import Header768 from '@/assets/header-768.webp';
+import Header2560 from '@/assets/header-large.png';
+import Header1920 from '@/assets/header.jpg';
+import Header1600 from '@/assets/header-1600.png';
+import Header1200 from '@/assets/header-1200.png';
+import Header768 from '@/assets/header-768.png';
 ---
 
 <header class="Header h-[43.75rem] w-full relative pt-1 pb-6">
@@ -27,7 +27,8 @@ import Header768 from '@/assets/header-768.webp';
 				src={Header768.src}
 				alt="Vizune banner"
 				class="h-[500px] w-full object-cover"
-				loading="lazy"
+				loading="eager"
+				fetchpriority="high"
 				decoding="async"
 			/>
 		</picture>
