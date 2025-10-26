@@ -2,6 +2,12 @@
 import { Header, Navigation, Body, Footer, IconSprite } from '@/components';
 import "../assets/style.css";
 const { title, description, heading } = Astro.props;
+
+import Header2560 from '@/assets/header-large.png';
+import Header1920 from '@/assets/header.jpg';
+import Header1600 from '@/assets/header-1600.png';
+import Header1200 from '@/assets/header-1200.png';
+import Header768 from '@/assets/header-768.png';
 ---
 
 <!doctype html>
@@ -10,6 +16,14 @@ const { title, description, heading } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+		<link
+			rel="preload"
+			as="image"
+			href={Header2560.src}
+			imagesrcset={`${Header768.src} 768w, ${Header1200.src} 1200w, ${Header1600.src} 1600w, ${Header1920.src} 1920w`}
+			imagesizes="100vw"
+			fetchpriority="high"
+		/>
 		<meta name="generator" content={Astro.generator} />
 		<title>{ title }</title>
 		<meta name="description" content={description}>
