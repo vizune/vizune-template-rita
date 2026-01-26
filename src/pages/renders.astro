@@ -1,15 +1,197 @@
 ---
-
 import Layout from '@/layouts/Layout.astro';
+import { tagReference } from '@/constants';
+import FilterDropdown from '@/components/ui/FilterDropdown.astro';
+import Pagination from '@/components/ui/Pagination.astro';
+import RendersPostCard from '@/components/posts/RenderPost.astro';
 
-const posts = await fetch(import.meta.env.PUBLIC_POSTS_RENDERS).then((r) => r.json());
+type Tag = { sys: { id: string } };
 
-const sortPostsByIndex = posts => {
-  return posts.items.sort((a,b) => a.fields.index < b.fields.index ? 1 : -1);
+type RenderPost = {
+  metadata: { tags?: Tag[] };
+  sys: { id: string };
+  fields: {
+    title?: string;
+    fileSize?: string;
+    date?: string;
+    thumbnail?: { sys?: { id?: string } };
+    downloadUrl?: string;
+    index?: number;
+  };
+};
+
+type Asset = {
+  sys: { id: string };
+  fields?: {
+    title?: string;
+    description?: string;
+    file?: { url?: string };
+  };
+};
+
+const data = await fetch(import.meta.env.PUBLIC_POSTS_RENDERS).then((r) => r.json());
+
+// Contentful responses often look like { items: [], includes: { Asset: [] } }
+const items: RenderPost[] = (data?.items ?? []) as RenderPost[];
+const assets: Asset[] = (data?.includes?.Asset ?? []) as Asset[];
+
+const assetsById = new Map<string, Asset>(assets.map(a => [a.sys.id, a]));
+
+// sort descending by index (higher first)
+const toTime = (d?: string) => {
+  const t = d ? Date.parse(d) : NaN;
+  return Number.isFinite(t) ? t : -Infinity;
+};
+
+const sorted = [...items].sort((a, b) => toTime(b.fields.date) - toTime(a.fields.date));
+
+// tags for dropdown (exclude "renders")
+const EXCLUDED = new Set(['renders']);
+
+function getTags(allPosts: RenderPost[]): string[] {
+  const tags = new Set<string>();
+  for (const post of allPosts) {
+    for (const t of post.metadata.tags ?? []) {
+      const id = t.sys.id;
+      if (!EXCLUDED.has(id)) tags.add(id);
+    }
+  }
+  return [...tags].sort();
 }
+
+function getTagCount(allPosts: RenderPost[], tagOption: string): number {
+  let count = 0;
+  for (const post of allPosts) {
+    if ((post.metadata.tags ?? []).some(t => t.sys.id === tagOption)) count++;
+  }
+  return count;
+}
+
+const tags = getTags(sorted);
+const tagCounts = Object.fromEntries(tags.map(t => [t, getTagCount(sorted, t)]));
+const labelFor = (tag: string) => tagReference[tag] ?? tag;
 
 ---
 
 <Layout title="Vizune Designs - Renders" heading="Vizune Renders" description="...">
-    {JSON.stringify(posts)}
+<div class="renders-list" id="render-wrapper" data-section="renders" data-renders-root>
+  <FilterDropdown>
+    <option value="">-- Filter Renders --</option>
+    {tags.map((t) => (
+      <option value={t}>
+        {labelFor(t)} ({tagCounts[t]})
+      </option>
+    ))}
+  </FilterDropdown>
+
+  <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-grid>
+    {sorted.map((post) => (
+      <RendersPostCard post={post} assetsById={assetsById} />
+    ))}
+  </div>
+
+  <Pagination id="renders" pageSize={12} />
+
+  <script is:inline define:vars={{ pageSize: 12 }}>
+    const root = document.querySelector('.renders-list[data-section="renders"]');
+    if (!root) return;
+
+    const select = root.querySelector('select');
+    const clearBtn = root.querySelector('[data-clear-filter]');
+    const cards = Array.from(root.querySelectorAll('.render-card'));
+    const pagination = root.querySelector('[data-pagination-id="renders"]');
+
+    let currentTag = '';
+    let currentPage = 1;
+
+    function matchesTag(card, tag) {
+      if (!tag) return true;
+      const tags = (card.getAttribute('data-tags') || '').split(/\s+/).filter(Boolean);
+      return tags.includes(tag);
+    }
+
+    function applyFilterAndPagination() {
+      const matched = cards.filter((c) => matchesTag(c, currentTag));
+
+      const start = (currentPage - 1) * pageSize;
+      const end = start + pageSize;
+
+      let matchedIndex = 0;
+
+      cards.forEach((c) => {
+        const ok = matchesTag(c, currentTag);
+        if (!ok) {
+          c.classList.add('hidden');
+          return;
+        }
+
+        const inPage = matchedIndex >= start && matchedIndex < end;
+        c.classList.toggle('hidden', !inPage);
+        matchedIndex += 1;
+      });
+
+      pagination?.dispatchEvent(
+        new CustomEvent('pagination:set', {
+          detail: { total: matched.length, pageSize, page: currentPage },
+        })
+      );
+    }
+
+    // init
+    applyFilterAndPagination();
+
+    select?.addEventListener('change', (e) => {
+      currentTag = e.currentTarget.value;
+      currentPage = 1;
+      applyFilterAndPagination();
+    });
+
+    clearBtn?.addEventListener('click', () => {
+      if (!select) return;
+      select.value = '';
+      currentTag = '';
+      currentPage = 1;
+      applyFilterAndPagination();
+    });
+
+    function smoothScrollTo(targetY, duration = 800) {
+      const startY = window.scrollY;
+      const diff = targetY - startY;
+      const startTime = performance.now();
+
+      function easeInOutCubic(t) {
+        return t < 0.5
+          ? 4 * t * t * t
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = easeInOutCubic(progress);
+
+        window.scrollTo(0, startY + diff * eased);
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    const section = document.getElementById('render-wrapper');
+
+    pagination.addEventListener('pagination:change', (e) => {
+      currentPage = e.detail?.page || 1;
+      applyFilterAndPagination();
+
+      if (section) {
+        const y = section.getBoundingClientRect().top + window.scrollY - 16;
+        smoothScrollTo(y, 1000); // 👈 duration in ms (try 1000–1400)
+      }
+    });
+  </script>
+</div>
+
 </Layout>
