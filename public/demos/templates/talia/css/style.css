@@ -1,0 +1,322 @@
+/* CSS VARIABLES */
+:root {
+    --yellow: #FFD600;
+	--rust: #C0392B;
+	--blue: #539BED;
+	--dark: #222;
+	--medium: #333;
+	--light: #F0F0F0;
+}
+body,html {
+	line-height: 26px;
+}
+/* NAVIGATION */
+.navbar {
+	border-radius: 0;
+	background: var(--dark);
+	font-family: 'Aldrich',sans-serif;
+	text-align: center;
+	margin-bottom: 0;
+	padding: 0;
+}
+.navbar-nav>li {
+	margin: 0 2px 0 0;
+	border-left: 1px solid transparent;
+	border-right: 1px solid transparent;
+}
+.navbar-nav>li a {
+	font-size: 18px;
+	line-height: 24px;
+	padding: 5px 25px;
+	color: #fff;
+	background: transparent;
+}
+.navbar-nav>li a:hover,
+.navbar-nav>li a:focus,
+.nav .open>a,.nav .open>a:hover,
+.nav .open>a:focus {
+	background: transparent;
+	color: var(--rust);
+}
+.navbar-nav>li:hover,.nav .open,.nav .open:hover,.nav .open:focus {
+	background: #fff;
+}
+.dropdown-menu {
+	border-radius: 0;
+	box-shadow: 0 0 1px #fff;
+	border: none;
+	padding-bottom: 5px;
+}
+.dropdown-menu>li {
+	background: transparent;
+	margin-bottom: 5px;
+}
+.dropdown-menu>li>a {
+	color: var(--dark);
+	margin: 0 4px;
+}
+.dropdown-menu>li:after {
+	display: none;
+	border-right: 3px solid var(--yellow);
+}
+.dropdown-menu {
+	background: #fff;
+}
+.dropdown-menu>li:hover {
+	background: var(--blue);
+}
+.dropdown-menu>li a:hover {
+    color: #fff;
+}
+/* Color of hamburger menu */
+.navbar-toggle .icon-bar {
+	background: var(--yellow);
+}
+.navbar-toggle:hover .icon-bar {
+	background: var(--blue);
+}
+/* un-comment this line below to hides th "/" after the last navigation link.
+.navbar-nav li:last-child a:after{display: none;}
+*/
+/* HEADER */
+.jumbotron {
+	background: url(../images/header.jpg) 75% 50%;
+	background-size: cover;
+	height: 500px;
+	margin: 0;
+}
+/* CONTENT AREA */
+.content-header {
+	width: 0;
+	height: 0;
+	border-color: rgba(255,255,255,0) var(--light);
+	border-style: solid solid dashed;
+	border-width: 400px 0 0 0;
+	border-left-width: 1583px;
+	border-top-width: 300px;
+}
+#content {
+	background: var(--light);
+	padding: 0 15px 65px;
+}
+
+/* BLOG FEED */
+.feed article {
+	margin-bottom: 20px;
+}
+.feed article .excerpt {
+	background: #fff;
+	min-height: 150px;
+	padding: 25px;
+	border-bottom: 2px solid var(--blue);
+}
+.feed article .meta {
+	height: 150px;
+	padding: 25px;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-family:'Aldrich',sans-serif;
+}
+.feed article .meta h2 {
+	margin-top: 0;
+}
+.feed article .yellow .meta {
+	background:var(--yellow);
+	color: var(--medium);
+}
+.feed article .red .meta {
+	background: var(--rust);
+	color: var(--medium);
+}
+.left {
+	float: left;
+	margin: 0 10px 0 0;
+	padding: 1px;
+	border: 1px solid rgba(83,155,237,0.5);
+}
+/* FOOTER */
+footer {
+	background: var(--dark) url('../images/bg.jpg');
+	color: #fff;
+	padding-top: 50px;
+}
+footer .logo {
+	text-align: center;
+}
+footer .copyright {
+	margin-top: 35px;
+	text-align: center;
+}
+/* TEXT STYLES */
+h1 {
+	background-size: 66px 132px;
+	vertical-align: bottom;
+	position: relative;
+	text-transform: uppercase;
+	font-size: 60px;
+	color: var(--dark);
+	border-left: 10px solid var(--yellow);
+	text-indent: 30px;
+	font-family: 'Aldrich',sans-serif;
+	text-shadow: 1px 1px 0px rgba(255,214,0,0.8);
+	text-shadow: 2px 1px 1px rgba(83,155,237,0.8);
+	margin: 0;
+}
+h2 {
+	font-size: 26px;
+}
+/* Add this class to any element with text for Aldrich font */
+.tech {
+	font-family: 'Aldrich',sans-serif;
+}
+.faith {
+	margin: 25px 0 10px 0;
+	font-family: 'Aldrich',sans-serif;
+	background: url('../images/faithBadge.png') left center no-repeat;
+	background-size: 32px 50px;
+	padding: 10px 0;
+	text-indent: 35px;
+}
+.faithYellow {
+	margin: 0 0 10px 0;
+	font-family: 'Aldrich',sans-serif;
+	background: url('../images/faithBadgeYellow.png') left center no-repeat;
+	background-size: 32px 50px;
+	padding: 10px 0;
+	text-indent: 35px;
+}
+ol,ul {
+	margin-bottom: 25px;
+}
+ol li,ul li {
+	margin-bottom: 10px;
+}
+ul.social li {
+	color: var(--yellow);
+	display: inline;
+	float: left;
+	list-style: none;
+	padding: 8px;
+}
+ul.social li a:hover {
+	color: var(--yellow);
+}
+blockquote {
+	padding: 14px;
+	margin: 10px 0;
+	border-left: 4px solid var(--yellow);
+}
+blockquote p.source {
+	font-style: italic;
+	padding-top: 15px;
+}
+.red-sub-heading {
+	display: inline-block;
+	background: rgba(197,21,21,0.8);
+	padding: 15px;
+	text-transform: uppercase;
+	margin: 15px 0;
+	font-family: 'Aldrich',sans-serif;
+}
+/* Over-writing Bootstrap button styles */
+.btn {
+	border-radius: 0;
+}
+.btn-primary {
+	background: rgba(197,21,21,0.8);
+	border-color: rgba(197,21,21,0.8); /* Using "border-color" rather than "border" to overwrite Bootstrap's styling */
+	padding: 15px 25px;
+	text-transform: uppercase;
+	font-family:'Aldrich',sans-serif;
+	font-size: 14px;
+}
+.btn-primary:hover,.btn-primary:focus {
+	background-color: transparent;
+	border-color: rgba(197,21,21,0.8);
+	color: rgba(197,21,21,0.8);
+}
+a:hover,a:focus {
+	color: var(--blue);
+}
+/* MEDIA QUERIES */
+@media screen and (min-width: 768px) {
+	.navbar {
+		padding: 15px 0;
+	}
+	.navbar-nav>li {
+		-webkit-transform: skew(-12deg,0deg);
+		transform: skew(-12deg,0deg);
+	}
+	.navbar-nav>li a {
+		-webkit-transform: skew(-12deg);
+		transform: skew(12deg);
+	}
+	.navbar-nav li:after {
+		position: absolute;
+		top: 0;
+		right: -3px;/* Prevents the navigation item's background on hover doesn't overlap the dash */
+		display: block;
+		height: 100%;
+		content: '';
+		border-right: 3px solid var(--yellow);
+	}
+	.navbar-nav>li:hover:after {
+		border-color: var(--rust);
+	}
+	.dropdown-menu {
+		padding-bottom: 0;
+	}
+	.dropdown-menu>li>a {
+		margin: 0;
+	}
+	.jumbotron {
+		margin-top: 65px;
+	}
+	#content {
+		padding-bottom: 50px;
+	}
+	h1  {
+		font-size: 90px;
+	}
+	footer {
+		padding-top: 0;
+	}
+	.footer-header {
+		width: 0;
+		height: 400px;
+		padding-left: 100%;
+		padding-top: 300px;
+		overflow: hidden;
+	}
+	.footer-header:after {
+		content: "";
+		display: block;
+		width: 0;
+		height: 0;
+		margin-left: -2000px;
+		margin-top: -300px;
+		border-left: 2000px solid transparent;
+		border-top: 300px solid var(--light);
+	}
+	footer .logo {
+		position: relative;
+		top: -150px;
+		text-align: center;
+	}
+	footer .row {
+		position: relative;
+		top: -80px;
+	}
+	footer .logo {
+		text-align: left;
+	}
+}
+@media screen and (min-width: 992px) {
+	.jumbotron {
+		background-position: 75% 50%;
+	}
+	h1  {
+		font-size: 120px;
+		margin: 0 0 45px;
+	}
+}

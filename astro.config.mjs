@@ -1,5 +1,4 @@
-// @ts-check
-import { defineConfig } from 'astro/config'
+import { defineConfig } from "astro/config";
 import tailwind from '@tailwindcss/vite'
 import critters from 'astro-critters';
 

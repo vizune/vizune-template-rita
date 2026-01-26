@@ -1,0 +1,180 @@
+---
+
+---
+
+<ui-tabs class="tabs block">
+  <slot />
+</ui-tabs>
+
+<script is:inline>
+  if (!customElements.get('ui-tabs')) {
+    class UITabs extends HTMLElement {
+      connectedCallback() {
+        const tabsEls = Array.from(this.querySelectorAll('ui-tab'));
+        const panels = Array.from(this.querySelectorAll('ui-panel'));
+        if (!tabsEls.length || tabsEls.length !== panels.length) return;
+
+        // Build/ensure tablist
+        let tablist = this.querySelector('[role="tablist"]');
+        if (!tablist) {
+          tablist = document.createElement('div');
+          tablist.setAttribute('role', 'tablist');
+          tablist.setAttribute('aria-orientation', 'horizontal'); // a11y
+          tablist.className = 'tablist flex items-center gap-8 mb-6 px-6';
+          this.prepend(tablist);
+        }
+
+        // Create real buttons from <ui-tab> content
+        const buttons = tabsEls.map((src, i) => {
+          const label = src.innerHTML.trim();
+          const panelId = src.getAttribute('for') || `ui-panel-${i + 1}`;
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.id = `ui-tab-${i + 1}`; // ensure aria-labelledby works
+          btn.className =
+            'tab inline-flex items-center h-10 px-4 rounded-full border';
+          btn.setAttribute('role', 'tab');
+          btn.setAttribute('aria-controls', panelId);
+          btn.setAttribute('aria-selected', String(i === 0));
+          btn.setAttribute('tabindex', i === 0 ? '0' : '-1');
+          btn.innerHTML = `<span>${label}</span>`;
+
+          const li = document.createElement('div');
+          li.className = 'grow w-full lg:w-auto flex justify-center';
+          li.appendChild(btn);
+          tablist.appendChild(li);
+
+          src.remove();
+          return btn;
+        });
+
+        panels.forEach((p, i) => {
+          p.id = p.id || `ui-panel-${i + 1}`;
+          p.setAttribute('role', 'tabpanel');
+          p.setAttribute('aria-labelledby', buttons[i].id || '');
+          p.hidden = i !== 0;
+          p.classList.add('wrapper-item');
+        });
+
+        let current = 0;
+        const activate = (idx) => {
+          buttons.forEach((b, i) => {
+            const on = i === idx;
+            b.setAttribute('aria-selected', String(on));
+            b.setAttribute('tabindex', on ? '0' : '-1');
+            const panel = this.querySelector('#' + b.getAttribute('aria-controls'));
+            if (panel) panel.hidden = !on;
+          });
+          current = idx;
+          buttons[idx].focus({ preventScroll: true });
+        };
+
+        // Events
+        buttons.forEach((b, i) => b.addEventListener('click', () => activate(i)));
+        tablist.addEventListener('keydown', (e) => {
+          if (!['ArrowLeft','ArrowRight','Home','End'].includes(e.key)) return;
+          e.preventDefault();
+          let next = current;
+          if (e.key === 'ArrowLeft') next = (current - 1 + buttons.length) % buttons.length;
+          if (e.key === 'ArrowRight') next = (current + 1) % buttons.length;
+          if (e.key === 'Home') next = 0;
+          if (e.key === 'End') next = buttons.length - 1;
+          activate(next);
+        });
+      }
+    }
+
+    customElements.define('ui-tabs', UITabs);
+    customElements.define('ui-tab', class extends HTMLElement {});
+    customElements.define('ui-panel', class extends HTMLElement {});
+  }
+</script>
+
+<style is:global>
+ui-tabs {
+  /* theme tokens */
+  --bar-bg: rgba(10, 14, 25, 0.55);
+  --bar-border: rgba(255, 255, 255, 0.10);
+
+  --tab-fg: rgba(255, 255, 255, 0.65);
+  --tab-fg-hover: rgba(255, 255, 255, 0.9);
+  --tab-active: rgba(255, 255, 255, 0.95);
+
+  --underline: rgb(99, 102, 241); /* indigo-ish */
+  --ring: rgba(160, 130, 255, 0.6);
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+
+/* the “bar” container */
+ui-tabs .tablist {
+  width: 100%;
+  padding: 16px 20px;
+  position: relative;
+}
+
+ui-tabs .tablist::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 12px;
+  height: 1px;
+  background: rgba(255,255,255,0.10);
+}
+
+/* each tab button */
+ui-tabs [role="tab"] {
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+
+  background: transparent;
+  border: 0;
+  padding: 10px 2px;
+
+  color: var(--tab-fg);
+  font-size: 14px;
+  letter-spacing: 0.01em;
+
+  transition: color .18s var(--ease);
+  cursor: pointer;
+}
+
+/* hover */
+ui-tabs [role="tab"]:hover {
+  color: var(--tab-fg-hover);
+}
+
+/* active tab text */
+ui-tabs [role="tab"][aria-selected="true"] {
+  color: var(--tab-active);
+}
+
+/* underline indicator */
+ui-tabs [role="tab"][aria-selected="true"]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;       /* sits just above the bar divider */
+  height: 2px;
+  background: var(--underline);
+  border-radius: 9999px;
+}
+
+ui-tabs [role="tab"]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+  border-radius: 10px;
+}
+
+ui-tabs [role="tabpanel"].wrapper-item {
+  /* optional */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ui-tabs [role="tab"] { transition: none; }
+  ui-tabs .tablist { backdrop-filter: none; }
+}
+
+</style>

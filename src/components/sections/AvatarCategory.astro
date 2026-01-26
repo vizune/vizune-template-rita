@@ -1,0 +1,216 @@
+---
+import FilterDropdown from '@/components/ui/FilterDropdown.astro';
+import Pagination from '@/components/ui/Pagination.astro';
+import { tagReference } from '@/constants';
+import AvatarPost from '@/components/posts/AvatarPost.astro'
+
+type Tag = { sys: { id: string } };
+
+type Post = {
+  metadata: { tags: Tag[] };
+  sys: { id: string };
+  fields: {
+    title: string;
+    index?: number;
+    asset?: { sys: { id: string } };
+  };
+};
+
+type Asset = {
+  sys: { id: string };
+  fields?: {
+    title?: string;
+    description?: string;
+    file?: {
+      url?: string;
+      details?: { image?: { width?: number; height?: number } };
+    };
+  };
+};
+
+interface Props {
+  category: number;
+  title: string;
+  posts: Post[];
+  assets: Asset[];
+  itemsPerPage: number;
+}
+
+const { category, title, posts, assets, itemsPerPage } = Astro.props as Props;
+
+const EXCLUDED_TAGS = new Set(['avatars', 'avatarsHundred', 'xavatars', 'avatarsFourHundred']);
+
+function getTags(allPosts: Post[]): string[] {
+  const tags = new Set<string>();
+  for (const post of allPosts) {
+    for (const t of post.metadata.tags) {
+      const id = t.sys.id;
+      if (!EXCLUDED_TAGS.has(id)) tags.add(id);
+    }
+  }
+  return [...tags].sort();
+}
+
+function getTagCount(allPosts: Post[], tagOption: string): number {
+  let count = 0;
+  for (const post of allPosts) {
+    if (post.metadata.tags.some(t => t.sys.id === tagOption)) count++;
+  }
+  return count;
+}
+
+const tags = getTags(posts);
+const tagCounts = Object.fromEntries(tags.map(t => [t, getTagCount(posts, t)]));
+const labelFor = (tag: string) => tagReference[tag] ?? tag;
+
+// Build a fast lookup map once
+const assetById = new Map<string, Asset>(assets?.map(a => [a.sys.id, a]) ?? []);
+
+function toAbsoluteContentfulUrl(url?: string) {
+  if (!url) return '';
+  // Contentful often returns //images.ctfassets.net/...
+  return url.startsWith('//') ? `https:${url}` : url;
+}
+
+function resolveAsset(post: Post) {
+  const id = post.fields.asset?.sys?.id;
+  if (!id) return null;
+
+  const asset = assetById.get(id);
+  const url = toAbsoluteContentfulUrl(asset?.fields?.file?.url);
+  if (!url) return null;
+
+  const alt =
+    asset?.fields?.description ||
+    asset?.fields?.title ||
+    post.fields.title ||
+    'Avatar';
+
+  const width = asset?.fields?.file?.details?.image?.width;
+  const height = asset?.fields?.file?.details?.image?.height;
+
+  return { url, alt, width, height };
+}
+---
+
+
+<div class="avatar-list mb-8" data-category={category}>
+  <h2 class="text-center text-dark my-8">{title}</h2>
+
+  <FilterDropdown>
+    <option value="">-- Filter {title} --</option>
+    {tags.map((t) => (
+      <option value={t}>
+        {labelFor(t)} ({tagCounts[t]})
+      </option>
+    ))}
+  </FilterDropdown>
+
+  <div class={`grid gap-4 wrapper${category} justify-center mt-8`}>
+    {posts.map((post) => {
+      const allTagIds = post.metadata.tags.map(t => t.sys.id);
+      const filterableTags = allTagIds.filter(id => !EXCLUDED_TAGS.has(id));
+
+      const img = resolveAsset(post);
+      const assetId = post.fields.asset?.sys?.id;
+
+      return (
+        <AvatarPost
+          id={post.sys.id}
+          tags={filterableTags.join(' ')}
+          img={img}
+          index={post.fields.index}
+          category={post.fields.category}
+          section={category}
+        />
+      );
+    })}
+  </div>
+
+  <Pagination id={`avatars-${category}`} pageSize={itemsPerPage} />
+
+  <script is:inline define:vars={{ category, itemsPerPage }}>
+    const root = document.querySelector(`.avatar-list[data-category="${category}"]`);
+    if (!root) return;
+
+    const select = root.querySelector('select');
+    const clearBtn = root.querySelector('[data-clear-filter]');
+    const cards = Array.from(root.querySelectorAll('.avatar-card'));
+
+    const pagination = root.querySelector(`[data-pagination-id="avatars-${category}"]`);
+
+    let currentTag = '';
+    let currentPage = 1;
+
+    function matchesTag(card, tag) {
+      if (!tag) return true;
+      const tags = (card.getAttribute('data-tags') || '').split(/\s+/).filter(Boolean);
+      return tags.includes(tag);
+    }
+
+    function applyFilterAndPagination() {
+      // 1) figure out which cards match the filter
+      const matched = cards.filter((c) => matchesTag(c, currentTag));
+
+      // 2) calculate paging window over matched results
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+
+      // 3) show/hide cards
+      let matchedIndex = 0;
+      cards.forEach((c) => {
+        const ok = matchesTag(c, currentTag);
+        if (!ok) {
+          c.classList.add('hidden');
+          return;
+        }
+
+        const inPage = matchedIndex >= start && matchedIndex < end;
+        c.classList.toggle('hidden', !inPage);
+        matchedIndex += 1;
+      });
+
+      // 4) update pagination component with new totals
+      pagination?.dispatchEvent(
+        new CustomEvent('pagination:set', {
+          detail: { total: matched.length, pageSize: itemsPerPage, page: currentPage },
+        })
+      );
+    }
+
+    // init totals
+    applyFilterAndPagination();
+
+    // filter changes
+    select?.addEventListener('change', (e) => {
+      currentTag = e.currentTarget.value;
+      currentPage = 1; // reset to first page on filter change
+      applyFilterAndPagination();
+    });
+
+    // clear filter
+    clearBtn?.addEventListener('click', () => {
+      if (!select) return;
+      select.value = '';
+      currentTag = '';
+      currentPage = 1;
+      applyFilterAndPagination();
+    });
+
+    // pagination changes (from the Pagination component)
+    pagination?.addEventListener('pagination:change', (e) => {
+      currentPage = e.detail.page;
+      applyFilterAndPagination();
+    });
+  </script>
+
+</div>
+
+<style>
+.wrapper100 { grid-template-columns: repeat(auto-fit, 250px); }
+.wrapper100 .wrapper-info { display: flex; margin-top: .5rem; }
+.wrapper200 { grid-template-columns: repeat(auto-fit, 200px); }
+.wrapper200 .wrapper-item { width: 200px; }
+.wrapper400 { grid-template-columns: repeat(auto-fit, 400px); grid-gap: .75rem; }
+.wrapper400 .wrapper-item { width: 400px; }
+</style>

@@ -1,0 +1,363 @@
+﻿/* CSS VARIABLES */
+:root {
+    --yellow: #ffcc1b;
+    --blue: #007bb4;
+    --cyan: #0ea8ef;
+    --grey: #2d3133;
+    --light: #cad2d6;
+}
+body, html {
+	height: 100%;
+}
+body {
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--grey);
+}
+a, a:hover, a:focus {
+    color: var(--blue);
+}
+#wrapper {
+    min-height: 100%;
+    padding: 0;
+}
+/* JUMBOTRON (HEADER) */
+.jumbotron {
+    background: url('../img/header.png') 50% 50%;
+    height: 385px; /* Adjust this value to the height of your header image, added extra 10px for border */
+    background-position: 70% 50%;
+    margin: 50px 0 0; /* If you have removed the fixed mobile menu, replace with margin: 0; */
+    padding: 0;
+    border-bottom: 10px solid var(--yellow);
+}
+/* This is needed to vertically align site name/logo */
+.jumbotron .container {
+    height: 100%;
+    position: relative;
+}
+.branding {
+    position: absolute;
+    left: 50%;
+    top: 67%;
+    transform: translate(-50%, -50%);
+}
+/* NAVIGATION */
+.navbar {
+    background: var(--grey);
+    margin: 0;
+    border-radius: 0;
+	border: 0;
+	text-align: left;
+    position: fixed; /* This forces the navigation fixed to the top of the window for tablet/mobile */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+.navbar-brand:hover {
+    color: var(--blue);
+}
+.logo {
+	background:url('../img/logo.png') 70% 50% no-repeat;
+	text-indent: -99999px;
+	display: block;
+	width: 210px; /* Update this value to the width of your logo */
+    height: 50px;
+	padding:0;
+}
+.navbar-brand {
+	color: #fff;
+    font-size: 30px;
+    text-transform: uppercase;
+}
+/* Remove this CSS if you don't want center aligned navigation links */
+.navbar-nav {
+	float: none;
+}
+.navbar-nav>li {
+	float: none;
+	display: block;
+}
+/* End of center aligned navigation links */
+.nav>li>a {
+    color: var(--yellow);
+    text-transform: uppercase;
+    font-size: 17px;
+    letter-spacing: 1.5px;
+    font-family: 'Abel', sans-serif;
+    padding: 15px 20px;
+}
+.nav>li>a:focus, .nav>li>a:hover {
+    background: #212121;
+    color: var(--cyan);
+    text-decoration: none;
+}
+.nav>li>a .fa {
+    margin-right: 10px;
+}
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    background: transparent;
+    color: var(--cyan);
+}
+.dropdown-menu {
+    background: var(--grey);
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+}
+.dropdown-menu>li>a {
+    color: #fff;
+    border-left: 5px solid transparent;
+}
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+    background: var(--blue);
+	color: #fff;
+}
+.dropdown-menu .divider {
+    background: var(--yellow);
+}
+.dropdown-header {
+    color: var(--yellow);
+}
+/* Colour of hamburger icon */
+.navbar-toggle .icon-bar {
+    background: var(--cyan);
+}
+/* CONTENT */
+#content {
+    padding: 40px 0 50px;
+}
+h1, h2 , h3, h4, h5 {
+    font-family: 'Abel', sans-serif;
+    text-transform: uppercase;
+    color: var(--grey);
+}
+h2:before, h3:before, h4:before, h5::before {
+    content: '';
+    position: relative;
+    left: 0px;
+    top: -23px;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-bottom-color: var(--yellow);
+    margin-right: 8px;
+}
+h2:before {
+    top: -29px;
+}
+h3:before {
+    top: -26px;
+}
+h3:before {
+    top: -25px;
+}
+h1 {
+    margin: 0 0 30px;
+    text-align: center;
+}
+h4 {
+	margin: 15px 0 10px;
+}
+.avatar {
+	margin: 0 6px 4px 0;
+    border: 2px solid var(--blue);
+	padding: 2px;
+    float: left;
+}
+/* PORTFOLIO SECTION */
+.portfolio {
+    margin: 30px 0;
+}
+.portfolio .row > .row {
+    margin-bottom: 20px;
+}
+.portfolio article {
+    border-bottom: 1px solid var(--light);
+}
+/* If the image isn't 100% width of the div, this centers the image */
+.portfolio article img {
+    margin: 0 auto;
+    display: block;
+}
+.portfolio article h2 {
+    margin: 0;
+    font-size: 24px;
+}
+.portfolio article h2:before {
+    display: none; /* Removes yellow triangle */
+}
+.portfolio-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0;
+    width: 100%;
+}
+.portfolio-links {
+    flex-shrink: 0;
+}
+.portfolio-links ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    float: right;
+}
+.portfolio-links ul li {
+    display: inline-block;
+}
+.portfolio-links a {
+    border-bottom: 4px solid var(--blue);
+    padding: 8px 5px;
+    margin: 0 10px;
+    display: inline-block;
+}
+.portfolio-links a:hover {
+    text-decoration: none;
+    background: var(--blue);
+    color: #fff;
+}
+/* ASIDE */
+aside {
+    background-color: var(--grey);
+    width: 100%;
+    float: none;
+    padding: 20px 20px 30px;
+    color: #fff;
+    margin: 25px 0;
+}
+aside ul {
+    padding-left: 0;
+    list-style: none;
+}
+aside ul li {
+    margin-bottom: 15px;
+    background: url('../img/arrow.png') left top no-repeat; /* Background-image is used rather than "list-style-image" to reposition the image as it is taller than the line height. */
+    padding-left: 20px;
+}
+aside ul li a {
+    color: var(--yellow);
+}
+aside ul li a:hover {
+    color: var(--yellow);
+}
+/* FOOTER */
+footer {
+	background: var(--grey) url('../img/footer.png') 60% 0 no-repeat;
+	width: 100%;
+	color: var(--light);
+    font-size: 14px;
+    padding: 25px 0;
+    padding: 10px 0 25px;
+}
+footer .slogan {
+    color: var(--grey);
+    text-transform: uppercase;
+    font-size: 150%;
+    text-align: right;
+    float: right;
+    margin: 0;
+    padding: 0 40px 10px 20px;
+    max-width: 450px;
+}
+footer h2 {
+    font-weight: normal;
+    text-transform: uppercase;
+    color: #fff;
+    margin: 0 0 25px;
+    padding: 0;
+    font-size: 20px;
+    border: none;
+}
+
+footer ul li {
+    margin-bottom: 10px;
+}
+footer ul.links {
+    list-style: none;
+    padding: 0;
+}
+footer ul.links li {
+    margin-bottom: 20px;
+}
+footer ul.links li a {
+    text-transform: uppercase;
+    color: var(--light);
+    border-bottom: 1px dotted var(--light);
+    letter-spacing: 1px;
+    padding-bottom: 5px;
+}
+footer ul.links li a:hover {
+    text-decoration: none;
+    color: var(--cyan);
+    border-bottom: 1px solid var(--cyan);
+}
+footer .widget {margin: 0 15px 40px;}
+footer .widget:nth-child(1) {
+    margin-top: 50px;
+}
+.buttons {
+    padding: 0;
+}
+.buttons li {
+	display: inline-block;
+	list-style: none;
+	border: 2px solid transparent;
+}
+.buttons li:hover {
+	border: 2px solid var(--blue);
+}
+/* MEDIA QUERIES */
+@media screen and (min-width: 768px) {
+    .branding {
+        top: 50%;
+        left: 18%;
+    }
+    .jumbotron {
+        background-position: 50% 0%;
+        margin-top: 0; /* If you have removed the fixed mobile menu, remove this line */
+    }
+    .navbar {
+        text-align: center;
+        position: static;
+    }
+    .navbar-brand {
+        position: relative;
+        left: 30%;
+    }
+    .navbar-nav>li {display: inline-block;}
+    .nav>li>a .fa {
+        display: block;
+        margin: 10px auto;
+        font-size: 28px;
+    }
+    aside {
+        background-image: url('../img/sidebar.png');
+        background-position: 0 100%;
+        background-repeat: no-repeat;
+        float: right;
+        width: 220px;
+        margin: 0 0 50px;
+    }
+    footer {
+        padding: 25px 0;
+        background-position: center top;
+    }
+    footer .slogan {
+        padding: 0 0 10px 20px;
+    }    
+    footer .widget:nth-child(1) {
+        margin: 0;
+    }
+    footer .widget:nth-child(2) {
+        margin: 30px 0 0;
+    }
+    footer .widget:nth-child(3) {
+        margin: 70px 0 0;
+    }
+    footer .slogan {
+        padding: 0 40px 10px 20px;
+    }
+
+}

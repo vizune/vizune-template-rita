@@ -1,7 +1,7 @@
 {
-  "name": "vizune-rita",
+  "name": "vizune-nexus",
   "type": "module",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -9,8 +9,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@contentful/rich-text-html-renderer": "^16.6.8",
+    "@contentful/rich-text-types": "^16.8.3",
     "@tailwindcss/vite": "^4.1.13",
-    "astro": "^5.13.5",
+    "astro": "^5.16.0",
     "astro-critters": "^2.2.1",
     "tailwindcss": "^4.1.13"
   }

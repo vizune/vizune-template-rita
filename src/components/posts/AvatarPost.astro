@@ -1,0 +1,51 @@
+---
+interface Props {
+  img: object;
+  index: string;
+  category: string;
+  id: number;
+  tags: string;
+  section: number;
+}
+
+const { img, index, category, id, tags, section } = Astro.props;
+
+const isCompact = section === 100;
+const isXL = section === 400;
+
+const wrapperClasses = `
+  overflow-hidden
+  border border-white/10
+  bg-white/5
+  backdrop-blur-md
+  ${isCompact ? 'flex items-center rounded-r-xl' : 'rounded-b-xl'}
+`;
+---
+
+<article
+  class="avatar-card"
+  data-post-id={id}
+  data-tags={tags}
+>
+  <div class={`wrapper-item ${wrapperClasses}`}>
+    {img ? (
+        <img
+        src={img.url}
+        alt={img.alt}
+        loading="lazy"
+        decoding="async"
+        class={`block shrink-0 w-[${section}px] h-[${section}px] object-cover`}
+        width={img.width}
+        height={img.height}
+        />
+    ) : (
+        <div class="aspect-square grid place-items-center text-white/50 text-sm">
+          No image
+        </div>
+    )}
+
+    <div class="p-3">
+        <div class={`text-white/80 ${isXL ? ' text-center' : 'text-sm'}`}><strong>{index}:</strong> {category}</div>
+    </div>
+  </div>
+</article>

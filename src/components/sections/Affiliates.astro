@@ -6,26 +6,26 @@ import glimpsedPng from '@/assets/buttons/a-glimpsed-horizon.png';
 import auroraPng   from '@/assets/buttons/aurora-veil.png';
 import hakanaiJpg  from '@/assets/buttons/hakanai.jpg';
 import kinkuGif    from '@/assets/buttons/kinku.gif';
-import kouyouPng   from '@/assets/buttons/kouyou-design.png';
 import loveZeroPng from '@/assets/buttons/love-is-zero.png';
 import pridefulJpg from '@/assets/buttons/prideful-moon.jpg';
 import randomPng   from '@/assets/buttons/random.png';
 import seaLovePng  from '@/assets/buttons/sea-love.png';
 import snowJpg     from '@/assets/buttons/snow-drops.jpg';
+import untamedPng  from '@/assets/buttons/untamed-rebel.png';
 
 const affiliates = [
-  { name: 'Affelius',          url: 'https://affeli.us/',                button: affeliusPng },
-  { name: 'A Glimpsed Horizon',url: 'https://akiba.flirt-wind.net/',     button: glimpsedPng },
-  { name: 'Aurora Veil',       url: 'https://auroraveil.org/',           button: auroraPng },
-  { name: 'Hakanai',           url: 'http://hakanai.net/',               button: hakanaiJpg },
-  { name: 'Kinku',             url: 'https://kuroi-inku.aniyu.net/',     button: kinkuGif },
-  { name: 'Kishou',            url: 'https://kishou.net/',               button: null },
-  { name: 'Kouyou Design',     url: 'http://kouyou-design.net/',         button: kouyouPng },
-  { name: 'Love is Zero',      url: 'https://loveiszero.net/',           button: loveZeroPng },
-  { name: 'Prideful Moon',     url: 'https://pridefulmoon.com/',         button: pridefulJpg },
-  { name: 'A Random Website',  url: 'https://a-random-website.net/',     button: randomPng },
-  { name: 'Sea Love',          url: 'http://sealove.sheisl0ved.com/',    button: seaLovePng },
-  { name: 'Snow Drops',        url: 'https://snow-drops.org/',           button: snowJpg }
+  { name: 'Affelius',          url: 'https://affeli.us/',                  button: affeliusPng },
+  { name: 'A Glimpsed Horizon',url: 'https://akiba.flirt-wind.net/',       button: glimpsedPng },
+  { name: 'Aurora Veil',       url: 'https://auroraveil.org/',             button: auroraPng },
+  { name: 'Hakanai',           url: 'http://hakanai.net/',                 button: hakanaiJpg },
+  { name: 'Kinku',             url: 'https://kuroi-inku.aniyu.net/',       button: kinkuGif },
+  { name: 'Kishou',            url: 'https://kishou.net/',                 button: null },
+  { name: 'Love is Zero',      url: 'https://loveiszero.net/',             button: loveZeroPng },
+  { name: 'Prideful Moon',     url: 'https://pridefulmoon.com/',           button: pridefulJpg },
+  { name: 'A Random Website',  url: 'https://a-random-website.net/',       button: randomPng },
+  { name: 'Sea Love',          url: 'http://sealove.sheisl0ved.com/',      button: seaLovePng },
+  { name: 'Snow Drops',        url: 'https://snow-drops.org/',             button: snowJpg },
+  { name: 'Untamed Rebel',     url: 'https://untamed-rebel.blogspot.com/', button: untamedPng }
 ];
 ---
 
@@ -37,7 +37,7 @@ const affiliates = [
         href={link.url}
         target="_blank"
         rel="noopener noreferrer"
-        class="group relative flex h-[39px] w-[96px] items-center justify-center border border-white text-center tracking-wide text-white transition-colors duration-300 ease-in-out hover:bg-lavender hover:text-raven"
+        class="Button group relative flex h-[39px] w-[96px] items-center justify-center border border-white text-center tracking-wide no-underline text-white transition-colors duration-300 ease-in-out hover:bg-lavender hover:text-raven"
         aria-label={`Affiliate: ${link.name}`}
       >
         <span class="p-1 text-xs uppercase tracking-wider">{link.name}</span>

@@ -1,0 +1,53 @@
+---
+
+import Layout from '@/layouts/Layout.astro';
+import Tabs from '@/components/ui/Tabs.astro';
+import AvatarCategory from '@/components/sections/AvatarCategory.astro';
+
+const posts100 = await fetch(import.meta.env.PUBLIC_POSTS_AVATARS_100).then((r) => r.json());
+
+const posts200 = await fetch(import.meta.env.PUBLIC_POSTS_AVATARS_200).then((r) => r.json());
+
+const posts400 = await fetch(import.meta.env.PUBLIC_POSTS_AVATARS_400).then((r) => r.json());
+
+const sortPostsByIndex = posts => {
+  return posts.items.sort((a,b) => a.fields.index < b.fields.index ? 1 : -1);
+}
+
+---
+
+<Layout title="Vizune Designs - Avatars" heading="Vizune Avatars" description="...">
+  <Tabs id="example-1">
+    <ui-tab>100 x 100 Avatars</ui-tab>
+    <ui-tab>200 x 200 Avatars</ui-tab>
+    <ui-tab>400 x 400 Avatars</ui-tab>
+
+    <ui-panel>
+      <AvatarCategory 
+        category={100}
+        title="100 x 100 avatars"
+        posts={sortPostsByIndex(posts100)}
+        assets={posts100.includes.Asset}
+        itemsPerPage={25}
+      />
+    </ui-panel>
+    <ui-panel>
+      <AvatarCategory 
+        category={200}
+        title="200 x 200 avatars"
+        posts={sortPostsByIndex(posts200)}
+        assets={posts200.includes.Asset}
+        itemsPerPage={18}
+      />
+    </ui-panel>
+    <ui-panel>
+      <AvatarCategory 
+        category={400}
+        title="400 x 400 avatars"
+        posts={sortPostsByIndex(posts400)}
+        assets={posts400.includes.Asset}
+        itemsPerPage={6}
+      />
+    </ui-panel>
+  </Tabs>
+</Layout>

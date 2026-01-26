@@ -1,0 +1,120 @@
+body {
+    background-color: #07080e;
+    color: #fff;
+    font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";
+}
+h1 {
+    background: url('heading.png') bottom center no-repeat;
+    background-size: 257px 60px;
+    height: 100px;
+    font-size: 1.75rem;
+    font-weight: 500;
+    text-align: center;
+    display: block;
+    margin: 3rem auto 0;
+}
+.Wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+.Frame {
+    width: 236px;
+    height: 236px;
+}
+.Frame-link {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: white;
+}
+.Frame-name {
+    width: 65%;
+    transition: transform .25s ease;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    top: 65%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.Frame-name:before {
+    content: '';
+    position: absolute;
+    height: 0;
+    width: 0;
+    border-style: solid;
+    top: 4px;
+    z-index: -10;
+    left: -20px;
+    border-width: 13px;
+}
+
+.Frame-blue .Frame-name:before {
+    border-color: #223076 #223076 #223076 transparent;
+}
+
+.Frame-red .Frame-name:before {
+    border-color: #a71717 #a71717 #a71717 transparent;
+}
+
+.Frame-pink .Frame-name:before {
+    border-color: #980d41 #980d41 #980d41 transparent;
+}
+
+.Frame-name:after {
+    content: '';
+    position: absolute;
+    height: 0;
+    width: 0;
+    border-style: solid;
+    top: 4px;
+    z-index: -10;
+    right: -20px;
+    border-width: 13px;
+}
+
+.Frame-blue .Frame-name:after {
+    border-color: #223076 transparent #223076 #223076;
+}
+
+.Frame-red .Frame-name:after {
+    border-color: #a71717 transparent #a71717 #a71717;
+}
+
+.Frame-pink .Frame-name:after {
+    border-color: #980d41 transparent #980d41 #980d41;
+}
+
+.Frame:hover .Frame-name {
+    transform: translate3D(-50%, -3px, 0) scale(1.2);
+}
+.Frame-text {
+    display: block;
+    width: 100%;
+    height: 1.5rem;
+    z-index: 10;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.4rem;
+    text-transform: uppercase;
+}
+.Frame-blue .Frame-text {
+    background: #293b93;
+    border: 1px solid #1f2c6b;
+}
+.Frame-red .Frame-text {
+    background: #c01818;
+    border: 1px solid #641212;
+}
+.Frame-pink .Frame-text {
+    background: #ba1453;
+    border: 1px solid #83103c;
+}
+.absolute {
+    position: absolute;
+}

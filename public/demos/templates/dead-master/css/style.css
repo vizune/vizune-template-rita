@@ -1,0 +1,245 @@
+﻿/* CSS VARIABLES */
+:root {
+    --orange: #ef7747;
+    --green: #3da927;
+    --lime: #80b458;
+    --dark: #151515;
+    --light: #999;
+}
+body, html {
+	height: 100%;
+}
+body {
+    background: url('../img/bg.png');
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--dark);
+}
+a, a:hover, a:focus {
+    color: var(--orange);
+}
+#wrapper.container {
+    padding: 0;
+}
+.container {
+    width: 100%;
+    max-width: 1000px;
+}
+/* NAVIGATION */
+.navbar {
+    background: var(--dark);
+    margin: 0 auto;
+    border-radius: 0;
+    max-width: 1000px;
+    border: none;
+}
+.navbar-brand {
+	color: #fff;
+    font-size: 30px;
+    text-transform: uppercase;
+    margin: 0 15px;
+}
+.navbar-brand:hover {
+    color: var(--green);
+}
+.navbar-nav {
+    margin: 0;
+}
+.logo {
+	background:url('../img/logo.png') 50% 50% no-repeat;
+	text-indent: -99999px;
+	display: block;
+	width: 200px; /* Update this value to the width of your logo */
+    height: 50px;
+	padding: 0;
+    margin: 0;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.nav>li>a {
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+.nav>li>a:focus, .nav>li>a:hover, .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    background: var(--green);
+    color: var(--dark);
+    text-decoration: none;
+}
+#bottomnav .navbar-nav {
+    text-align: center;
+    width: 100%;
+}
+#bottomnav.navbar-collapse {
+    padding: 0;
+}
+#bottomnav .navbar-nav>li {
+    width: 100%;
+}
+#bottomnav .navbar-nav>li>a {
+    width: 100%;
+    border: none;
+}
+#bottomnav a i {
+    display: block;
+    margin: 0 auto 10px;
+    /* If you would like the symbols on the left side of navigation, delete above CSS and use this: margin-right: 10px; */
+}
+/* Colour of hamburger icon */
+.navbar-toggle .icon-bar {
+    background: var(--green);
+}
+.topnav {
+    padding-right: 10px;
+    text-align: center;
+}
+ul li.social {
+	display: inline-block;
+}
+li.social a {
+	padding: 8px 4px;
+}
+li.social a.instagram {
+	color: #e1306c;
+}
+li.social a.twitter {
+	color: #55acee;
+}
+li.social a.deviantart {
+	color: #05cc47;
+}
+li.social a.tumblr {
+	color: #35465c;
+}
+li.social a.pinterest {
+	color: #cc2127;
+}
+li.social a:hover {color: var(--dark);}
+/* JUMBOTRON (HEADER) */
+.container .jumbotron, .container-fluid .jumbotron {
+    border-radius: 0;
+}
+.jumbotron {
+    background: url('../img/header.png') 50% 50% no-repeat;
+    height: 350px; /* Adjust this value to the height of your header image */
+    padding: 0;
+	margin: 0;
+}
+/* CONTENT */
+#content {
+    padding: 30px 40px;
+    background: #fff;
+}
+h1, h2 , h3, h4, h5 {
+    text-transform: uppercase;
+    padding: 10px 15px;
+    border-left: 10px solid var(--dark);
+    background: var(--green);
+    color: #fff;
+    display: inline-block;
+    margin: 25px 0;
+}
+.avatar {
+	margin: 6px 8px 0 0;
+    border: 3px solid var(--lime);
+	padding: 2px;
+    float: left;
+}
+.avatar-wrapper {
+    min-height: 110px;
+}
+/* FOOTER */
+footer {
+	background: var(--dark);
+	width: 100%;
+	color: var(--light);
+    font-size: 14px;
+    padding: 25px 0;
+}
+footer h2 {
+    font-weight: normal;
+    text-transform: uppercase;
+    color: var(--lime);
+    margin: 0 0 25px;
+    background: none;
+    border-bottom: 3px solid var(--lime);
+    padding: 10px 15px;
+    font-size: 20px;
+    text-align: center;
+    display: block;
+}
+footer a {
+    color: #fff;
+    border-bottom: 1px dotted var(--light);
+}
+footer a:hover {
+    color: var(--orange);
+    border-bottom: 1px solid var(--orange);
+    text-decoration: none;
+}
+footer ul li {
+    margin-bottom: 10px;
+}
+footer ul.links {
+    list-style: none;
+    padding: 0;
+}
+footer ul.links li {
+    margin-bottom: 20px;
+}
+footer ul.links li a {
+    text-transform: uppercase;
+    color: #fff;
+    border-bottom: 1px dotted var(--light);
+    letter-spacing: 1px;
+    padding-bottom: 5px;
+}
+footer ul.links li a:hover {
+    text-decoration: none;
+    color: var(--orange);
+    border-bottom: 1px solid var(--orange);
+}
+.buttons {
+    padding: 0;
+    text-align: center;
+}
+.buttons li {
+	display: inline-block;
+	list-style: none;
+	border: 2px solid transparent;
+}
+.buttons li:hover {
+	border: 2px solid var(--lime);
+}
+/* MEDIA QUERIES */
+@media (min-width: 768px) {
+    .topnav {
+        text-align: left;
+    }
+    .logo {
+        position: static;
+        left: unset;
+        transform: none;
+        margin: 0 15px;
+    }
+    .navbar-right {
+        margin-right: 0;
+    }
+    #bottomnav .navbar-nav>li {
+        width: 20%;
+    }
+}
+/* CSS for high-resolution devices */
+@media only screen and (-Webkit-min-device-pixel-ratio: 1.5),
+only screen and (-moz-min-device-pixel-ratio: 1.5),
+only screen and (-o-min-device-pixel-ratio: 3/2),
+only screen and (min-device-pixel-ratio: 1.5) {
+    body {
+        background-image: url(../img/bg_2x.png);
+        background-size: 48px 48px;
+    }
+}
