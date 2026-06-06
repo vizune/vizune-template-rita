@@ -1,0 +1,175 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import vizuneButton01 from '@/assets/buttons/vizune-button-01.png';
+import vizuneButton02 from '@/assets/buttons/vizune-button-02.png';
+import vizuneButton03 from '@/assets/buttons/vizune-button-03.png';
+import darkPassionJpg     from '@/assets/buttons/dark-passion-gfx.jpg';
+import eccentricityPng       from '@/assets/buttons/eccentricity.png';
+import fadedMorningGif from '@/assets/buttons/faded-morning.gif';
+import kingdraPng     from '@/assets/buttons/kingdra.png';
+import notsJpg      from '@/assets/buttons/numbers-of-the-sky.jpg';
+import questionPointWebp        from '@/assets/buttons/question-point.webp';
+import redVelvetGif     from '@/assets/buttons/red-velvet.gif';
+import twilightPng     from '@/assets/buttons/twilight-pentagram.png';
+
+
+const linkExchangeList = [
+  {
+    name: 'Dreamscape',
+    url: 'http://dreamscape.ezyro.com',
+  },
+  {
+    name: 'Mishipaper Graphics',
+    url: 'https://mishipaper.tumblr.com/',
+  },
+  {
+    name: 'Neotokio3TV',
+    url: 'https://www.youtube.com/@Neotokio3TV/',
+  },
+];
+
+const linkExchangeButtons = [
+  {
+    name: 'Dark Passion GFX',
+    url: 'http://www.dp-gfx.de',
+    image: darkPassionJpg,
+  },
+  {
+    name: 'Eccentricity',
+    url: 'http://eccentricity.sammiirose.com/',
+    image: eccentricityPng,
+  },
+  {
+    name: 'Faded Morning',
+    url: 'https://faded-morning.carrd.co/',
+    image: fadedMorningGif,
+  },
+  {
+    name: 'Kingdra',
+    url: 'https://kingdra.net/',
+    image: kingdraPng,
+  },
+  {
+    name: 'Numbers of the Sky',
+    url: 'https://numbersofthesky.tumblr.com/',
+    image: notsJpg,
+  },
+  {
+    name: 'Question Point',
+    url: 'https://thequestpoint.wordpress.com/',
+    image: questionPointWebp,
+  },
+  {
+    name: 'Red Velvet',
+    url: 'https://redvelvet.cc/',
+    image: redVelvetGif,
+  },
+  {
+    name: 'Twilight Pentagram',
+    url: 'https://twilightpentagram.neocities.org/',
+    image: twilightPng,
+  },
+];
+---
+
+<Layout
+  title="Vizune Designs - Link Exchange"
+  description="Link exchange and affiliate buttons for Vizune Designs."
+  heading="Link Exchange"
+>
+  <section class="space-y-10">
+    <div>
+      <h2 class="mb-3">Vizune Link Buttons</h2>
+      <p class="text-white/75 mb-5">
+        Feel free to use one of my buttons if you would like to link back to Vizune. Please don't direct link and save to your own server.
+      </p>
+
+      <div class="grid gap-4 sm:grid-cols-3 max-w-xl">
+        <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg p-4 flex items-center justify-center">
+          <img
+            src={vizuneButton03.src}
+            alt="Vizune link button version 3"
+            width="88"
+            height="31"
+            class="image-rendering-pixelated"
+          />
+        </div>
+
+        <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg p-4 flex items-center justify-center">
+          <img
+            src={vizuneButton01.src}
+            alt="Vizune link button version 1"
+            width="88"
+            height="31"
+            class="image-rendering-pixelated"
+          />
+        </div>
+
+        <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg p-4 flex items-center justify-center">
+          <img
+            src={vizuneButton02.src}
+            alt="Vizune link button version 2"
+            width="88"
+            height="31"
+            class="image-rendering-pixelated"
+          />
+        </div>
+      </div>
+    </div>
+
+    <h2 class="mb-3">Link Exchanges</h2>
+    <p class="text-white/75 mb-6">
+      If you would like your website link or button featured below, drop me a message in the chat box.
+    </p>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      {linkExchangeButtons.map((button) => (
+        <a
+          href={button.url}
+          title={button.name}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg p-5
+                hover:border-white/20 hover:bg-white/[0.07] hover:text-lavender transition group"
+        >
+          <article>
+            <h3 class="text-base font-semibold text-center mb-4">
+              {button.name}
+            </h3>
+
+            <div
+              class="flex items-center justify-center rounded-xl border border-white/10
+                    bg-black/20 min-h-[92px] group-hover:bg-black/30 transition"
+            >
+              <img
+                src={button.image.src}
+                alt={`${button.name} button`}
+                width="88"
+                height="31"
+                class="[image-rendering:pixelated]"
+              />
+            </div>
+          </article>
+        </a>
+      ))}
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {linkExchangeList.map((link) => (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-white text-lg text-center font-medium hover:text-lavender transition"
+        >
+          <article
+            class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg p-5
+                    hover:border-white/20 hover:bg-white/[0.07] transition"
+          >
+            {link.name}
+          </article>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,95 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Pagination from '@/components/ui/Pagination.astro';
+import TutorialPostCard from '@/components/posts/TutorialPost.astro';
+
+type TutorialPost = {
+  sys: { id: string };
+  fields: {
+    title?: string;
+    slug?: string;
+    publishDate?: string;
+    description?: string;
+    thumbnail?: { sys?: { id?: string } };
+  };
+};
+
+type Asset = {
+  sys: { id: string };
+  fields?: {
+    title?: string;
+    description?: string;
+    file?: { url?: string };
+  };
+};
+
+const data = await fetch(import.meta.env.PUBLIC_POSTS_TUTORIALS).then((r) => r.json());
+
+const items: TutorialPost[] = (data?.items ?? []) as TutorialPost[];
+const assets: Asset[] = (data?.includes?.Asset ?? []) as Asset[];
+
+const assetsById = new Map<string, Asset>(assets.map((a) => [a.sys.id, a]));
+
+const toTime = (d?: string) => {
+  const t = d ? Date.parse(d) : NaN;
+  return Number.isFinite(t) ? t : -Infinity;
+};
+
+const sorted = [...items].sort(
+  (a, b) => toTime(b.fields.publishDate) - toTime(a.fields.publishDate)
+);
+---
+
+<Layout
+  title="Vizune Designs - Tutorials"
+  description="Tutorials and guides from Vizune Designs."
+  heading="Vizune Tutorials"
+>
+  <div class="tutorials-list" data-section="tutorials">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-9" data-grid>
+      {sorted.map((post) => (
+        <TutorialPostCard post={post} assetsById={assetsById} />
+      ))}
+    </div>
+
+    <Pagination id="tutorials" pageSize={6} />
+
+    <script is:inline define:vars={{ pageSize: 6 }}>
+      (() => {
+        const root = document.querySelector('.tutorials-list[data-section="tutorials"]');
+        if (!root) return;
+
+        const cards = Array.from(root.querySelectorAll('.tutorial-card'));
+        const pagination = root.querySelector('[data-pagination-id="tutorials"]');
+
+        let currentPage = 1;
+
+        function applyPagination() {
+          const total = cards.length;
+          const start = (currentPage - 1) * pageSize;
+          const end = start + pageSize;
+
+          cards.forEach((card, index) => {
+            card.classList.toggle('hidden', !(index >= start && index < end));
+          });
+
+          pagination?.dispatchEvent(
+            new CustomEvent('pagination:set', {
+              detail: { total, pageSize, page: currentPage },
+            })
+          );
+        }
+
+        applyPagination();
+
+        pagination?.addEventListener('pagination:change', (e) => {
+          currentPage = e.detail?.page || 1;
+          applyPagination();
+
+          const y = root.getBoundingClientRect().top + window.scrollY - 16;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        });
+      })();
+    </script>
+  </div>
+</Layout>

@@ -1,0 +1,268 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Icon from '@/components/ui/Icon.astro';
+import TemplateTarotCard from '@/components/posts/TemplatePost.astro';
+import arrowPng from '@/assets/arrow.png';
+
+type Tag = { sys: { id: string } };
+
+type TemplatePost = {
+  metadata: { tags?: Tag[] };
+  sys: { id: string };
+  fields: {
+    title?: string;
+    slug?: string;
+    banner?: { sys?: { id?: string } };
+    downloadUrl?: string;
+    fileSize?: string;
+    publishDate?: string;
+    techStack?: string;
+    category?: string;
+    series?: string;
+    character?: string;
+    demoUrl?: string;
+    repoUrl?: string;
+  };
+};
+
+type Asset = {
+  sys: { id: string };
+  fields?: { file?: { url?: string }; title?: string; description?: string };
+};
+
+const data = await fetch(import.meta.env.PUBLIC_POSTS_TEMPLATES).then((r) => r.json());
+const items: TemplatePost[] = (data?.items ?? []) as TemplatePost[];
+const assets: Asset[] = (data?.includes?.Asset ?? []) as Asset[];
+const assetsById = new Map<string, Asset>(assets.map((a) => [a.sys.id, a]));
+
+const toTime = (d?: string) =>
+  d && Number.isFinite(Date.parse(d)) ? Date.parse(d) : -Infinity;
+
+const sorted = [...items].sort(
+  (a, b) => toTime(b.fields.publishDate) - toTime(a.fields.publishDate)
+);
+---
+
+<Layout title="Vizune Designs - Templates" heading="Vizune Templates" description="...">
+  <section class="relative pb-10" data-tarot-root>
+    <div class="text-center mb-8">
+      <p class="mb-3 text-white/70 text-sm">Explore the template spread • Select a card to reveal its details</p>
+    </div>
+
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="relative min-h-[560px] flex flex-col items-center justify-center gap-2">
+        <div
+          class="tarot-spread relative w-full max-w-5xl h-[420px] sm:h-[460px] md:h-[520px]"
+          data-spread
+        >
+          {sorted.map((post, idx) => (
+            <TemplateTarotCard post={post} assetsById={assetsById} index={idx} />
+          ))}
+        </div>
+
+        <div class="flex items-center gap-8 mb-8">
+          <button
+            type="button"
+            aria-label="Previous templates"
+            data-prev
+            class="h-18 w-18 rounded-full border border-white/20 bg-black/40
+                  text-white/90 backdrop-blur-md hover:border-white/50 transition
+                  disabled:opacity-40 disabled:cursor-not-allowed
+                  flex items-center justify-center"
+          >
+            <img
+              src={arrowPng.src}
+              alt=""
+              aria-hidden="true"
+              class="w-[45px] h-[30px] rotate-180"
+            />
+          </button>
+
+          <button
+            type="button"
+            aria-label="Next templates"
+            data-next
+            class="h-18 w-18 rounded-full border border-white/20 bg-black/40
+                  text-white/90 backdrop-blur-md transition hover:border-white/50
+                  disabled:opacity-40 disabled:cursor-not-allowed
+                  flex items-center justify-center"
+          >
+            <img
+              src={arrowPng.src}
+              alt=""
+              aria-hidden="true"
+              class="w-[45px] h-[30px]"
+            />
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="mx-auto max-w-6xl rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg shadow-black/30 overflow-hidden"
+        data-template-details
+      >
+        <div class="grid md:grid-cols-[1fr_360px]">
+          <div class="p-5 md:p-6 text-white/90 space-y-2" data-template-meta></div>
+
+          <div
+            class="border-t md:border-t-0 md:border-l border-white/10 grid gap-px bg-white/10"
+            data-template-links
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <template data-new-tab-icon>
+      <Icon name="newTab" title="Opens url in a new tab" />
+    </template>
+
+    <script is:inline>
+      (() => {
+        const root = document.querySelector('[data-tarot-root]');
+        if (!root) return;
+
+        const cards = Array.from(root.querySelectorAll('[data-card]'));
+        const prevBtn = root.querySelector('[data-prev]');
+        const nextBtn = root.querySelector('[data-next]');
+        const meta = document.querySelector('[data-template-meta]');
+        const links = document.querySelector('[data-template-links]');
+        const newTabIcon = root.querySelector('[data-new-tab-icon]')?.innerHTML ?? '';
+
+        if (!cards.length) return;
+
+        let activeIndex = 0;
+        let isAnimating = false;
+
+        function formatUkDate(value) {
+          if (!value) return '';
+          const t = Date.parse(value);
+          if (!Number.isFinite(t)) return value;
+          return new Date(t).toLocaleDateString('en-GB');
+        }
+
+        function renderDetails(card) {
+          if (!meta || !links || !card) return;
+
+          const publishDate = card.dataset.publishDate || '';
+          const techStack = card.dataset.techStack || '';
+          const category = card.dataset.category || '';
+          const series = card.dataset.series || '';
+          const character = card.dataset.character || '';
+          const demoUrl = card.dataset.demoUrl || '';
+          const repoUrl = card.dataset.repoUrl || '';
+          const downloadUrl = card.dataset.downloadUrl || '';
+
+          meta.innerHTML = `
+            ${publishDate ? `<p><strong>Publish Date:</strong> ${formatUkDate(publishDate)}</p>` : ''}
+            ${techStack ? `<p><strong>Tech Stack:</strong> ${techStack}</p>` : ''}
+            ${category ? `<p><strong>Category:</strong> ${category}</p>` : ''}
+            ${series ? `<p><strong>Series:</strong> ${series}</p>` : ''}
+            ${character ? `<p><strong>Character:</strong> ${character}</p>` : ''}
+          `;
+
+          const items = [
+            demoUrl ? { label: 'Demo', href: demoUrl, action: 'demo' } : null,
+            repoUrl ? { label: 'Source code', href: repoUrl, action: 'repo' } : null,
+            downloadUrl ? { label: 'Download .zip', href: downloadUrl, action: 'download' } : null,
+          ].filter(Boolean);
+
+          links.innerHTML = items.map((item) => `
+            <a
+              href="${item.href}"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-template-action="${item.action}"
+              class="flex items-center justify-between gap-4
+                    bg-white/5 px-4 py-5 text-white/90
+                    hover:bg-white/15 hover:text-white transition"
+            >
+              <span>${item.label}</span>
+              <span aria-hidden="true" class="text-white/60 [&_svg]:h-5 [&_svg]:w-5">
+                ${newTabIcon}
+              </span>
+            </a>
+          `).join('');
+
+          links.querySelectorAll('[data-template-action]').forEach(link => {
+            link.addEventListener('click', () => {
+              const action = link.dataset.templateAction;
+              const templateName = card.dataset.title || '';
+
+              if (window.gtag) {
+                gtag('event', 'template_click', {
+                  template_name: templateName,
+                  action: action,
+                  location: 'templates_page'
+                });
+              }
+            });
+          });
+        }
+
+        function render() {
+          cards.forEach((card, index) => {
+            card.classList.remove('is-left', 'is-center', 'is-right', 'is-hidden');
+
+            if (index === activeIndex - 1) {
+              card.classList.add('is-left');
+              return;
+            }
+
+            if (index === activeIndex) {
+              card.classList.add('is-center');
+              return;
+            }
+
+            if (index === activeIndex + 1) {
+              card.classList.add('is-right');
+              return;
+            }
+
+            card.classList.add('is-hidden');
+          });
+
+          const centerCard = cards[activeIndex] ?? null;
+          renderDetails(centerCard);
+
+          if (prevBtn) prevBtn.disabled = isAnimating || activeIndex === 0;
+          if (nextBtn) nextBtn.disabled = isAnimating || activeIndex === cards.length - 1;
+        }
+
+        function moveTo(nextIndex) {
+          if (isAnimating) return;
+
+          const clamped = Math.max(0, Math.min(cards.length - 1, nextIndex));
+          if (clamped === activeIndex) return;
+
+          isAnimating = true;
+          activeIndex = clamped;
+          render();
+
+          window.setTimeout(() => {
+            isAnimating = false;
+            render();
+          }, 450);
+        }
+
+        prevBtn?.addEventListener('click', () => moveTo(activeIndex - 1));
+        nextBtn?.addEventListener('click', () => moveTo(activeIndex + 1));
+
+        cards.forEach((card) => {
+          card.addEventListener('click', () => {
+            if (isAnimating) return;
+
+            const index = Number(card.getAttribute('data-index') || 0);
+
+            if (index === activeIndex - 1) {
+              moveTo(activeIndex - 1);
+            } else if (index === activeIndex + 1) {
+              moveTo(activeIndex + 1);
+            }
+          });
+        });
+
+        render();
+      })();
+    </script>
+  </section>
+</Layout>

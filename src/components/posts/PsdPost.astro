@@ -1,0 +1,116 @@
+---
+import Icon from '../ui/Icon.astro';
+
+type PsdPost = {
+  sys: { id: string };
+  fields: {
+    title?: string;
+    fileSize?: string;
+    url?: string;
+    publishDate?: string;
+    thumbnail?: { sys?: { id?: string } };
+  };
+};
+
+type Asset = {
+  sys: { id: string };
+  fields?: {
+    title?: string;
+    description?: string;
+    file?: { url?: string };
+  };
+};
+
+interface Props {
+  post: PsdPost;
+  assetsById: Map<string, Asset>;
+}
+
+const { post, assetsById } = Astro.props as Props;
+
+function toAbsoluteContentfulUrl(url?: string) {
+  if (!url) return '';
+  return url.startsWith('//') ? `https:${url}` : url;
+}
+
+const thumbId = post.fields.thumbnail?.sys?.id;
+const asset = thumbId ? assetsById.get(thumbId) : undefined;
+
+const imgUrl = toAbsoluteContentfulUrl(asset?.fields?.file?.url);
+
+const title = post.fields.title ?? 'Untitled PSD';
+const fileSize = post.fields.fileSize ?? '';
+const downloadUrl = post.fields.url ?? '#';
+
+const alt =
+  asset?.fields?.description ||
+  asset?.fields?.title ||
+  title ||
+  'PSD thumbnail';
+  
+const trackingId = `psd-${post.sys.id}`;
+---
+
+<article
+  class="psd-card bg-white/5 border border-white/10 rounded-2xl overflow-hidden
+         backdrop-blur-md shadow-lg hover:border-white/20 transition"
+  id={trackingId}
+>
+  <h2 class="text-center font-bold pt-4 text-3xl bg-midnight">
+    {title}
+  </h2>
+
+  {imgUrl ? (
+    <div class="p-4 flex justify-center">
+      <img
+        src={imgUrl}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        class="max-h-[150px] object-contain"
+      />
+    </div>
+  ) : (
+    <div class="p-4 text-center text-sm text-black/40">
+      No thumbnail
+    </div>
+  )}
+
+  <div class="p-4 pt-0 flex justify-center">
+    <a
+      href={downloadUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-psd-download
+      data-psd-title={title}
+      data-psd-size={fileSize}
+      class="Button mt-4 text-lg uppercase inline-flex w-full items-center justify-center gap-2
+             h-10 rounded-xl px-4 bg-white/10 text-white/90 border border-white/10
+             hover:bg-white/15 hover:border-white/20 transition"
+    >
+      Download{fileSize ? ` (${fileSize})` : ''} <Icon name="newTab" title="Opens url in a new tab" size="small" />
+    </a>
+  </div>
+</article>
+
+<script is:inline define:vars={{ trackingId }}>
+  const root = document.getElementById(trackingId);
+  const link = root?.querySelector('[data-psd-download]');
+
+  if (link && link.dataset.gaBound !== '1') {
+    link.dataset.gaBound = '1';
+
+    link.addEventListener('click', () => {
+      const title = link.getAttribute('data-psd-title') || '';
+      const fileSize = link.getAttribute('data-psd-size') || '';
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'psd_download_click', {
+          psd_title: title,
+          file_size: fileSize,
+          location: 'psd_page',
+        });
+      }
+    });
+  }
+</script>

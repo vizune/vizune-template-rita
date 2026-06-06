@@ -188,7 +188,7 @@ const labelFor = (tag: string) => tagReference[tag] ?? tag;
 
       if (section) {
         const y = section.getBoundingClientRect().top + window.scrollY - 16;
-        smoothScrollTo(y, 1000); // 👈 duration in ms (try 1000–1400)
+        smoothScrollTo(y, 1000);
       }
     });
   </script>

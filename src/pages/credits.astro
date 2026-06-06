@@ -1,0 +1,454 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const techStack = [
+  {
+    description: 'Web host:',
+    name: 'Neocities',
+    url: 'https://neocities.org/'
+  },
+  {
+    description: 'Domain host:',
+    name: 'Kualo',
+    url: 'https://www.kualo.co.uk/',
+  },
+  {
+    description: 'JavaScript framework:',
+    name: 'Astro',
+    url: 'https://astro.build/',
+    name2: 'Vue.js',
+    url2: 'https://vuejs.org/'
+  },
+  {
+    description: 'CSS framework:',
+    name: 'Tailwind',
+    url: 'https://tailwindcss.com/',
+    name2: 'Bootstrap',
+    url2: 'https://getbootstrap.com/'
+  },
+  {
+    description: 'Content Management System:',
+    name: 'Contentful',
+    url: 'https://www.contentful.com/'
+  },
+  {
+    description: 'Comment discussion platform:',
+    name: 'Disqus',
+    url: 'https://disqus.com/'
+  },
+  {
+    description: 'Live chat / guestbook:',
+    name: 'Cbox',
+    url: 'https://www.cbox.ws/'
+  },
+  {
+    description: 'Web analytics tracking:',
+    name: 'Google Analytics',
+    url: 'https://developers.google.com/analytics'
+  },
+  {
+    description: 'Code repository:',
+    name: 'Github',
+    url: 'https://github.com/'
+  },
+  {
+    description: 'Downloadable resources hosted on',
+    name: 'Google Drive',
+    url: 'https://drive.google.com/'
+  },
+  {
+    description: 'Code demos hosted on',
+    name: 'Codepen',
+    url: 'https://codepen.io/',
+    name2: 'Netlify',
+    url2: 'https://www.netlify.com/'
+  },
+  {
+    description: 'Codepen demo assets hosted on',
+    name: 'Cloudinary',
+    url: 'https://cloudinary.com/'
+  },
+  {
+    description: 'Image editing software:',
+    name: 'Adobe Photoshop 2025',
+    url: 'https://www.adobe.com'
+  },
+  {
+    description: 'IDE:',
+    name: 'Visual Code',
+    url: 'https://code.visualstudio.com/'
+  },
+  {
+    description: 'Git GUI client:',
+    name: 'Gitkraken',
+    url: 'https://www.gitkraken.com/'
+  }
+];
+
+const imageSources = [
+  {
+    name: 'MiniTokyo',
+    url: 'http://www.minitokyo.net/'
+  },
+  {
+    name: 'Creative Uncut',
+    url: 'https://www.creativeuncut.com/'
+  },
+  {
+    name: 'Firenze Design',
+    url: 'https://www.deviantart.com/firenze-design'
+  },
+  {
+    name: 'gerryray',
+    url: 'https://www.deviantart.com/gerryray'
+  },
+  {
+    name: 'NightShades',
+    url: 'https://www.deviantart.com/nightshades/'
+  },
+  {
+    name: 'Shuushuu Image Board',
+    url: 'https://e-shuushuu.net/'
+  },
+  {
+    name: 'Zerochan',
+    url: 'https://www.zerochan.net/'
+  }
+]
+
+
+
+const designSources = [
+  {
+    name: '99 Mockingbirds',
+    url: 'https://www.deviantart.com/99mockingbirds'
+  },
+  {
+    name: 'adriano09',
+    url: 'http://adriano09.deviantart.com/'
+  },
+  {
+    name: 'AF Studios',
+    url: 'http://af-studios.deviantart.com/'
+  },
+  {
+    name: 'akiranyo',
+    url: 'https://www.deviantart.com/akiranyo/'
+  },
+  {
+    name: 'Arabesco Resources',
+    url: 'http://arabesco-resources.deviantart.com/'
+  },
+  {
+    name: 'BeastBomb',
+    url: 'https://www.deviantart.com/beastbomb'
+  },
+  {
+    name: 'Bloomotion',
+    url: 'http://bloomotion.com/'
+  },
+  {
+    name: 'Brush King',
+    url: 'http://www.brushking.eu/'
+  },
+  {
+    name: 'BTTRFLYKISS',
+    url: 'https://www.deviantart.com/bttrflykiss'
+  },
+  {
+    name: 'Carllton',
+    url: 'http://carllton.deviantart.com/'
+  },
+  {
+    name: 'Car0usel (Closed)',
+    url: 'http://car0usel.net/'
+  },
+  {
+    name: 'Chambertin',
+    url: 'http://chambertin.deviantart.com/'
+  },
+  {
+    name: 'Chazzief',
+    url: 'https://www.deviantart.com/chazzief'
+  },
+  {
+    name: 'Cilou',
+    url: 'http://cilou.minitokyo.net'
+  },
+  {
+    name: 'Colordipped (Closed)',
+    url: 'http://colordipped.com/'
+  },
+  {
+    name: 'Coy Dreamer',
+    url: 'https://www.brusheezy.com/members/coydreamer'
+  },
+  {
+    name: 'Crazy Kira Resources',
+    url: 'http://crazykira-resources.deviantart.com/'
+  },
+  {
+    name: 'Darciana (Closed)',
+    url: 'http://darciana.livejournal.com/'
+  },
+  {
+    name: 'Dastardly Icons',
+    url: 'https://www.deviantart.com/dastardly-icons'
+  },
+  {
+    name: 'deceptivx',
+    url: 'https://www.deviantart.com/deceptivx'
+  },
+  {
+    name: 'dmaland',
+    url: 'https://www.deviantart.com/dmaland/'
+  },
+  {
+    name: 'enhancers',
+    url: 'https://www.deviantart.com/enhancers/'
+  },
+  {
+    name: 'Estriella',
+    url: 'http://estriella.deviantart.com/'
+  },
+  {
+    name: 'firesign24-7',
+    url: 'https://www.deviantart.com/firesign24-7',
+  },
+  {
+    name: 'Gerry Ray',
+    url: 'http://gerryray.deviantart.com/'
+  },
+  {
+    name: 'FrozenStarART',
+    url: 'https://www.deviantart.com/frozenstarart/',
+  },
+  {
+    name: 'Hattu-Aki',
+    url: 'https://www.deviantart.com/hattu-aki/',
+  },
+  {
+    name: 'HorrorKittey',
+    url: 'https://www.deviantart.com/horrorkittey/'
+  },
+  {
+    name: 'iAmFreeman',
+    url: 'http://iamfreeman.deviantart.com/'
+  },
+  {
+    name: 'Ihea',
+    url: 'http://ihea.deviantart.com/'
+  },
+  {
+    name: 'Inconditionally',
+    url: 'http://inconditionally.deviantart.com/'
+  },
+  {
+    name: 'JavierZHX',
+    url: 'http://javierzhx.deviantart.com/'
+  },
+  {
+    name: 'Jessiesquash',
+    url: 'http://jessiesquash.deviantart.com/'
+  },
+  {
+    name: 'JunSoulsilver',
+    url: 'https://www.deviantart.com/junsoulsilver/'
+  },
+  {
+    name: 'lucemare',
+    url: 'https://www.deviantart.com/lucemare/'
+  },
+  {
+    name: 'Master Jinn',
+    url: 'http://masterjinn.deviantart.com/'
+  },
+  {
+    name: 'mayrarose',
+    url: 'https://www.deviantart.com/mayrarose'
+  },
+  {
+    name: 'Moonchilde Stock',
+    url: 'http://moonchilde-stock.deviantart.com/'
+  },
+  {
+    name: 'Narcoticplease',
+    url: 'http://narcoticplease.deviantart.com/'
+  },
+  {
+    name: 'Obsidian Dawn',
+    url: 'http://www.obsidiandawn.com/'
+  },
+  {
+    name: 'Premium Pixels',
+    url: 'https://www.premiumpixels.com'
+  },
+  {
+    name: 'RavenOrlov',
+    url: 'https://www.deviantart.com/ravenorlov/',
+  },
+  {
+    name: 'Ryoko30',
+    url: 'http://ryoko30.deviantart.com/'
+  },
+  {
+    name: 'Sanami276',
+    url: 'http://sanami276.deviantart.com/'
+  },
+  {
+    name: 'Sarytah',
+    url: 'https://www.deviantart.com/sarytah/'
+  },
+  {
+    name: 'ScarArt',
+    url: 'https://www.deviantart.com/scarart/gallery'
+  },
+  {
+    name: 'Shinwa (Closed)',
+    url: 'http://shinwa.webs.com/'
+  },
+  {
+    name: 'ShiftyJ',
+    url: 'http://shiftyj.deviantart.com/'
+  },
+  {
+    name: 'Shizoo Design',
+    url: 'https://www.deviantart.com/shizoo-design'
+  },
+  {
+    name: 'Silverqe (Closed)',
+    url: 'http://silverqe.livejournal.com/'
+  },
+  {
+    name: 'Sirius-sdz',
+    url: 'http://sirius-sdz.deviantart.com/'
+  },
+  {
+    name: 'Snow Drops',
+    url: 'https://snow-drops.org/'
+  },
+  {
+    name: 'So-ghislaine',
+    url: 'https://www.deviantart.com/so-ghislaine'
+  },
+  {
+    name: 'Spiritcoda',
+    url: 'https://www.deviantart.com/spiritcoda'
+  },
+  {
+    name: 'Station (Closed)',
+    url: 'http://station.chanlu.org/'
+  },
+  {
+    name: 'Struckdumb',
+    url: 'http://struckdumb.deviantart.com/'
+  },
+  {
+    name: 'Sujune',
+    url: 'https://www.deviantart.com/sujune/'
+  },
+  {
+    name: 'SunnyGirl333',
+    url: 'http://sunnygirl33.deviantart.com/'
+  },
+  {
+    name: 'Subtle Patterns',
+    url: 'http://subtlepatterns.com/'
+  },
+  {
+    name: 'Swimchick (Closed)',
+    url: 'http://swimchick.net/'
+  },
+  {
+    name: 'sxc.hu (Closed)',
+    url: 'http://sxc.hu/'
+  },
+  {
+    name: 'tanja92',
+    url: 'https://www.deviantart.com/tanja92/',
+  },
+  {
+    name: 'Tony Apex',
+    url: 'https://www.deviantart.com/tonyapex/'
+  },
+  {
+    name: 'weeknder',
+    url: 'https://www.deviantart.com/weeknder/'
+  },
+  {
+    name: 'xnienke',
+    url: 'http://xnienke.deviantart.com/'
+  },
+  {
+    name: 'Yunyunsarang',
+    url: 'https://www.yunyunsarang.deviantart.com/'
+  },
+  {
+    name: 'Yamaro-ks (Closed)',
+    url: 'https://www.deviantart.com/yamaro-ks'
+  },
+  {
+    name: 'Zy0rg',
+    url: 'https://zy0rg.deviantart.com/'
+  }
+]
+
+---
+
+<Layout
+  title="Vizune Designs - Credits"
+  description="Credits & Resources used by Vizune Designs."
+  heading="Credits & Resources"
+>
+  <section class="space-y-10">
+    <h2 class="mb-3">💻 Vizune Tech Stack</h2>
+    <p class="text-sm">(Everything I use to make Vizune a reality)</p>
+
+    <ul>
+      {techStack.map((link) => (
+        <li class="mb-3 ml-4 pl-1 list-disc">
+          <span>{ link.description }</span> <a href={link.url} target="_blank" rel="noopener noreferrer">{link.name}</a>
+          {link.name2 && link.url2 && (<span>and <a href={link.url2} target="_blank" rel="noopener noreferrer">{link.name2}</a></span>)}
+        </li>
+      ))}
+    </ul>
+
+    <h2>🖼️ Image credits</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 justify-center">
+      {imageSources.map((link) => (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-white text-lg text-center font-medium hover:text-lavender transition"
+        >
+          <article
+            class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg p-5
+                    hover:border-white/20 hover:bg-white/[0.07] transition"
+          >
+            {link.name}
+          </article>
+        </a>
+      ))}
+    </div>
+
+    <h2>✏️ Design credits</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5 justify-center">
+      {designSources.map((link) => (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-white text-lg text-center font-medium hover:text-lavender transition"
+        >
+          <article
+            class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg p-5
+                    hover:border-white/20 hover:bg-white/[0.07] transition"
+          >
+            {link.name}
+          </article>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

@@ -1,22 +1,27 @@
 ---
 import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
 
 import affeliusPng from '@/assets/buttons/affelius.png';
-import glimpsedPng from '@/assets/buttons/a-glimpsed-horizon.png';
-import auroraPng   from '@/assets/buttons/aurora-veil.png';
-import hakanaiJpg  from '@/assets/buttons/hakanai.jpg';
-import kinkuGif    from '@/assets/buttons/kinku.gif';
-import loveZeroPng from '@/assets/buttons/love-is-zero.png';
-import pridefulJpg from '@/assets/buttons/prideful-moon.jpg';
-import randomPng   from '@/assets/buttons/random.png';
-import seaLovePng  from '@/assets/buttons/sea-love.png';
-import snowJpg     from '@/assets/buttons/snow-drops.jpg';
-import untamedPng  from '@/assets/buttons/untamed-rebel.png';
+import glimpsedPng     from '@/assets/buttons/a-glimpsed-horizon.png';
+import auroraPng       from '@/assets/buttons/aurora-veil.png';
+import designFreaksPng from '@/assets/buttons/design-freaks.png';
+import feyRadioPng     from '@/assets/buttons/fey-radio.png';
+import hakanaiJpg      from '@/assets/buttons/hakanai.jpg';
+import kinkuGif        from '@/assets/buttons/kinku.gif';
+import loveZeroPng     from '@/assets/buttons/love-is-zero.png';
+import pridefulJpg     from '@/assets/buttons/prideful-moon.jpg';
+import randomPng       from '@/assets/buttons/random.png';
+import seaLovePng      from '@/assets/buttons/sea-love.png';
+import snowJpg         from '@/assets/buttons/snow-drops.jpg';
+import untamedPng      from '@/assets/buttons/untamed-rebel.png';
 
 const affiliates = [
   { name: 'Affelius',          url: 'https://affeli.us/',                  button: affeliusPng },
   { name: 'A Glimpsed Horizon',url: 'https://akiba.flirt-wind.net/',       button: glimpsedPng },
   { name: 'Aurora Veil',       url: 'https://auroraveil.org/',             button: auroraPng },
+  { name: 'Design Freaks',     url: 'https://designfreaks.net/',           button: designFreaksPng },
+  { name: 'Fey Radio',         url: 'https://feyradio.moe/',               button: feyRadioPng },
   { name: 'Hakanai',           url: 'http://hakanai.net/',                 button: hakanaiJpg },
   { name: 'Kinku',             url: 'https://kuroi-inku.aniyu.net/',       button: kinkuGif },
   { name: 'Kishou',            url: 'https://kishou.net/',                 button: null },
@@ -30,8 +35,8 @@ const affiliates = [
 ---
 
 <div>
-  <h2 class="mt-5 mb-10 tracking-[.08em] font-extralight text-2xl text-center">Affiliates</h2>
-  <div class="flex flex-wrap gap-4 my-4 lg:px-6">
+  <h2 class="mt-5 mb-10 tracking-[.08em] font-extralight text-2xl text-center lowercase">💖 Affiliates 🌟</h2>
+  <div class="flex flex-wrap gap-4 my-4 mb-6 lg:px-6">
     {affiliates.map((link) => (
       <a
         href={link.url}
@@ -55,5 +60,9 @@ const affiliates = [
         )}
       </a>
     ))}
+  </div>
+  <div class="flex flex-wrap justify-center gap-6">
+    <Button href="/links/">Link back / link exchanges</Button>
+    <Button href="/credits/">Credits & resources</Button>
   </div>
 </div>

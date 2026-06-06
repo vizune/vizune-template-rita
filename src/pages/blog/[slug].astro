@@ -1,0 +1,91 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import {
+  fetchContentfulEntries,
+  formatUkDate,
+  richTextToHtml,
+  type RichTextDocument,
+  type ContentfulEntry,
+} from '@/lib/contentful';
+
+type BlogFields = {
+  title?: string;
+  slug?: string;
+  publishDate?: string;
+  description?: string;
+  content?: RichTextDocument;
+};
+
+export async function getStaticPaths() {
+  const { items, assets } = await fetchContentfulEntries<BlogFields>('articles');
+  const assetsById = Object.fromEntries(assets.map((asset) => [asset.sys.id, asset]));
+
+  return items
+    .filter((item) => item.fields?.slug)
+    .map((item) => ({
+      params: { slug: item.fields.slug! },
+      props: {
+        entry: item,
+        assetsById,
+      },
+    }));
+}
+
+const {
+  entry,
+  assetsById,
+} = Astro.props as {
+  entry: ContentfulEntry<BlogFields>;
+  assetsById: Record<string, unknown>;
+};
+
+const title = entry.fields.title ?? 'Blog post';
+const description = entry.fields.description ?? title;
+const date = formatUkDate(entry.fields.publishDate);
+const entryID = entry.sys.id;
+
+const html = richTextToHtml(
+  entry.fields.content,
+  new Map(Object.entries(assetsById))
+);
+
+const pageUrl = Astro.url.href;
+---
+
+<Layout
+  title={`Vizune Designs - ${title}`}
+  description={description}
+  heading={title}
+>
+  <article class="max-w-4xl mx-auto">
+    {date ? <span class="text-white/60 mb-0">📅 Published {date}</span> : null}
+
+    <hr class="mt-4 mb-10 border-white/10" />
+
+    <div class="prose prose-invert max-w-none" set:html={html}></div>
+
+    <hr class="my-10 border-white/10" />
+
+    <section class="mt-8">
+      <div id="disqus_thread"></div>
+      <noscript>
+        Please enable JavaScript to view the comments powered by Disqus.
+      </noscript>
+    </section>
+  </article>
+
+  <script is:inline define:vars={{ pageUrl, entryID }}>
+    window.disqus_config = function () {
+      this.page.url = pageUrl;
+      this.page.identifier = entryID;
+    };
+
+    (() => {
+      const d = document;
+      const s = d.createElement('script');
+      s.src = 'https://vizune.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', String(+new Date()));
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+</Layout>

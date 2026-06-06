@@ -1,10 +1,10 @@
 ---
-const { name, title } = Astro.props;
+const { name, title, size } = Astro.props;
 ---
 
 <svg
-  width="32px"
-  height="32px"
+  width={size === "small" ? "16px" : "32px"}
+  height={size === "small" ? "16px" : "32px"}
   viewBox="0 0 640 640"
   fill="currentColor" 
   aria-hidden="true"

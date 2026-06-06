@@ -1,0 +1,159 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { Button } from '@/components';
+import {
+  fetchContentfulEntries,
+  formatUkDate,
+  richTextToHtml,
+  type RichTextDocument,
+  type ContentfulEntry,
+} from '@/lib/contentful';
+
+type TutorialFields = {
+  title?: string;
+  slug?: string;
+  publishDate?: string;
+  content?: RichTextDocument;
+  demoUrl: string;
+};
+
+export async function getStaticPaths() {
+  const { items, assets } = await fetchContentfulEntries<TutorialFields>('tutorials');
+  const assetsById = Object.fromEntries(assets.map((asset) => [asset.sys.id, asset]));
+
+  return items
+    .filter((item) => item.fields?.slug)
+    .map((item) => ({
+      params: { slug: item.fields.slug! },
+      props: {
+        entry: item,
+        assetsById,
+      },
+    }));
+}
+
+const {
+  entry,
+  assetsById,
+} = Astro.props as {
+  entry: ContentfulEntry<TutorialFields>;
+  assetsById: Record<string, unknown>;
+};
+
+const title = entry.fields.title ?? 'Tutorial';
+const date = formatUkDate(entry.fields.publishDate);
+const demoUrl = entry.fields.demoUrl;
+const html = richTextToHtml(
+  entry.fields.content,
+  new Map(Object.entries(assetsById))
+);
+---
+
+<Layout
+  title={`Vizune Designs - ${title}`}
+  description={title}
+  heading={title}
+>
+  <article class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-end">
+      {date ? <span class="text-white/60 mb-0">📅 Published {date}</span> : null}
+      {demoUrl ? <Button external href={demoUrl}>Demo</Button> : null}
+    </div> 
+
+    <hr class="mt-4 mb-10 border-white/10" />
+    
+    <div class="prose prose-invert max-w-none" set:html={html}></div>
+  </article>
+</Layout>
+
+<style is:global>
+  .prose pre {
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.02)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1rem;
+    padding: 2.5rem 1.5rem 1.5rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+    backdrop-filter: blur(12px);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+.prose pre code {
+  display: block;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    "Courier New",
+    monospace;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #e6e1ff;
+  white-space: pre;
+  border-radius: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.015);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 1.7em,
+    rgba(255, 255, 255, 0.025) 1.7em,
+    rgba(255, 255, 255, 0.025) calc(1.7em * 2)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.prose code:not(pre code) {
+  display: inline;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.4rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e6e1ff;
+}
+
+.prose pre::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  width: 52px;
+  height: 10px;
+  background:
+    radial-gradient(circle, #ff5f56 6px, transparent 7px) left,
+    radial-gradient(circle, #ffbd2e 6px, transparent 7px) center,
+    radial-gradient(circle, #27c93f 6px, transparent 7px) right;
+  background-size: 16px 10px;
+  background-repeat: no-repeat;
+}
+
+.prose .content-image {
+  margin: 2rem 0;
+}
+
+.prose .content-image img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0 auto;
+}
+
+.prose .content-image figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+</style>

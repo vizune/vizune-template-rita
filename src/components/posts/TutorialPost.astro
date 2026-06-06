@@ -1,0 +1,135 @@
+---
+type TutorialPost = {
+  sys: { id: string };
+  fields: {
+    title?: string;
+    slug?: string;
+    publishDate?: string;
+    description?: string;
+    thumbnail?: { sys?: { id?: string } };
+  };
+};
+
+type Asset = {
+  sys: { id: string };
+  fields?: {
+    title?: string;
+    description?: string;
+    file?: { url?: string };
+  };
+};
+
+interface Props {
+  post: TutorialPost;
+  assetsById: Map<string, Asset>;
+}
+
+const { post, assetsById } = Astro.props as Props;
+
+function toAbsoluteContentfulUrl(url?: string) {
+  if (!url) return '';
+  return url.startsWith('//') ? `https:${url}` : url;
+}
+
+function formatUkDate(iso?: string) {
+  if (!iso) return '';
+  const t = Date.parse(iso);
+  if (!Number.isFinite(t)) return '';
+  return new Date(t).toLocaleDateString('en-GB');
+}
+
+const thumbId = post.fields.thumbnail?.sys?.id;
+const asset = thumbId ? assetsById.get(thumbId) : undefined;
+const imgUrl = toAbsoluteContentfulUrl(asset?.fields?.file?.url);
+
+const title = post.fields.title ?? 'Untitled tutorial';
+const slug = post.fields.slug ?? '';
+const description = post.fields.description ?? '';
+const publishDate = formatUkDate(post.fields.publishDate);
+
+const alt =
+  asset?.fields?.description ||
+  asset?.fields?.title ||
+  title ||
+  'Tutorial thumbnail';
+
+const trackingId = `tutorial-card-${post.sys.id}`;
+---
+
+<a
+  id={trackingId}
+  href={`/tutorials/${slug}/`}
+  data-tutorial-click
+  data-tutorial-title={title}
+  data-tutorial-slug={slug}
+  class="tutorial-card card block group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg overflow-hidden hover:border-white/20 hover:bg-white/[0.07] transition focus:outline-none focus:ring-2 focus:ring-lavender/60"
+>
+  <article>
+    <div class="grid md:grid-cols-[250px_1fr]">
+      {imgUrl ? (
+        <div class="w-full h-[250px] md:w-[250px] md:h-[250px] bg-black/20 md:border-r border-white/10 overflow-hidden">
+          <img
+            src={imgUrl}
+            alt={alt}
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      ) : (
+        <div class="bg-black/20 md:border-r border-white/10 w-full h-[250px] md:w-[250px] md:h-[250px] flex items-center justify-center text-white/50 text-sm">
+          No thumbnail
+        </div>
+      )}
+
+      <div class="p-5 flex flex-col justify-center">
+        <h2 class="text-white text-xl font-semibold mb-2 transition group-hover:text-lavender">
+          {title}
+        </h2>
+
+        {publishDate ? <p class="text-white/60 text-sm mb-4">📅 {publishDate}</p> : null}
+
+        {description ? <p class="text-white/80">{description}</p> : null}
+      </div>
+    </div>
+  </article>
+</a>
+
+<script is:inline define:vars={{ trackingId }}>
+  const link = document.getElementById(trackingId);
+
+  if (link && link.dataset.gaBound !== '1') {
+    link.dataset.gaBound = '1';
+
+    link.addEventListener('click', () => {
+      const title = link.getAttribute('data-tutorial-title') || '';
+      const slug = link.getAttribute('data-tutorial-slug') || '';
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'tutorial_click', {
+          tutorial_title: title,
+          tutorial_slug: slug,
+          location: 'tutorials_page',
+        });
+      }
+    });
+  }
+</script>
+
+<style>
+  .tutorial-card:hover img {
+    transform: scale(1.04);
+  }
+
+  .tutorial-card img {
+    transition: transform 0.4s ease;
+  }
+
+  .tutorial-card h2 {
+    text-decoration: underline;
+  }
+
+  .tutorial-card:hover h2 {
+    text-decoration: none;
+  }
+</style>

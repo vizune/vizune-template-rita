@@ -1,0 +1,171 @@
+---
+type TemplatePost = {
+  sys: { id: string };
+  fields: {
+    title?: string;
+    banner?: { sys?: { id?: string } };
+    downloadUrl?: string;
+    publishDate?: string;
+    techStack?: string;
+    category?: string;
+    series?: string;
+    character?: string;
+    demoUrl?: string;
+    repoUrl?: string;
+  };
+};
+
+type Asset = {
+  sys: { id: string };
+  fields?: {
+    file?: { url?: string };
+    title?: string;
+    description?: string;
+  };
+};
+
+interface Props {
+  post: TemplatePost;
+  assetsById: Map<string, Asset>;
+  index: number;
+}
+
+const { post, assetsById, index } = Astro.props as Props;
+
+function toAbsoluteContentfulUrl(url?: string) {
+  if (!url) return '';
+  return url.startsWith('//') ? `https:${url}` : url;
+}
+
+const bannerId = post.fields.banner?.sys?.id;
+const asset = bannerId ? assetsById.get(bannerId) : undefined;
+const imgUrl = toAbsoluteContentfulUrl(asset?.fields?.file?.url);
+
+const title = post.fields.title ?? 'Untitled template';
+const alt = asset?.fields?.description || asset?.fields?.title || title;
+---
+
+<article
+  data-card
+  data-index={index}
+  data-title={title}
+  data-publish-date={post.fields.publishDate ?? ''}
+  data-tech-stack={post.fields.techStack ?? ''}
+  data-category={post.fields.category ?? ''}
+  data-series={post.fields.series ?? ''}
+  data-character={post.fields.character ?? ''}
+  data-demo-url={post.fields.demoUrl ?? ''}
+  data-repo-url={post.fields.repoUrl ?? ''}
+  data-download-url={post.fields.downloadUrl ?? ''}
+  class="tarot-card absolute left-1/2 top-1/2 w-[180px] sm:w-[230px] md:w-[262px]
+         aspect-[0.62] rounded-[22px] overflow-hidden
+         border border-white/15 bg-white/5 backdrop-blur-md shadow-2xl
+         transition-all duration-500 ease-out"
+>
+  {imgUrl ? (
+    <img
+      src={imgUrl}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      class="h-full w-full object-cover"
+    />
+  ) : (
+    <div class="h-full w-full flex items-center justify-center bg-black/20 text-white/60 text-sm">
+      No banner
+    </div>
+  )}
+
+  <div class="absolute inset-x-0 bottom-0 px-3 py-4 bg-black/60 backdrop-blur-md">
+    <h3 class="text-white text-sm sm:text-lg font-semibold leading-snug">
+      {title}
+    </h3>
+  </div>
+</article>
+<style>
+.tarot-card {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.85);
+  transition:
+    transform 0.45s cubic-bezier(.22,1,.36,1),
+    opacity 0.35s ease,
+    filter 0.35s ease;
+}
+
+.tarot-card.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tarot-card.is-left,
+.tarot-card.is-right {
+  cursor: pointer;
+}
+
+.tarot-card.is-left,
+.tarot-card.is-center,
+.tarot-card.is-right {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tarot-card.is-left {
+  transform: translate(calc(-50% - 220px), -50%) rotate(-10deg) scale(0.92);
+  z-index: 1;
+}
+
+.tarot-card.is-center {
+  transform: translate(-50%, -54%) rotate(0deg) scale(1);
+  z-index: 3;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.15),
+    0 20px 60px rgba(0,0,0,0.8),
+    0 0 40px rgba(120,90,255,0.35);
+  cursor: default;
+}
+
+.tarot-card.is-right {
+  transform: translate(calc(-50% + 220px), -50%) rotate(10deg) scale(0.92);
+  z-index: 2;
+}
+
+.tarot-card.is-center:hover {
+  transform: translate(-50%, -56%) rotate(0deg) scale(1.03);
+}
+
+.tarot-card.is-left:hover {
+  transform: translate(calc(-50% - 220px), -52%) rotate(-10deg) scale(0.95);
+}
+
+.tarot-card.is-right:hover {
+  transform: translate(calc(-50% + 220px), -52%) rotate(10deg) scale(0.95);
+}
+
+.tarot-card.is-disabled-left,
+.tarot-card.is-disabled-right {
+  cursor: not-allowed;
+}
+
+@media (max-width: 767px) {
+  .tarot-card.is-left {
+    transform: translate(calc(-50% - 110px), -50%) rotate(-8deg) scale(0.88);
+  }
+
+  .tarot-card.is-left:hover {
+    transform: translate(calc(-50% - 120px), -52%) rotate(-10deg) scale(0.95);
+  }
+
+  .tarot-card.is-center {
+    transform: translate(-50%, -54%) rotate(0deg) scale(0.96);
+  }
+
+  .tarot-card.is-right {
+    transform: translate(calc(-50% + 110px), -50%) rotate(8deg) scale(0.88);
+  }
+
+  .tarot-card.is-right:hover {
+    transform: translate(calc(-50% + 120px), -52%) rotate(10deg) scale(0.95);
+  }
+}
+</style>

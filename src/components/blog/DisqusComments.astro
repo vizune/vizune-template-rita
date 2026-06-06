@@ -1,0 +1,35 @@
+---
+const {
+  pageUrl,
+  pageIdentifier,
+} = Astro.props as {
+  pageUrl: string;
+  pageIdentifier: string;
+};
+---
+
+<div id="disqus_thread" class="mt-8"></div>
+
+<noscript>
+  Please enable JavaScript to view the comments powered by Disqus.
+</noscript>
+
+<script
+  is:inline
+  define:vars={{ pageUrl, pageIdentifier }}
+>
+  window.disqus_config = function () {
+    this.page.url = pageUrl;
+    this.page.identifier = pageIdentifier;
+  };
+
+  (() => {
+    if (document.getElementById('disqus-script')) return;
+
+    const s = document.createElement('script');
+    s.id = 'disqus-script';
+    s.src = 'https://vizune.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', String(+new Date()));
+    document.body.appendChild(s);
+  })();
+</script>
