@@ -130,78 +130,99 @@ function resolveAsset(post: Post) {
   <Pagination id={`avatars-${category}`} pageSize={itemsPerPage} />
 
   <script is:inline define:vars={{ category, itemsPerPage }}>
-    const root = document.querySelector(`.avatar-list[data-category="${category}"]`);
-    if (!root) return;
+    (() => {
+      const root = document.querySelector(`.avatar-list[data-category="${category}"]`);
+      if (!root) return;
 
-    const select = root.querySelector('select');
-    const clearBtn = root.querySelector('[data-clear-filter]');
-    const cards = Array.from(root.querySelectorAll('.avatar-card'));
+      const select = root.querySelector('select');
+      const clearBtn = root.querySelector('[data-clear-filter]');
+      const cards = Array.from(root.querySelectorAll('.avatar-card'));
 
-    const pagination = root.querySelector(`[data-pagination-id="avatars-${category}"]`);
+      const pagination = root.querySelector(
+        `[data-pagination-id="avatars-${category}"]`
+      );
 
-    let currentTag = '';
-    let currentPage = 1;
+      let currentTag = '';
+      let currentPage = 1;
 
-    function matchesTag(card, tag) {
-      if (!tag) return true;
-      const tags = (card.getAttribute('data-tags') || '').split(/\s+/).filter(Boolean);
-      return tags.includes(tag);
-    }
+      function matchesTag(card, tag) {
+        if (!tag) return true;
 
-    function applyFilterAndPagination() {
-      // 1) figure out which cards match the filter
-      const matched = cards.filter((c) => matchesTag(c, currentTag));
+        const tags = (card.getAttribute('data-tags') || '')
+          .split(/\s+/)
+          .filter(Boolean);
 
-      // 2) calculate paging window over matched results
-      const start = (currentPage - 1) * itemsPerPage;
-      const end = start + itemsPerPage;
+        return tags.includes(tag);
+      }
 
-      // 3) show/hide cards
-      let matchedIndex = 0;
-      cards.forEach((c) => {
-        const ok = matchesTag(c, currentTag);
-        if (!ok) {
-          c.classList.add('hidden');
-          return;
-        }
+      function applyFilterAndPagination() {
+        // 1) Figure out which cards match the filter
+        const matched = cards.filter((card) =>
+          matchesTag(card, currentTag)
+        );
 
-        const inPage = matchedIndex >= start && matchedIndex < end;
-        c.classList.toggle('hidden', !inPage);
-        matchedIndex += 1;
+        // 2) Calculate paging window over matched results
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+
+        // 3) Show/hide cards
+        let matchedIndex = 0;
+
+        cards.forEach((card) => {
+          const matches = matchesTag(card, currentTag);
+
+          if (!matches) {
+            card.classList.add('hidden');
+            return;
+          }
+
+          const inPage =
+            matchedIndex >= start &&
+            matchedIndex < end;
+
+          card.classList.toggle('hidden', !inPage);
+          matchedIndex += 1;
+        });
+
+        // 4) Update pagination component with new totals
+        pagination?.dispatchEvent(
+          new CustomEvent('pagination:set', {
+            detail: {
+              total: matched.length,
+              pageSize: itemsPerPage,
+              page: currentPage,
+            },
+          })
+        );
+      }
+
+      // Initialise totals
+      applyFilterAndPagination();
+
+      // Filter changes
+      select?.addEventListener('change', (event) => {
+        currentTag = event.currentTarget.value;
+        currentPage = 1;
+        applyFilterAndPagination();
       });
 
-      // 4) update pagination component with new totals
-      pagination?.dispatchEvent(
-        new CustomEvent('pagination:set', {
-          detail: { total: matched.length, pageSize: itemsPerPage, page: currentPage },
-        })
-      );
-    }
+      // Clear filter
+      clearBtn?.addEventListener('click', () => {
+        if (!select) return;
 
-    // init totals
-    applyFilterAndPagination();
+        select.value = '';
+        currentTag = '';
+        currentPage = 1;
 
-    // filter changes
-    select?.addEventListener('change', (e) => {
-      currentTag = e.currentTarget.value;
-      currentPage = 1; // reset to first page on filter change
-      applyFilterAndPagination();
-    });
+        applyFilterAndPagination();
+      });
 
-    // clear filter
-    clearBtn?.addEventListener('click', () => {
-      if (!select) return;
-      select.value = '';
-      currentTag = '';
-      currentPage = 1;
-      applyFilterAndPagination();
-    });
-
-    // pagination changes (from the Pagination component)
-    pagination?.addEventListener('pagination:change', (e) => {
-      currentPage = e.detail.page;
-      applyFilterAndPagination();
-    });
+      // Pagination changes
+      pagination?.addEventListener('pagination:change', (event) => {
+        currentPage = event.detail.page;
+        applyFilterAndPagination();
+      });
+    })();
   </script>
 
 </div>

@@ -93,104 +93,128 @@ const labelFor = (tag: string) => tagReference[tag] ?? tag;
   <Pagination id="renders" pageSize={12} />
 
   <script is:inline define:vars={{ pageSize: 12 }}>
-    const root = document.querySelector('.renders-list[data-section="renders"]');
-    if (!root) return;
+    (() => {
+      const root = document.querySelector('.renders-list[data-section="renders"]');
+      if (!root) return;
 
-    const select = root.querySelector('select');
-    const clearBtn = root.querySelector('[data-clear-filter]');
-    const cards = Array.from(root.querySelectorAll('.render-card'));
-    const pagination = root.querySelector('[data-pagination-id="renders"]');
+      const select = root.querySelector('select');
+      const clearBtn = root.querySelector('[data-clear-filter]');
+      const cards = Array.from(root.querySelectorAll('.render-card'));
+      const pagination = root.querySelector('[data-pagination-id="renders"]');
 
-    let currentTag = '';
-    let currentPage = 1;
+      let currentTag = '';
+      let currentPage = 1;
 
-    function matchesTag(card, tag) {
-      if (!tag) return true;
-      const tags = (card.getAttribute('data-tags') || '').split(/\s+/).filter(Boolean);
-      return tags.includes(tag);
-    }
+      function matchesTag(card, tag) {
+        if (!tag) return true;
 
-    function applyFilterAndPagination() {
-      const matched = cards.filter((c) => matchesTag(c, currentTag));
+        const tags = (card.getAttribute('data-tags') || '')
+          .split(/\s+/)
+          .filter(Boolean);
 
-      const start = (currentPage - 1) * pageSize;
-      const end = start + pageSize;
+        return tags.includes(tag);
+      }
 
-      let matchedIndex = 0;
+      function applyFilterAndPagination() {
+        const matched = cards.filter((card) =>
+          matchesTag(card, currentTag)
+        );
 
-      cards.forEach((c) => {
-        const ok = matchesTag(c, currentTag);
-        if (!ok) {
-          c.classList.add('hidden');
-          return;
-        }
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
 
-        const inPage = matchedIndex >= start && matchedIndex < end;
-        c.classList.toggle('hidden', !inPage);
-        matchedIndex += 1;
+        let matchedIndex = 0;
+
+        cards.forEach((card) => {
+          const matches = matchesTag(card, currentTag);
+
+          if (!matches) {
+            card.classList.add('hidden');
+            return;
+          }
+
+          const inPage =
+            matchedIndex >= start &&
+            matchedIndex < end;
+
+          card.classList.toggle('hidden', !inPage);
+          matchedIndex += 1;
+        });
+
+        pagination?.dispatchEvent(
+          new CustomEvent('pagination:set', {
+            detail: {
+              total: matched.length,
+              pageSize,
+              page: currentPage,
+            },
+          })
+        );
+      }
+
+      // Initialise
+      applyFilterAndPagination();
+
+      select?.addEventListener('change', (event) => {
+        currentTag = event.currentTarget.value;
+        currentPage = 1;
+
+        applyFilterAndPagination();
       });
 
-      pagination?.dispatchEvent(
-        new CustomEvent('pagination:set', {
-          detail: { total: matched.length, pageSize, page: currentPage },
-        })
-      );
-    }
+      clearBtn?.addEventListener('click', () => {
+        if (!select) return;
 
-    // init
-    applyFilterAndPagination();
+        select.value = '';
+        currentTag = '';
+        currentPage = 1;
 
-    select?.addEventListener('change', (e) => {
-      currentTag = e.currentTarget.value;
-      currentPage = 1;
-      applyFilterAndPagination();
-    });
+        applyFilterAndPagination();
+      });
 
-    clearBtn?.addEventListener('click', () => {
-      if (!select) return;
-      select.value = '';
-      currentTag = '';
-      currentPage = 1;
-      applyFilterAndPagination();
-    });
+      function smoothScrollTo(targetY, duration = 800) {
+        const startY = window.scrollY;
+        const diff = targetY - startY;
+        const startTime = performance.now();
 
-    function smoothScrollTo(targetY, duration = 800) {
-      const startY = window.scrollY;
-      const diff = targetY - startY;
-      const startTime = performance.now();
-
-      function easeInOutCubic(t) {
-        return t < 0.5
-          ? 4 * t * t * t
-          : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      }
-
-      function step(now) {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = easeInOutCubic(progress);
-
-        window.scrollTo(0, startY + diff * eased);
-
-        if (progress < 1) {
-          requestAnimationFrame(step);
+        function easeInOutCubic(t) {
+          return t < 0.5
+            ? 4 * t * t * t
+            : 1 - Math.pow(-2 * t + 2, 3) / 2;
         }
+
+        function step(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = easeInOutCubic(progress);
+
+          window.scrollTo(0, startY + diff * eased);
+
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          }
+        }
+
+        requestAnimationFrame(step);
       }
 
-      requestAnimationFrame(step);
-    }
+      const section = document.getElementById('render-wrapper');
 
-    const section = document.getElementById('render-wrapper');
+      pagination?.addEventListener('pagination:change', (event) => {
+        currentPage = event.detail?.page || 1;
 
-    pagination.addEventListener('pagination:change', (e) => {
-      currentPage = e.detail?.page || 1;
-      applyFilterAndPagination();
+        applyFilterAndPagination();
 
-      if (section) {
-        const y = section.getBoundingClientRect().top + window.scrollY - 16;
-        smoothScrollTo(y, 1000);
-      }
-    });
+        if (section) {
+          const y =
+            section.getBoundingClientRect().top +
+            window.scrollY -
+            16;
+
+          smoothScrollTo(y, 1000);
+        }
+      });
+    })();
   </script>
 </div>
 

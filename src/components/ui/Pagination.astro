@@ -39,65 +39,91 @@ const { id, pageSize = 12 } = Astro.props;
 </nav>
 
 <script is:inline define:vars={{ id }}>
-  const el = document.querySelector(`[data-pagination][data-pagination-id="${id}"]`);
-  if (!el) return;
+  (() => {
+    const el = document.querySelector(
+      `[data-pagination][data-pagination-id="${id}"]`
+    );
 
-  const prevBtn = el.querySelector('[data-page-prev]');
-  const nextBtn = el.querySelector('[data-page-next]');
-  const label = el.querySelector('[data-page-label]');
+    if (!el) return;
 
-  const state = {
-    page: 1,
-    pageSize: Number(el.getAttribute('data-page-size') || 12),
-    total: 0,
-  };
+    const prevBtn = el.querySelector('[data-page-prev]');
+    const nextBtn = el.querySelector('[data-page-next]');
+    const label = el.querySelector('[data-page-label]');
 
-  function totalPages() {
-    return Math.max(1, Math.ceil(state.total / state.pageSize));
-  }
+    const state = {
+      page: 1,
+      pageSize: Number(el.getAttribute('data-page-size') || 12),
+      total: 0,
+    };
 
-  function render() {
-    const pages = totalPages();
-    state.page = Math.min(Math.max(1, state.page), pages);
-
-    if (label) {
-      label.textContent = `Page ${state.page} of ${pages}`;
-      label.classList.remove('hidden');
+    function totalPages() {
+      return Math.max(1, Math.ceil(state.total / state.pageSize));
     }
 
-    if (prevBtn) prevBtn.disabled = state.page <= 1;
-    if (nextBtn) nextBtn.disabled = state.page >= pages;
-  }
+    function render() {
+      const pages = totalPages();
 
-  function emitChange() {
-    el.dispatchEvent(
-      new CustomEvent('pagination:change', {
-        bubbles: true,
-        detail: { page: state.page, pageSize: state.pageSize },
-      })
-    );
-  }
+      state.page = Math.min(
+        Math.max(1, state.page),
+        pages
+      );
 
-  prevBtn?.addEventListener('click', () => {
-    state.page -= 1;
+      if (label) {
+        label.textContent = `Page ${state.page} of ${pages}`;
+        label.classList.remove('hidden');
+      }
+
+      if (prevBtn) {
+        prevBtn.disabled = state.page <= 1;
+      }
+
+      if (nextBtn) {
+        nextBtn.disabled = state.page >= pages;
+      }
+    }
+
+    function emitChange() {
+      el.dispatchEvent(
+        new CustomEvent('pagination:change', {
+          bubbles: true,
+          detail: {
+            page: state.page,
+            pageSize: state.pageSize,
+          },
+        })
+      );
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      state.page -= 1;
+      render();
+      emitChange();
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      state.page += 1;
+      render();
+      emitChange();
+    });
+
+    el.addEventListener('pagination:set', (e) => {
+      const detail = e.detail || {};
+
+      if (typeof detail.total === 'number') {
+        state.total = detail.total;
+      }
+
+      if (typeof detail.pageSize === 'number') {
+        state.pageSize = detail.pageSize;
+      }
+
+      if (typeof detail.page === 'number') {
+        state.page = detail.page;
+      }
+
+      render();
+    });
+
     render();
-    emitChange();
-  });
-
-  nextBtn?.addEventListener('click', () => {
-    state.page += 1;
-    render();
-    emitChange();
-  });
-
-  el.addEventListener('pagination:set', (e) => {
-    const detail = e.detail || {};
-    if (typeof detail.total === 'number') state.total = detail.total;
-    if (typeof detail.pageSize === 'number') state.pageSize = detail.pageSize;
-    if (typeof detail.page === 'number') state.page = detail.page;
-    render();
-  });
-
-  render();
+  })();
 </script>
-

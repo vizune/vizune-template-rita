@@ -48,66 +48,84 @@ const pageSize = 9;
     <Pagination id="psd" pageSize={pageSize} />
 
     <script is:inline define:vars={{ pageSize }}>
-      const root = document.querySelector('.psd-list[data-section="psd"]');
-      if (!root) return;
+      (() => {
+        const root = document.querySelector('.psd-list[data-section="psd"]');
+        if (!root) return;
 
-      const cards = Array.from(root.querySelectorAll('.psd-card'));
-      const pagination = root.querySelector('[data-pagination-id="psd"]');
-      const section = document.getElementById('psd-wrapper');
+        const cards = Array.from(root.querySelectorAll('.psd-card'));
+        const pagination = root.querySelector('[data-pagination-id="psd"]');
+        const section = document.getElementById('psd-wrapper');
 
-      let currentPage = 1;
+        let currentPage = 1;
 
-      function applyPagination() {
-        const total = cards.length;
+        function applyPagination() {
+          const total = cards.length;
 
-        const start = (currentPage - 1) * pageSize;
-        const end = start + pageSize;
+          const start = (currentPage - 1) * pageSize;
+          const end = start + pageSize;
 
-        cards.forEach((c, idx) => {
-          c.classList.toggle('hidden', !(idx >= start && idx < end));
-        });
+          cards.forEach((card, index) => {
+            card.classList.toggle(
+              'hidden',
+              !(index >= start && index < end)
+            );
+          });
 
-        pagination?.dispatchEvent(
-          new CustomEvent('pagination:set', {
-            detail: { total, pageSize, page: currentPage },
-          })
-        );
-      }
-
-      function smoothScrollTo(targetY, duration = 800) {
-        const startY = window.scrollY;
-        const diff = targetY - startY;
-        const startTime = performance.now();
-
-        function easeInOutCubic(t) {
-          return t < 0.5
-            ? 4 * t * t * t
-            : 1 - Math.pow(-2 * t + 2, 3) / 2;
+          pagination?.dispatchEvent(
+            new CustomEvent('pagination:set', {
+              detail: {
+                total,
+                pageSize,
+                page: currentPage,
+              },
+            })
+          );
         }
 
-        function step(now) {
-          const elapsed = now - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = easeInOutCubic(progress);
-          window.scrollTo(0, startY + diff * eased);
-          if (progress < 1) requestAnimationFrame(step);
+        function smoothScrollTo(targetY, duration = 800) {
+          const startY = window.scrollY;
+          const diff = targetY - startY;
+          const startTime = performance.now();
+
+          function easeInOutCubic(t) {
+            return t < 0.5
+              ? 4 * t * t * t
+              : 1 - Math.pow(-2 * t + 2, 3) / 2;
+          }
+
+          function step(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = easeInOutCubic(progress);
+
+            window.scrollTo(0, startY + diff * eased);
+
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            }
+          }
+
+          requestAnimationFrame(step);
         }
 
-        requestAnimationFrame(step);
-      }
-
-      // init
-      applyPagination();
-
-      pagination?.addEventListener('pagination:change', (e) => {
-        currentPage = e.detail?.page || 1;
+        // Init
         applyPagination();
 
-        if (section) {
-          const y = section.getBoundingClientRect().top + window.scrollY - 16;
-          smoothScrollTo(y, 1000);
-        }
-      });
+        pagination?.addEventListener('pagination:change', (event) => {
+          currentPage = event.detail?.page || 1;
+
+          applyPagination();
+
+          if (section) {
+            const y =
+              section.getBoundingClientRect().top +
+              window.scrollY -
+              16;
+
+            smoothScrollTo(y, 1000);
+          }
+        });
+      })();
     </script>
   </div>
 </Layout>
