@@ -67,9 +67,16 @@ const html = richTextToHtml(
 </Layout>
 
 <style is:global>
+  .prose {
+    background-color: #fff;
+    color: #333;
+    border-radius: 20px;
+    padding: 1.5rem;
+  }
+
   .prose pre {
     position: relative;
-    background: linear-gradient(
+    background: #111 linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.06),
       rgba(255, 255, 255, 0.02)
@@ -85,75 +92,81 @@ const html = richTextToHtml(
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
-.prose pre code {
-  display: block;
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    "Liberation Mono",
-    "Courier New",
-    monospace;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: #e6e1ff;
-  white-space: pre;
-  border-radius: 0.75rem;
-  background-color: rgba(255, 255, 255, 0.015);
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 1.7em,
-    rgba(255, 255, 255, 0.025) 1.7em,
-    rgba(255, 255, 255, 0.025) calc(1.7em * 2)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
+  .prose pre code {
+    display: block;
+    font-family:
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      "Liberation Mono",
+      "Courier New",
+      monospace;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #e6e1ff;
+    white-space: pre;
+    border-radius: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.015);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 1.7em,
+      rgba(255, 255, 255, 0.025) 1.7em,
+      rgba(255, 255, 255, 0.025) calc(1.7em * 2)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
 
-.prose code:not(pre code) {
-  display: inline;
-  padding: 0.15rem 0.4rem;
-  border-radius: 0.4rem;
-  background: rgba(255, 255, 255, 0.08);
-  color: #e6e1ff;
-}
+  .prose code:not(pre code) {
+    display: inline;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.4rem;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e6e1ff;
+  }
 
-.prose pre::before {
-  content: "";
-  position: absolute;
-  top: 12px;
-  left: 16px;
-  width: 52px;
-  height: 10px;
-  background:
-    radial-gradient(circle, #ff5f56 6px, transparent 7px) left,
-    radial-gradient(circle, #ffbd2e 6px, transparent 7px) center,
-    radial-gradient(circle, #27c93f 6px, transparent 7px) right;
-  background-size: 16px 10px;
-  background-repeat: no-repeat;
-}
+  .prose pre::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    width: 52px;
+    height: 10px;
+    background:
+      radial-gradient(circle, #ff5f56 6px, transparent 7px) left,
+      radial-gradient(circle, #ffbd2e 6px, transparent 7px) center,
+      radial-gradient(circle, #27c93f 6px, transparent 7px) right;
+    background-size: 16px 10px;
+    background-repeat: no-repeat;
+  }
 
-.prose .content-image {
-  margin: 2rem 0;
-}
+  .prose .content-image {
+    margin: 2rem 0;
+  }
 
-.prose .content-image img {
-  display: block;
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 0 auto;
-}
+  .prose .content-image img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0 auto;
+  }
 
-.prose .content-image figcaption {
-  margin-top: 0.75rem;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
-  text-align: center;
-}
+  .prose .content-image figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+  }
+
+  .prose ul {
+    list-style: square;
+    padding-left: 1.25rem;
+    margin: 1rem 0;
+  }
 </style>

@@ -11,6 +11,13 @@ import {
 type BlogFields = {
   title?: string;
   slug?: string;
+  banner?: {
+    sys: {
+      type: 'Link';
+      linkType: 'Asset';
+      id: string;
+    };
+  };
   publishDate?: string;
   description?: string;
   content?: RichTextDocument;
@@ -43,6 +50,28 @@ const title = entry.fields.title ?? 'Blog post';
 const description = entry.fields.description ?? title;
 const date = formatUkDate(entry.fields.publishDate);
 const entryID = entry.sys.id;
+const bannerId = entry.fields.banner?.sys.id;
+
+const banner = bannerId
+  ? (assetsById[bannerId] as {
+      fields?: {
+        file?: {
+          url?: string;
+        };
+        title?: string;
+        description?: string;
+      };
+    })
+  : undefined;
+
+const bannerUrl = banner?.fields?.file?.url
+  ? `https:${banner.fields.file.url}`
+  : undefined;
+
+const bannerAlt =
+  banner?.fields?.description ??
+  banner?.fields?.title ??
+  title;
 
 const html = richTextToHtml(
   entry.fields.content,
@@ -50,6 +79,7 @@ const html = richTextToHtml(
 );
 
 const pageUrl = Astro.url.href;
+
 ---
 
 <Layout
@@ -57,12 +87,24 @@ const pageUrl = Astro.url.href;
   description={description}
   heading={title}
 >
-  <article class="max-w-4xl mx-auto">
-    {date ? <span class="text-white/60 mb-0">📅 Published {date}</span> : null}
+  <article class="home-article max-w-4xl mx-auto">
+    {
+    bannerUrl && (
+      <img
+        src={bannerUrl}
+        alt={bannerAlt}
+        class="mx-auto mb-8"
+      />
+    )
+  }
+    <div class="prose prose-invert max-w-none">
+      {date ? <span class="mb-0">📅 Published {date}</span> : null}
 
-    <hr class="mt-4 mb-10 border-white/10" />
+      <hr class="mt-4 mb-10" />
 
-    <div class="prose prose-invert max-w-none" set:html={html}></div>
+      <div set:html={html} />
+
+    </div>
 
     <hr class="my-10 border-white/10" />
 
@@ -89,3 +131,28 @@ const pageUrl = Astro.url.href;
     })();
   </script>
 </Layout>
+
+<style is:global>
+  .prose {
+    background-color: #fff;
+    color: #333;
+    border-radius: 20px;
+    padding: 1.5rem;
+  }
+
+  .prose h2 {
+    font-size: 2.75rem;
+  }
+
+  .home-article .prose .content-image {
+    margin: 2rem 0;
+    display: inline-block;
+    max-width: 33%;
+  }
+
+  .prose ul {
+    list-style: square;
+    padding-left: 1.25rem;
+    margin: 1rem 0;
+  }
+</style>

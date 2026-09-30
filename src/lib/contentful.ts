@@ -147,11 +147,6 @@ export function richTextToHtml(
               decoding="async"
               ${dimensionAttrs}
             />
-            ${
-              title
-                ? `<figcaption>${escapeHtml(title)}</figcaption>`
-                : ''
-            }
           </figure>
         `;
       },
