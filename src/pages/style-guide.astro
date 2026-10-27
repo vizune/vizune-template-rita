@@ -1,0 +1,438 @@
+---
+/**
+ * Style guide / template demo page.
+ *
+ * Shows every component and style used across the Rita template in one place,
+ * using local sample data (no Contentful / .env needed), so it always renders.
+ * Visit: http://localhost:4321/style-guide/
+ */
+import Layout from '@/layouts/Layout.astro';
+import { Button, Icon } from '@/components';
+import Tabs from '@/components/ui/Tabs.astro';
+import FilterDropdown from '@/components/ui/FilterDropdown.astro';
+import Pagination from '@/components/ui/Pagination.astro';
+import BlogPost from '@/components/posts/BlogPost.astro';
+import TutorialPost from '@/components/posts/TutorialPost.astro';
+import RenderPost from '@/components/posts/RenderPost.astro';
+import PsdPost from '@/components/posts/PsdPost.astro';
+import ImageCaption from '@/components/ui/ImageCaption.astro';
+import TemplateCarousel from '@/components/sections/TemplateCarousel.astro';
+
+import arrowPng from '@/assets/arrow.png';
+import header1200 from '@/assets/header-1200.png';
+import ritaThumb from '@/assets/template-thumbnails/rita.jpg';
+import inoriThumb from '@/assets/template-thumbnails/inori.jpg';
+import chieThumb from '@/assets/template-thumbnails/chie.jpg';
+import celtyThumb from '@/assets/template-thumbnails/celty.jpg';
+import taliaThumb from '@/assets/template-thumbnails/talia.jpg';
+import vizuneButton01 from '@/assets/buttons/vizune-button-01.png';
+import vizuneButton02 from '@/assets/buttons/vizune-button-02.png';
+import vizuneButton03 from '@/assets/buttons/vizune-button-03.png';
+
+/* ------------------------------------------------------------------ */
+/* Sample data, shaped like the Contentful responses the real pages use */
+/* ------------------------------------------------------------------ */
+
+const asset = (id: string, img: { src: string }, title: string) => ({
+  sys: { id },
+  fields: { title, description: title, file: { url: img.src } },
+});
+
+const assets = [
+  asset('banner', header1200, 'Sample banner'),
+  asset('rita', ritaThumb, 'Rita template'),
+  asset('inori', inoriThumb, 'Inori template'),
+  asset('chie', chieThumb, 'Chie template'),
+  asset('celty', celtyThumb, 'Celty template'),
+  asset('talia', taliaThumb, 'Talia template'),
+];
+const assetsById = new Map(assets.map((a) => [a.sys.id, a]));
+const link = (id: string) => ({ sys: { id } });
+
+const lorem =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a ultrices tellus. In commodo massa vitae finibus semper.';
+
+const blogPosts = [
+  { sys: { id: 'b1' }, fields: { title: 'Featured blog post', slug: '#', publishDate: '2026-10-01', description: lorem, banner: link('banner'), thumbnail: link('rita') } },
+  { sys: { id: 'b2' }, fields: { title: 'Blog post', slug: '#', publishDate: '2026-09-14', description: lorem, thumbnail: link('inori') } },
+  { sys: { id: 'b3' }, fields: { title: 'Blog post', slug: '#', publishDate: '2026-08-20', description: lorem, thumbnail: link('chie') } },
+];
+
+const tutorialPosts = [
+  { sys: { id: 't1' }, fields: { title: 'Tutorial post', slug: '#', publishDate: '2026-07-02', description: lorem, thumbnail: link('celty') } },
+  { sys: { id: 't2' }, fields: { title: 'Tutorial post', slug: '#', publishDate: '2026-06-11', description: lorem, thumbnail: link('talia') } },
+];
+
+const renderPosts = [
+  { metadata: { tags: [] }, sys: { id: 'r1' }, fields: { title: 'Render 001: Guilty Crown', date: '2013-10-13', imageDimensions: '800 x 1200', fileSize: '1.2 MB', downloadUrl: '#', thumbnail: link('inori') } },
+  { metadata: { tags: [] }, sys: { id: 'r2' }, fields: { title: 'Render 002: Persona 4', date: '2013-10-14', imageDimensions: '1200 x 2200', fileSize: '2.3 MB', downloadUrl: '#', thumbnail: link('chie') } },
+  { metadata: { tags: [] }, sys: { id: 'r3' }, fields: { title: 'Render 003: Durarara!!', date: '2013-10-14', imageDimensions: '1300 x 750', fileSize: '1.75 MB', downloadUrl: '#', thumbnail: link('celty') } },
+];
+
+const psdPosts = [
+  { sys: { id: 'p1' }, fields: { title: 'PSD Pack 01', fileSize: '24 MB', url: '#', thumbnail: link('rita') } },
+  { sys: { id: 'p2' }, fields: { title: 'PSD Pack 02', fileSize: '18 MB', url: '#', thumbnail: link('talia') } },
+  { sys: { id: 'p3' }, fields: { title: 'PSD Pack 03', fileSize: '31 MB', url: '#', thumbnail: link('inori') } },
+];
+
+const templatePosts = [
+  { sys: { id: 'tp1' }, fields: { title: 'Template: Inori', banner: link('inori'), publishDate: '2023-10-14', techStack: 'Vue, Vite, Tailwind', category: 'Anime/Manga', series: 'Guilty Crown', character: 'Inori Yuzuriha', demoUrl: '#', repoUrl: '#' } },
+  { sys: { id: 'tp2' }, fields: { title: 'Template: Rita', banner: link('rita'), publishDate: '2026-01-01', techStack: 'Astro, Tailwind, Contentful', category: 'Video Game', series: '—', character: '—', demoUrl: '#', repoUrl: '#', downloadUrl: '#' } },
+  { sys: { id: 'tp3' }, fields: { title: 'Template: Chie', banner: link('chie'), publishDate: '2023-10-14', techStack: 'HTML, Bootstrap', category: 'Video Game', series: 'Persona Q: Shadow of the Labyrinth', character: 'Chie Satonaka', demoUrl: '#', repoUrl: '#' } },
+];
+
+/* Filter + pagination demo items */
+const filterItems = [
+  ['Guilty Crown', 'anime'], ['Persona 4', 'game'], ['Durarara!!', 'anime'],
+  ['Honkai Impact', 'game'], ['Kantai Collection', 'game'], ['Code Geass', 'anime'],
+  ['Granblue Fantasy', 'game'], ['Puella Magi', 'anime'], ['Neptunia', 'game'],
+];
+
+const palette = [
+  { name: 'hynacinth', hex: '#6f55d8', cls: 'bg-hynacinth' },
+  { name: 'lavender', hex: '#646cff', cls: 'bg-lavender' },
+  { name: 'indigo', hex: '#240470', cls: 'bg-indigo' },
+  { name: 'orchid', hex: '#865eff', cls: 'bg-orchid' },
+  { name: 'raven', hex: '#020007', cls: 'bg-raven' },
+  { name: 'clay', hex: '#f1edff', cls: 'bg-clay' },
+];
+
+const toc = [
+  ['typography', 'Typography'],
+  ['colours', 'Colours'],
+  ['buttons', 'Buttons'],
+  ['tabs', 'Tabs'],
+  ['filter', 'Filter & pagination'],
+  ['cards', 'Cards'],
+  ['blog', 'Blog posts'],
+  ['tutorials', 'Tutorial posts'],
+  ['renders', 'Render posts'],
+  ['psd', 'PSD posts'],
+  ['image-caption', 'Image & caption'],
+  ['templates', 'Template cards'],
+];
+
+const glass = 'rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg';
+const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-white/10 backdrop-blur-md transition hover:bg-white/10 hover:border-white/20';
+---
+
+<Layout
+  title="Vizune Designs - Rita Template Style Guide"
+  description="Every component and style used across the Rita web template, on one page."
+  heading="Rita Web Template"
+>
+  <div class="text-white space-y-20">
+
+    <!-- Intro -->
+    <section class="flex flex-col md:flex-row gap-6 items-start">
+      <img src={ritaThumb.src} alt="Rita template thumbnail" width="160" class="rounded-xl border border-white/10 shrink-0 mx-auto md:mx-0" />
+      <div class="text-white/85">
+        <p>
+          This page gathers every component and style used across the <em>Rita</em> template.
+          It was built with <a href="https://astro.build/" target="_blank" rel="noopener noreferrer">Astro</a>, 
+          <a href="https://tailwindcss.com/" target="_blank" rel="noopener noreferrer">Tailwind</a>.
+          You can browse the code on <a href="https://github.com/vizune" target="_blank" rel="noopener noreferrer">my GitHub</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Table of contents -->
+    <nav aria-label="Style guide sections" class={`${glass} p-5`}>
+      <ul class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-base">
+        {toc.map(([id, label]) => (
+          <li><a href={`#${id}`} class="hover:text-lavender transition">{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Typography -->
+    <section id="typography" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Typography</h2>
+      <div class="space-y-4">
+        <h1 class="!text-left text-clay font-extralight tracking-[.08em] [text-shadow:0_0_18px_rgba(134,94,255,0.25)]">Heading 1</h1>
+        <h2 class="text-3xl">Heading 2</h2>
+        <h3 class="text-2xl">Heading 3</h3>
+        <h4 class="text-xl">Heading 4</h4>
+        <h2 class="tracking-[.08em] font-extralight text-2xl lowercase">💖 Section heading (lowercase) 🌟</h2>
+        <p>Body copy. {lorem} <strong>Bold text</strong>, <em>italic text</em> and <a href="#typography">an inline link</a>.</p>
+        <p class="text-white/80">Muted copy (text-white/80), used for descriptions.</p>
+        <p class="text-white/60 text-sm">Meta copy (text-white/60 text-sm), used for dates: 📅 27/10/2026</p>
+        <p class="text-sm">(Small print, used for notes)</p>
+        <ul>
+          <li class="mb-3 ml-4 pl-1 list-disc">List item with <a href="#typography">a link</a></li>
+          <li class="mb-3 ml-4 pl-1 list-disc">List item</li>
+          <li class="mb-3 ml-4 pl-1 list-disc">List item</li>
+        </ul>
+        <hr class="my-6 border-white/10" />
+      </div>
+    </section>
+
+    <!-- Colours -->
+    <section id="colours" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Colours</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        {palette.map((c) => (
+          <div class={`${glass} overflow-hidden`}>
+            <div class={`${c.cls} h-20 border-b border-white/10`}></div>
+            <div class="p-3 text-base">
+              <strong>{c.name}</strong><br />
+              <span class="text-white/60 text-sm">{c.hex}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Buttons -->
+    <section id="buttons" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Buttons</h2>
+      <div class="space-y-8">
+        <div>
+          <h3 class="text-xl mb-3">Primary button</h3>
+          <div class="flex flex-wrap gap-6">
+            <Button href="#buttons">Link back / link exchanges</Button>
+            <Button href="#buttons" external>External link <Icon name="newTab" size="small" /></Button>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl mb-3">Download button (renders, PSDs)</h3>
+          <a
+            href="#buttons"
+            class="Button text-lg uppercase inline-flex w-full max-w-sm items-center justify-center gap-2
+                   h-10 rounded-xl px-4 bg-white/10 text-white/90 border border-white/10
+                   hover:bg-white/15 hover:border-white/20 transition"
+          >
+            Download (24 MB) <Icon name="newTab" title="Opens url in a new tab" size="small" />
+          </a>
+        </div>
+
+        <div>
+          <h3 class="text-xl mb-3">Glass buttons (filter, pagination)</h3>
+          <div class="flex flex-wrap gap-4">
+            <button type="button" class={glassBtn}>Clear filter</button>
+            <button type="button" class={`${glassBtn} !h-10 px-4`}>Prev</button>
+            <button type="button" class={`${glassBtn} !h-10 px-4 opacity-40 cursor-not-allowed`} disabled>Next (disabled)</button>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl mb-3">Cookie banner buttons</h3>
+          <div class="flex flex-wrap gap-3 text-base">
+            <button type="button" class="px-4 py-2 rounded-lg border border-white/20 hover:bg-white/10 transition">Decline</button>
+            <button type="button" class="px-4 py-2 rounded-lg bg-indigo/60 hover:bg-indigo transition">Accept</button>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl mb-3">Round arrow buttons (templates carousel)</h3>
+          <div class="flex items-center gap-8">
+            <button type="button" aria-label="Previous" class="h-18 w-18 rounded-full border border-white/20 bg-black/40 text-white/90 backdrop-blur-md hover:border-white/50 transition flex items-center justify-center">
+              <img src={arrowPng.src} alt="" aria-hidden="true" class="w-[45px] h-[30px] rotate-180" />
+            </button>
+            <button type="button" aria-label="Next" class="h-18 w-18 rounded-full border border-white/20 bg-black/40 text-white/90 backdrop-blur-md hover:border-white/50 transition flex items-center justify-center">
+              <img src={arrowPng.src} alt="" aria-hidden="true" class="w-[45px] h-[30px]" />
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl mb-3">Affiliate button (hover to reveal 88×31)</h3>
+          <a
+            href="#buttons"
+            class="Button group relative flex h-[39px] w-[96px] items-center justify-center border border-white text-center tracking-wide no-underline text-white transition-colors duration-300 ease-in-out hover:bg-lavender hover:text-raven"
+          >
+            <span class="p-1 text-xs uppercase tracking-wider">Vizune</span>
+            <img src={vizuneButton01.src} alt="Vizune button" width="88" height="31" class="absolute left-[3px] top-[3px] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <section id="tabs" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Tabs component</h2>
+      <Tabs>
+        <ui-tab>Tab 1</ui-tab>
+        <ui-tab>Tab 2</ui-tab>
+        <ui-tab>Tab 3</ui-tab>
+        <ui-panel><p>Tab 1 content. {lorem} {lorem}</p></ui-panel>
+        <ui-panel><p>Tab 2 content. {lorem}</p></ui-panel>
+        <ui-panel><p>Tab 3 content. {lorem} {lorem} {lorem}</p></ui-panel>
+      </Tabs>
+    </section>
+
+    <!-- Filter + pagination -->
+    <section id="filter" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Filter dropdown &amp; pagination</h2>
+      <div class="styleguide-filter" data-section="styleguide">
+        <FilterDropdown>
+          <option value="">-- Filter content --</option>
+          <option value="anime">Anime (4)</option>
+          <option value="game">Video games (5)</option>
+        </FilterDropdown>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-3">
+          {filterItems.map(([name, tag]) => (
+            <div class={`styleguide-item ${glass} p-5 text-center`} data-tags={tag}>
+              {name}
+              <span class="block text-white/60 text-sm">{tag}</span>
+            </div>
+          ))}
+        </div>
+
+        <Pagination id="styleguide" pageSize={3} />
+      </div>
+
+      <script is:inline>
+        (() => {
+          const root = document.querySelector('.styleguide-filter[data-section="styleguide"]');
+          if (!root) return;
+
+          const pageSize = 3;
+          const select = root.querySelector('select');
+          const clearBtn = root.querySelector('[data-clear-filter]');
+          const cards = Array.from(root.querySelectorAll('.styleguide-item'));
+          const pagination = root.querySelector('[data-pagination-id="styleguide"]');
+
+          let currentTag = '';
+          let currentPage = 1;
+
+          const matches = (card) => !currentTag || (card.dataset.tags || '').split(/\s+/).includes(currentTag);
+
+          function apply() {
+            const matched = cards.filter(matches);
+            const start = (currentPage - 1) * pageSize;
+            cards.forEach((card) => card.classList.add('hidden'));
+            matched.slice(start, start + pageSize).forEach((card) => card.classList.remove('hidden'));
+
+            pagination?.dispatchEvent(new CustomEvent('pagination:set', {
+              detail: { total: matched.length, pageSize, page: currentPage },
+            }));
+          }
+
+          select?.addEventListener('change', (e) => {
+            currentTag = e.currentTarget.value;
+            currentPage = 1;
+            apply();
+          });
+
+          clearBtn?.addEventListener('click', () => {
+            if (select) select.value = '';
+            currentTag = '';
+            currentPage = 1;
+            apply();
+          });
+
+          pagination?.addEventListener('pagination:change', (e) => {
+            currentPage = e.detail?.page || 1;
+            apply();
+          });
+
+          apply();
+        })();
+      </script>
+    </section>
+
+    <!-- Generic cards -->
+    <section id="cards" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Cards</h2>
+      <div class="space-y-8">
+        <div>
+          <h3 class="text-xl mb-3">Glass card</h3>
+          <div class={`${glass} p-6 max-w-xl`}>
+            <p class="mb-0 text-white/80">{lorem}</p>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl mb-3">Link cards (credits, link exchanges)</h3>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {['MiniTokyo', 'Zerochan', 'Creative Uncut', 'Shuushuu'].map((name) => (
+              <a href="#cards" class="text-white text-lg text-center font-medium hover:text-lavender transition">
+                <article class={`${glass} p-5 hover:border-white/20 hover:bg-white/[0.07] transition`}>{name}</article>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl mb-3">Button cards</h3>
+          <div class="grid gap-4 sm:grid-cols-3 max-w-xl mb-6">
+            {[vizuneButton03, vizuneButton01, vizuneButton02].map((img) => (
+              <div class={`${glass} p-4 flex items-center justify-center`}>
+                <img src={img.src} alt="Vizune link button" width="88" height="31" class="[image-rendering:pixelated]" />
+              </div>
+            ))}
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[vizuneButton01, vizuneButton02].map((img, i) => (
+              <a href="#cards" class={`block ${glass} p-5 hover:border-white/20 hover:bg-white/[0.07] hover:text-lavender transition group`}>
+                <article>
+                  <h3 class="text-base font-semibold text-center mb-4">Link exchange {i + 1}</h3>
+                  <div class="flex items-center justify-center rounded-xl border border-white/10 bg-black/20 min-h-[92px] group-hover:bg-black/30 transition">
+                    <img src={img.src} alt="Sample button" width="88" height="31" class="[image-rendering:pixelated]" />
+                  </div>
+                </article>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog posts -->
+    <section id="blog" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Blog posts</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-9">
+        <div class="md:col-span-2">
+          <BlogPost post={blogPosts[0]} assetsById={assetsById} featured />
+        </div>
+        <BlogPost post={blogPosts[1]} assetsById={assetsById} />
+        <BlogPost post={blogPosts[2]} assetsById={assetsById} />
+      </div>
+    </section>
+
+    <!-- Tutorial posts -->
+    <section id="tutorials" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Tutorial posts</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-9">
+        {tutorialPosts.map((post) => <TutorialPost post={post} assetsById={assetsById} />)}
+      </div>
+    </section>
+
+    <!-- Render posts -->
+    <section id="renders" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Render posts</h2>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {renderPosts.map((post) => <RenderPost post={post} assetsById={assetsById} />)}
+      </div>
+    </section>
+
+    <!-- PSD posts -->
+    <section id="psd" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">PSD posts</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-9">
+        {psdPosts.map((post) => <PsdPost post={post} assetsById={assetsById} />)}
+      </div>
+    </section>
+
+    <!-- Image + caption -->
+    <section id="image-caption" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Image &amp; caption</h2>
+      <div class="grid gap-3 grid-cols-[repeat(auto-fit,minmax(0,400px))] justify-center">
+        <ImageCaption src={inoriThumb.src} alt="Inori template preview">
+          <strong>#1:</strong> Guilty Crown
+        </ImageCaption>
+        <ImageCaption src={chieThumb.src} alt="Chie template preview" caption="Caption passed as a prop" />
+      </div>
+    </section>
+
+    <!-- Template tarot carousel -->
+    <section id="templates" class="scroll-mt-8">
+      <h2 class="mb-6 text-3xl">Template carousel</h2>
+      <TemplateCarousel posts={templatePosts} assetsById={assetsById} startIndex={1} location="style_guide" />
+    </section>
+
+  </div>
+</Layout>

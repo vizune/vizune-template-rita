@@ -1,18 +1,25 @@
 ---
-import { Social, Affiliates } from '@/components';
+import { Social, Affiliates, Button } from '@/components';
 ---
 
 <footer class="relative bg-raven">
   <div class="container mx-auto px-4 py-6 items-center gap-8 xl:grid xl:grid-flow-row xl:grid-cols-3 lg:justify-center">
     <Affiliates />
     <Social />
-    <div class="min-h-[450px] lg:h-full">
-      <!-- BEGIN CBOX - www.cbox.ws - v4.3 -->
-      <div id="cboxdiv" style="position: relative; margin: 0 auto; width: 100%; height: 100%; font-size: 0; line-height: 0; display: flex; flex-direction: column;">
-      <div style="position: relative; height: 100%; flex-grow: 1; overflow: auto; overflow-y: auto; -webkit-overflow-scrolling: touch; border: 0px solid;"><iframe src="https://www7.cbox.ws/box/?boxid=548557&boxtag=kb26kf&sec=main" title="Cbox chat log" marginheight="0" marginwidth="0" frameborder="0" width="100%" height="100%" scrolling="auto" allowtransparency="yes" name="cboxmain7-548557" id="cboxmain7-548557"></iframe></div>
-      <div style="position: relative; height: 92px; overflow: hidden; border: 0px solid; border-top: 0px;"><iframe src="https://www7.cbox.ws/box/?boxid=548557&boxtag=kb26kf&sec=form" title="Cbox chat form" allow="autoplay" marginheight="0" marginwidth="0" frameborder="0" width="100%" height="100%" scrolling="no" allowtransparency="yes" name="cboxform7-548557" id="cboxform7-548557"></iframe></div>
+    <section aria-labelledby="footer-about" class="max-w-md mx-auto">
+      <h2 id="footer-about" class="my-5 tracking-[.08em] font-extralight text-2xl text-center lowercase">✨ About 🌙</h2>
+      <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg p-6 text-white/80">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec lobortis ipsum, ac rhoncus ante.
+          Nullam auctor mi sit amet enim lacinia viverra. Etiam fringilla sapien ut vehicula molestie.
+        </p>
+        <p class="mb-6">
+          Ut feugiat enim velit, vitae mattis diam tincidunt id. Quisque et enim ut magna venenatis aliquet.
+        </p>
+        <div class="flex justify-center">
+          <Button href="/style-guide/">Find out more</Button>
+        </div>
       </div>
-      <!-- END CBOX -->	
-    </div>
+    </section>
   </div>
 </footer>

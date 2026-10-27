@@ -85,17 +85,17 @@ const publishDateUk = formatUkDate(publishDate);
   data-tags={filterableTags.join(' ')}
 >
   {imgUrl ? (
-    <div class="bg-black/20">
+    <div class="h-[250px] bg-black/20 overflow-hidden">
       <img
         src={imgUrl}
         alt={alt}
         loading="lazy"
         decoding="async"
-        class="w-full h-full"
+        class="w-full h-full object-cover"
       />
     </div>
   ) : (
-    <div class="aspect-[16/10] bg-black/20 flex items-center justify-center text-white/50 text-sm">
+    <div class="h-[250px] bg-black/20 flex items-center justify-center text-white/50 text-sm">
       No thumbnail
     </div>
   )}

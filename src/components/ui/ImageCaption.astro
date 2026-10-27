@@ -1,0 +1,47 @@
+---
+/**
+ * Image with a caption underneath, in the glass card style.
+ *
+ * <ImageCaption src={img.src} alt="..." width={400} height={400}>
+ *   <strong>#1:</strong> Guilty Crown
+ * </ImageCaption>
+ *
+ * Pass the caption as slot content (supports markup) or as the `caption` prop.
+ */
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  caption?: string;
+  class?: string;
+}
+
+const { src, alt, width = 400, height = 400, caption, class: className } = Astro.props;
+const hasCaption = Astro.slots.has('default') || caption;
+---
+
+<figure
+  class:list={[
+    'image-caption overflow-hidden rounded-b-xl border border-white/10 bg-white/5 backdrop-blur-md',
+    className,
+  ]}
+  style={`max-width: ${width}px`}
+>
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading="lazy"
+    decoding="async"
+    class="block w-full h-auto object-cover"
+    style={`aspect-ratio: ${width} / ${height}`}
+  />
+
+  {hasCaption && (
+    <figcaption class="p-3 text-center text-white/80">
+      <slot>{caption}</slot>
+    </figcaption>
+  )}
+</figure>

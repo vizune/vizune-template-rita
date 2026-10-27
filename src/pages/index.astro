@@ -1,85 +1,14 @@
 ---
+
 import Layout from '@/layouts/Layout.astro';
-import BlogPost from '@/components/posts/BlogPost.astro';
-
-type ArticlePost = {
-  sys: { id: string };
-  fields: {
-    title?: string;
-    slug?: string;
-    publishDate?: string;
-    description?: string;
-    thumbnail?: { sys?: { id?: string } };
-  };
-};
-
-type Asset = {
-  sys: { id: string };
-  fields?: {
-    title?: string;
-    description?: string;
-    file?: { url?: string };
-  };
-};
-
-const data = await fetch(import.meta.env.PUBLIC_POSTS_BLOG).then((r) => r.json());
-
-const items: ArticlePost[] = (data?.items ?? []) as ArticlePost[];
-const assets: Asset[] = (data?.includes?.Asset ?? []) as Asset[];
-const assetsById = new Map<string, Asset>(assets.map((a) => [a.sys.id, a]));
-
-const toTime = (d?: string) => {
-  const t = d ? Date.parse(d) : NaN;
-  return Number.isFinite(t) ? t : -Infinity;
-};
-
-const sorted = [...items].sort(
-  (a, b) => toTime(b.fields.publishDate) - toTime(a.fields.publishDate)
-);
-
-const featuredPost = sorted[0];
-const recentPosts = sorted.slice(1, 7);
+import { Button } from '@/components';
 ---
 
-<Layout
-  title="Welcome to Vizune Designs - News & Updates"
-  description="Vizune is a creative hub where anime, gaming, design, and web development merge — explore tutorials, visuals, and resources to fuel your imagination."
-  heading="Welcome to Vizune Designs"
->
-  <section class="space-y-10">
-    <div class="mx-auto max-w-3xl text-center">
-      <p><em>A creative hub where anime, gaming, design, and web development merge.</em></p>
-    </div>
-
-    <section>
-      <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h2 class="mb-1">News & Updates</h2>
-          <p class="text-white/80">
-            Latest posts from the Vizune blog.
-          </p>
-        </div>
-
-        <!-- <a
-          href="/blog/"
-          class="text-white/70 hover:text-lavender transition"
-        >
-          View all posts →
-        </a>
-        -->
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-9">
-        {featuredPost ? (
-          <div class="md:col-span-2">
-            <BlogPost post={featuredPost} assetsById={assetsById} featured />
-          </div>
-        ) : null}
-
-        {recentPosts.map((post) => (
-          <BlogPost post={post} assetsById={assetsById} />
-        ))}
-      </div>
-    </section>
-  </section>
+<Layout title="Welcome to Vizune Design - The Dusken Glow" description="Vizune is a creative hub where anime, gaming, design, and web development merge — explore tutorials, visuals, and resources to fuel your imagination." heading="Welcome to Vizune Designs">
+	<p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec lobortis ipsum, ac rhoncus ante. Nullam auctor mi sit amet enim lacinia viverra. Etiam fringilla sapien ut vehicula molestie. Ut feugiat enim velit, vitae mattis diam tincidunt id. Quisque et enim ut magna venenatis aliquet. Vestibulum nec nisl nisi. Praesent feugiat nibh vitae luctus rhoncus. Cras placerat sed sapien et accumsan. Donec maximus lacinia magna, eget luctus purus hendrerit ut. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisis urna leo, eu facilisis ligula ultrices a. Fusce finibus accumsan sagittis. Mauris non elit dolor. Donec ultricies placerat urna, vestibulum dignissim orci lobortis ac.
+    </p>
+    <div class="flex justify-end">
+		<Button href="/style-guide/">View style guide</Button>
+	</div>
 </Layout>
