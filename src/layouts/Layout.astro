@@ -1,5 +1,5 @@
 ---
-import { Header, Navigation, Body, Footer, IconSprite } from '@/components';
+import { Header, Navigation, Body, Footer } from '@/components';
 import "../assets/style.css";
 const { title, description, heading } = Astro.props;
 
@@ -30,7 +30,6 @@ import CookieBanner from '@/components/layout/CookieBanner.astro';
 		<meta name="description" content={description}>
 	</head>
 	<body>
-		<IconSprite />
 		<Header />
 		<Navigation />
 		<Body heading={heading}>

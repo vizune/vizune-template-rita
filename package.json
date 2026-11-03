@@ -11,7 +11,12 @@
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^16.6.10",
     "@contentful/rich-text-types": "^16.8.3",
+    "@fortawesome/free-brands-svg-icons": "^7.3.1",
+    "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "astro": "^7.2.0",
     "astro-critters": "^2.2.1"
+  },
+  "overrides": {
+    "deepmerge-ts": "^8.0.2"
   }
 }

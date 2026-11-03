@@ -1,15 +1,69 @@
 ---
+/**
+ * Font Awesome icon, rendered as inline SVG at build time (no icon font or JS).
+ *
+ * <Icon name="github" title="GitHub" />
+ * <Icon name="newTab" size="small" />
+ *
+ * To add an icon, import it from @fortawesome/free-brands-svg-icons or
+ * @fortawesome/free-solid-svg-icons and add it to `icons` below.
+ */
+import {
+  faCodepen,
+  faDeviantart,
+  faDiscord,
+  faGithub,
+  faInstagram,
+  faLinkedin,
+  faPinterest,
+  faSpotify,
+  faSteam,
+  type IconDefinition,
+} from '@fortawesome/free-brands-svg-icons';
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+
+const icons: Record<string, IconDefinition> = {
+  codepen: faCodepen,
+  deviantart: faDeviantart,
+  discord: faDiscord,
+  github: faGithub,
+  instagram: faInstagram,
+  linkedin: faLinkedin,
+  pinterest: faPinterest,
+  spotify: faSpotify,
+  steam: faSteam,
+  newTab: faArrowUpRightFromSquare,
+};
+
+interface Props {
+  name: keyof typeof icons;
+  title?: string;
+  size?: 'small';
+}
+
 const { name, title, size } = Astro.props;
+
+const definition = icons[name];
+if (!definition) throw new Error(`Unknown icon "${name}"`);
+
+const [width, height, , , pathData] = definition.icon;
+const paths = Array.isArray(pathData) ? pathData : [pathData];
+
+// Centre the glyph in a square box with 1/8 padding on each side,
+// matching the 640x640 artboard the old SVG sprite used.
+const box = height * 1.25;
+const viewBox = `${(width - box) / 2} ${(height - box) / 2} ${box} ${box}`;
+const px = size === 'small' ? '16px' : '32px';
 ---
 
 <svg
-  width={size === "small" ? "16px" : "32px"}
-  height={size === "small" ? "16px" : "32px"}
-  viewBox="0 0 640 640"
-  fill="currentColor" 
+  width={px}
+  height={px}
+  viewBox={viewBox}
+  fill="currentColor"
   aria-hidden="true"
   role="img"
 >
-    {title && <title>{ title }</title>}
-    <use href={`#${name}`} xlink:href={`#${name}`} />
+  {title && <title>{title}</title>}
+  {paths.map((d) => <path d={d} />)}
 </svg>
