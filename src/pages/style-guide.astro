@@ -77,7 +77,7 @@ const psdPosts = [
 
 const templatePosts = [
   { sys: { id: 'tp1' }, fields: { title: 'Template: Inori', banner: link('inori'), publishDate: '2023-10-14', techStack: 'Vue, Vite, Tailwind', category: 'Anime/Manga', series: 'Guilty Crown', character: 'Inori Yuzuriha', demoUrl: '#', repoUrl: '#' } },
-  { sys: { id: 'tp2' }, fields: { title: 'Template: Rita', banner: link('rita'), publishDate: '2026-01-01', techStack: 'Astro, Tailwind, Contentful', category: 'Video Game', series: '—', character: '—', demoUrl: '#', repoUrl: '#', downloadUrl: '#' } },
+  { sys: { id: 'tp2' }, fields: { title: 'Template: Rita', banner: link('rita'), publishDate: '2026-01-01', techStack: 'Astro, Contentful', category: 'Video Game', series: '—', character: '—', demoUrl: '#', repoUrl: '#', downloadUrl: '#' } },
   { sys: { id: 'tp3' }, fields: { title: 'Template: Chie', banner: link('chie'), publishDate: '2023-10-14', techStack: 'HTML, Bootstrap', category: 'Video Game', series: 'Persona Q: Shadow of the Labyrinth', character: 'Chie Satonaka', demoUrl: '#', repoUrl: '#' } },
 ];
 
@@ -89,12 +89,12 @@ const filterItems = [
 ];
 
 const palette = [
-  { name: 'hynacinth', hex: '#6f55d8', cls: 'bg-hynacinth' },
-  { name: 'lavender', hex: '#646cff', cls: 'bg-lavender' },
-  { name: 'indigo', hex: '#240470', cls: 'bg-indigo' },
-  { name: 'orchid', hex: '#865eff', cls: 'bg-orchid' },
-  { name: 'raven', hex: '#020007', cls: 'bg-raven' },
-  { name: 'clay', hex: '#f1edff', cls: 'bg-clay' },
+  { name: 'hynacinth', hex: '#6f55d8' },
+  { name: 'lavender', hex: '#646cff' },
+  { name: 'indigo', hex: '#240470' },
+  { name: 'orchid', hex: '#865eff' },
+  { name: 'raven', hex: '#020007' },
+  { name: 'clay', hex: '#f1edff' },
 ];
 
 const toc = [
@@ -111,9 +111,6 @@ const toc = [
   ['image-caption', 'Image & caption'],
   ['templates', 'Template cards'],
 ];
-
-const glass = 'rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg';
-const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-white/10 backdrop-blur-md transition hover:bg-white/10 hover:border-white/20';
 ---
 
 <Layout
@@ -121,62 +118,61 @@ const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-wh
   description="Every component and style used across the Rita web template, on one page."
   heading="The Dusken Glow Web Template"
 >
-  <div class="text-white space-y-20">
+  <div class="guide">
 
     <!-- Intro -->
-    <section class="flex flex-col md:flex-row gap-6 items-start">
-      <img src={ritaThumb.src} alt="Rita template thumbnail" width="160" class="rounded-xl border border-white/10 shrink-0 mx-auto md:mx-0" />
-      <div class="text-white/85">
+    <section class="intro">
+      <img src={ritaThumb.src} alt="Rita template thumbnail" width="160" class="intro-image" />
+      <div class="muted-strong">
         <p>
           This page gathers every component and style used across the <em>Dusken Glow</em> template.
-          It was built with <a href="https://astro.build/" target="_blank" rel="noopener noreferrer">Astro</a>, 
-          <a href="https://tailwindcss.com/" target="_blank" rel="noopener noreferrer">Tailwind</a>.
+          It was built with <a href="https://astro.build/" target="_blank" rel="noopener noreferrer">Astro</a>.
           You can browse the code on <a href="https://github.com/vizune" target="_blank" rel="noopener noreferrer">my GitHub</a>.
         </p>
       </div>
     </section>
 
     <!-- Table of contents -->
-    <nav aria-label="Style guide sections" class={`${glass} p-5`}>
-      <ul class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-base">
+    <nav aria-label="Style guide sections" class="toc glass">
+      <ul class="toc-list">
         {toc.map(([id, label]) => (
-          <li><a href={`#${id}`} class="hover:text-lavender transition">{label}</a></li>
+          <li><a href={`#${id}`} class="toc-link">{label}</a></li>
         ))}
       </ul>
     </nav>
 
     <!-- Typography -->
-    <section id="typography" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Typography</h2>
-      <div class="space-y-4">
-        <h1 class="!text-left text-clay font-extralight tracking-[.08em] [text-shadow:0_0_18px_rgba(134,94,255,0.25)]">Heading 1</h1>
-        <h2 class="text-3xl">Heading 2</h2>
-        <h3 class="text-2xl">Heading 3</h3>
-        <h4 class="text-xl">Heading 4</h4>
-        <h2 class="tracking-[.08em] font-extralight text-2xl lowercase">💖 Section heading (lowercase) 🌟</h2>
+    <section id="typography" class="guide-section">
+      <h2 class="section-title">Typography</h2>
+      <div class="specimen">
+        <h1 class="specimen-h1">Heading 1</h1>
+        <h2 class="specimen-h2">Heading 2</h2>
+        <h3 class="specimen-h3">Heading 3</h3>
+        <h4 class="specimen-h4">Heading 4</h4>
+        <h2 class="specimen-h3">💖 Section heading (lowercase) 🌟</h2>
         <p>Body copy. {lorem} <strong>Bold text</strong>, <em>italic text</em> and <a href="#typography">an inline link</a>.</p>
-        <p class="text-white/80">Muted copy (text-white/80), used for descriptions.</p>
-        <p class="text-white/60 text-sm">Meta copy (text-white/60 text-sm), used for dates: 📅 27/10/2026</p>
-        <p class="text-sm">(Small print, used for notes)</p>
+        <p class="muted">Muted copy (white at 80%), used for descriptions.</p>
+        <p class="meta">Meta copy (white at 60%, small), used for dates: 📅 27/10/2026</p>
+        <p class="small">(Small print, used for notes)</p>
         <ul>
-          <li class="mb-3 ml-4 pl-1 list-disc">List item with <a href="#typography">a link</a></li>
-          <li class="mb-3 ml-4 pl-1 list-disc">List item</li>
-          <li class="mb-3 ml-4 pl-1 list-disc">List item</li>
+          <li class="list-item">List item with <a href="#typography">a link</a></li>
+          <li class="list-item">List item</li>
+          <li class="list-item">List item</li>
         </ul>
-        <hr class="my-6 border-white/10" />
+        <hr class="rule" />
       </div>
     </section>
 
     <!-- Colours -->
-    <section id="colours" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Colours</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+    <section id="colours" class="guide-section">
+      <h2 class="section-title">Colours</h2>
+      <div class="swatches">
         {palette.map((c) => (
-          <div class={`${glass} overflow-hidden`}>
-            <div class={`${c.cls} h-20 border-b border-white/10`}></div>
-            <div class="p-3 text-base">
+          <div class="swatch glass">
+            <div class="swatch-colour" style={`background-color: var(--color-${c.name})`}></div>
+            <div class="swatch-label">
               <strong>{c.name}</strong><br />
-              <span class="text-white/60 text-sm">{c.hex}</span>
+              <span class="meta">{c.hex}</span>
             </div>
           </div>
         ))}
@@ -184,74 +180,66 @@ const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-wh
     </section>
 
     <!-- Buttons -->
-    <section id="buttons" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Buttons</h2>
-      <div class="space-y-8">
+    <section id="buttons" class="guide-section">
+      <h2 class="section-title">Buttons</h2>
+      <div class="stack">
         <div>
-          <h3 class="text-xl mb-3">Primary button</h3>
-          <div class="flex flex-wrap gap-6">
+          <h3 class="demo-title">Primary button</h3>
+          <div class="row row--wide">
             <Button href="#buttons">Link back / link exchanges</Button>
             <Button href="#buttons" external>External link <Icon name="newTab" size="small" /></Button>
           </div>
         </div>
 
         <div>
-          <h3 class="text-xl mb-3">Download button (renders, PSDs)</h3>
-          <a
-            href="#buttons"
-            class="Button text-lg uppercase inline-flex w-full max-w-sm items-center justify-center gap-2
-                   h-10 rounded-xl px-4 bg-white/10 text-white/90 border border-white/10
-                   hover:bg-white/15 hover:border-white/20 transition"
-          >
+          <h3 class="demo-title">Download button (renders, PSDs)</h3>
+          <a href="#buttons" class="Button download-button download-demo">
             Download (24 MB) <Icon name="newTab" title="Opens url in a new tab" size="small" />
           </a>
         </div>
 
         <div>
-          <h3 class="text-xl mb-3">Glass buttons (filter, pagination)</h3>
-          <div class="flex flex-wrap gap-4">
-            <button type="button" class={glassBtn}>Clear filter</button>
-            <button type="button" class={`${glassBtn} !h-10 px-4`}>Prev</button>
-            <button type="button" class={`${glassBtn} !h-10 px-4 opacity-40 cursor-not-allowed`} disabled>Next (disabled)</button>
+          <h3 class="demo-title">Glass buttons (filter, pagination)</h3>
+          <div class="row">
+            <button type="button" class="glass-button">Clear filter</button>
+            <button type="button" class="glass-button glass-button--small">Prev</button>
+            <button type="button" class="glass-button glass-button--small" disabled>Next (disabled)</button>
           </div>
         </div>
 
         <div>
-          <h3 class="text-xl mb-3">Cookie banner buttons</h3>
-          <div class="flex flex-wrap gap-3 text-base">
-            <button type="button" class="px-4 py-2 rounded-lg border border-white/20 hover:bg-white/10 transition">Decline</button>
-            <button type="button" class="px-4 py-2 rounded-lg bg-indigo/60 hover:bg-indigo transition">Accept</button>
+          <h3 class="demo-title">Cookie banner buttons</h3>
+          <div class="row row--tight">
+            <button type="button" class="cookie-button cookie-button--decline">Decline</button>
+            <button type="button" class="cookie-button cookie-button--accept">Accept</button>
           </div>
         </div>
 
         <div>
-          <h3 class="text-xl mb-3">Round arrow buttons (templates carousel)</h3>
-          <div class="flex items-center gap-8">
-            <button type="button" aria-label="Previous" class="h-18 w-18 rounded-full border border-white/20 bg-black/40 text-white/90 backdrop-blur-md hover:border-white/50 transition flex items-center justify-center">
-              <img src={arrowPng.src} alt="" aria-hidden="true" class="w-[45px] h-[30px] rotate-180" />
+          <h3 class="demo-title">Round arrow buttons (templates carousel)</h3>
+          <div class="arrow-row">
+            <button type="button" aria-label="Previous" class="round-button round-button--prev">
+              <img src={arrowPng.src} alt="" aria-hidden="true" />
             </button>
-            <button type="button" aria-label="Next" class="h-18 w-18 rounded-full border border-white/20 bg-black/40 text-white/90 backdrop-blur-md hover:border-white/50 transition flex items-center justify-center">
-              <img src={arrowPng.src} alt="" aria-hidden="true" class="w-[45px] h-[30px]" />
+            <button type="button" aria-label="Next" class="round-button">
+              <img src={arrowPng.src} alt="" aria-hidden="true" />
             </button>
           </div>
         </div>
 
         <div>
-          <h3 class="text-xl mb-3">Affiliate button (hover to reveal 88×31)</h3>
-          <a
-            href="#buttons"
-            class="Button group relative flex h-[39px] w-[96px] items-center justify-center border border-white text-center tracking-wide no-underline text-white transition-colors duration-300 ease-in-out hover:bg-lavender hover:text-raven"
-          >
-            <span class="p-1 text-xs uppercase tracking-wider">Vizune</span>
-            <img src={vizuneButton01.src} alt="Vizune button" width="88" height="31" class="absolute left-[3px] top-[3px] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
+          <h3 class="demo-title">Affiliate button (hover to reveal 88×31)</h3>
+          <a href="#buttons" class="Button affiliate-button">
+            <span>Vizune</span>
+            <img src={vizuneButton01.src} alt="Vizune button" width="88" height="31" />
           </a>
         </div>
       </div>
     </section>
 
     <!-- Tabs -->
-    <section id="tabs" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Tabs component</h2>
+    <section id="tabs" class="guide-section">
+      <h2 class="section-title">Tabs component</h2>
       <Tabs>
         <ui-tab>Tab 1</ui-tab>
         <ui-tab>Tab 2</ui-tab>
@@ -263,8 +251,8 @@ const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-wh
     </section>
 
     <!-- Filter + pagination -->
-    <section id="filter" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Filter dropdown &amp; pagination</h2>
+    <section id="filter" class="guide-section">
+      <h2 class="section-title">Filter dropdown &amp; pagination</h2>
       <div class="styleguide-filter" data-section="styleguide">
         <FilterDropdown>
           <option value="">-- Filter content --</option>
@@ -272,11 +260,11 @@ const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-wh
           <option value="game">Video games (5)</option>
         </FilterDropdown>
 
-        <div class="mt-8 grid gap-4 sm:grid-cols-3">
+        <div class="filter-grid">
           {filterItems.map(([name, tag]) => (
-            <div class={`styleguide-item ${glass} p-5 text-center`} data-tags={tag}>
+            <div class="styleguide-item glass" data-tags={tag}>
               {name}
-              <span class="block text-white/60 text-sm">{tag}</span>
+              <span class="filter-tag meta">{tag}</span>
             </div>
           ))}
         </div>
@@ -303,8 +291,8 @@ const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-wh
           function apply() {
             const matched = cards.filter(matches);
             const start = (currentPage - 1) * pageSize;
-            cards.forEach((card) => card.classList.add('hidden'));
-            matched.slice(start, start + pageSize).forEach((card) => card.classList.remove('hidden'));
+            cards.forEach((card) => { card.hidden = true; });
+            matched.slice(start, start + pageSize).forEach((card) => { card.hidden = false; });
 
             pagination?.dispatchEvent(new CustomEvent('pagination:set', {
               detail: { total: matched.length, pageSize, page: currentPage },
@@ -335,43 +323,43 @@ const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-wh
     </section>
 
     <!-- Generic cards -->
-    <section id="cards" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Cards</h2>
-      <div class="space-y-8">
+    <section id="cards" class="guide-section">
+      <h2 class="section-title">Cards</h2>
+      <div class="stack">
         <div>
-          <h3 class="text-xl mb-3">Glass card</h3>
-          <div class={`${glass} p-6 max-w-xl`}>
-            <p class="mb-0 text-white/80">{lorem}</p>
+          <h3 class="demo-title">Glass card</h3>
+          <div class="glass-demo glass">
+            <p class="muted">{lorem}</p>
           </div>
         </div>
 
         <div>
-          <h3 class="text-xl mb-3">Link cards (credits, link exchanges)</h3>
-          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <h3 class="demo-title">Link cards (credits, link exchanges)</h3>
+          <div class="card-grid">
             {['MiniTokyo', 'Zerochan', 'Creative Uncut', 'Shuushuu'].map((name) => (
-              <a href="#cards" class="text-white text-lg text-center font-medium hover:text-lavender transition">
-                <article class={`${glass} p-5 hover:border-white/20 hover:bg-white/[0.07] transition`}>{name}</article>
+              <a href="#cards" class="link-card">
+                <article class="link-card-body glass">{name}</article>
               </a>
             ))}
           </div>
         </div>
 
         <div>
-          <h3 class="text-xl mb-3">Button cards</h3>
-          <div class="grid gap-4 sm:grid-cols-3 max-w-xl mb-6">
+          <h3 class="demo-title">Button cards</h3>
+          <div class="button-grid">
             {[vizuneButton03, vizuneButton01, vizuneButton02].map((img) => (
-              <div class={`${glass} p-4 flex items-center justify-center`}>
-                <img src={img.src} alt="Vizune link button" width="88" height="31" class="[image-rendering:pixelated]" />
+              <div class="button-tile glass">
+                <img src={img.src} alt="Vizune link button" width="88" height="31" class="pixelated" />
               </div>
             ))}
           </div>
-          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="card-grid">
             {[vizuneButton01, vizuneButton02].map((img, i) => (
-              <a href="#cards" class={`block ${glass} p-5 hover:border-white/20 hover:bg-white/[0.07] hover:text-lavender transition group`}>
+              <a href="#cards" class="exchange-card glass">
                 <article>
-                  <h3 class="text-base font-semibold text-center mb-4">Link exchange {i + 1}</h3>
-                  <div class="flex items-center justify-center rounded-xl border border-white/10 bg-black/20 min-h-[92px] group-hover:bg-black/30 transition">
-                    <img src={img.src} alt="Sample button" width="88" height="31" class="[image-rendering:pixelated]" />
+                  <h3 class="exchange-title">Link exchange {i + 1}</h3>
+                  <div class="exchange-frame">
+                    <img src={img.src} alt="Sample button" width="88" height="31" class="pixelated" />
                   </div>
                 </article>
               </a>
@@ -382,10 +370,10 @@ const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-wh
     </section>
 
     <!-- Blog posts -->
-    <section id="blog" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Blog posts</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-9">
-        <div class="md:col-span-2">
+    <section id="blog" class="guide-section">
+      <h2 class="section-title">Blog posts</h2>
+      <div class="post-grid">
+        <div class="span-full">
           <BlogPost post={blogPosts[0]} assetsById={assetsById} featured />
         </div>
         <BlogPost post={blogPosts[1]} assetsById={assetsById} />
@@ -394,33 +382,33 @@ const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-wh
     </section>
 
     <!-- Tutorial posts -->
-    <section id="tutorials" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Tutorial posts</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-9">
+    <section id="tutorials" class="guide-section">
+      <h2 class="section-title">Tutorial posts</h2>
+      <div class="post-grid">
         {tutorialPosts.map((post) => <TutorialPost post={post} assetsById={assetsById} />)}
       </div>
     </section>
 
     <!-- Render posts -->
-    <section id="renders" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Render posts</h2>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <section id="renders" class="guide-section">
+      <h2 class="section-title">Render posts</h2>
+      <div class="render-grid">
         {renderPosts.map((post) => <RenderPost post={post} assetsById={assetsById} />)}
       </div>
     </section>
 
     <!-- PSD posts -->
-    <section id="psd" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">PSD posts</h2>
-      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-9">
+    <section id="psd" class="guide-section">
+      <h2 class="section-title">PSD posts</h2>
+      <div class="psd-grid">
         {psdPosts.map((post) => <PsdPost post={post} assetsById={assetsById} />)}
       </div>
     </section>
 
     <!-- Image + caption -->
-    <section id="image-caption" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Image &amp; caption</h2>
-      <div class="grid gap-3 grid-cols-[repeat(auto-fit,minmax(0,400px))] justify-center">
+    <section id="image-caption" class="guide-section">
+      <h2 class="section-title">Image &amp; caption</h2>
+      <div class="caption-grid">
         <ImageCaption src={inoriThumb.src} alt="Inori template preview">
           <strong>#1:</strong> Guilty Crown
         </ImageCaption>
@@ -429,10 +417,366 @@ const glassBtn = 'h-12 rounded-xl px-5 bg-white/5 text-white/85 border border-wh
     </section>
 
     <!-- Template tarot carousel -->
-    <section id="templates" class="scroll-mt-8">
-      <h2 class="mb-6 text-3xl">Template carousel</h2>
+    <section id="templates" class="guide-section">
+      <h2 class="section-title">Template carousel</h2>
       <TemplateCarousel posts={templatePosts} assetsById={assetsById} startIndex={1} location="style_guide" />
     </section>
 
   </div>
 </Layout>
+
+<style>
+  .guide {
+    color: #fff;
+  }
+
+  .guide > :not(:last-child) {
+    margin-bottom: 5rem;
+  }
+
+  .guide-section {
+    scroll-margin-top: 2rem;
+  }
+
+  .section-title {
+    margin-bottom: 1.5rem;
+    font-size: var(--text-3xl);
+    line-height: var(--leading-3xl);
+  }
+
+  .demo-title {
+    margin-bottom: 0.75rem;
+    font-size: var(--text-xl);
+    line-height: var(--leading-xl);
+  }
+
+  .stack > :not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
+  .muted-strong {
+    color: rgb(255 255 255 / 0.85);
+  }
+
+  .muted {
+    color: rgb(255 255 255 / 0.8);
+  }
+
+  .meta {
+    color: rgb(255 255 255 / 0.6);
+    font-size: var(--text-sm);
+    line-height: var(--leading-sm);
+  }
+
+  .small {
+    font-size: var(--text-sm);
+    line-height: var(--leading-sm);
+  }
+
+  .pixelated {
+    image-rendering: pixelated;
+  }
+
+  /* Intro */
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .intro-image {
+    flex-shrink: 0;
+    margin-inline: auto;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: var(--radius-xl);
+  }
+
+  @media (min-width: 768px) {
+    .intro {
+      flex-direction: row;
+    }
+
+    .intro-image {
+      margin-inline: 0;
+    }
+  }
+
+  /* Table of contents */
+  .toc {
+    padding: 1.25rem;
+  }
+
+  .toc-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    font-size: var(--text-base);
+    line-height: var(--leading-base);
+  }
+
+  .toc-link {
+    transition: color var(--transition);
+  }
+
+  .toc-link:hover {
+    color: var(--color-lavender);
+  }
+
+  /* Typography */
+  .specimen > :not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  .specimen-h1 {
+    color: var(--color-clay);
+    text-align: left;
+    text-shadow: 0 0 18px rgba(134, 94, 255, 0.25);
+  }
+
+  .specimen-h2 {
+    font-size: var(--text-3xl);
+    line-height: var(--leading-3xl);
+  }
+
+  .specimen-h3 {
+    font-size: var(--text-2xl);
+    line-height: var(--leading-2xl);
+  }
+
+  .specimen-h4 {
+    font-size: var(--text-xl);
+    line-height: var(--leading-xl);
+  }
+
+  .list-item {
+    margin: 0 0 0.75rem 1rem;
+    padding-left: 0.25rem;
+    list-style-type: disc;
+  }
+
+  .rule {
+    margin-block: 1.5rem;
+    border-color: rgb(255 255 255 / 0.1);
+  }
+
+  /* Colours */
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .swatch {
+    overflow: hidden;
+  }
+
+  .swatch-colour {
+    height: 5rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  }
+
+  .swatch-label {
+    padding: 0.75rem;
+    font-size: var(--text-base);
+    line-height: var(--leading-base);
+  }
+
+  /* Buttons */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .row--wide {
+    gap: 1.5rem;
+  }
+
+  .row--tight {
+    gap: 0.75rem;
+    font-size: var(--text-base);
+    line-height: var(--leading-base);
+  }
+
+  .arrow-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .download-demo {
+    max-width: 24rem;
+  }
+
+  /* Filter + pagination */
+  .filter-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .styleguide-item {
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .filter-tag {
+    display: block;
+  }
+
+  /* Cards */
+  .glass-demo {
+    max-width: 36rem;
+    padding: 1.5rem;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .link-card {
+    color: #fff;
+    font-size: var(--text-lg);
+    line-height: var(--leading-lg);
+    font-weight: 500;
+    text-align: center;
+    transition: color var(--transition);
+  }
+
+  .link-card:hover {
+    color: var(--color-lavender);
+  }
+
+  .link-card-body {
+    padding: 1.25rem;
+    transition: border-color var(--transition), background-color var(--transition);
+  }
+
+  .link-card-body:hover,
+  .exchange-card:hover {
+    border-color: rgb(255 255 255 / 0.2);
+    background-color: rgb(255 255 255 / 0.07);
+  }
+
+  .button-grid {
+    display: grid;
+    gap: 1rem;
+    max-width: 36rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .button-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .exchange-card {
+    display: block;
+    padding: 1.25rem;
+    transition: border-color var(--transition), background-color var(--transition), color var(--transition);
+  }
+
+  .exchange-card:hover {
+    color: var(--color-lavender);
+  }
+
+  .exchange-title {
+    margin-bottom: 1rem;
+    font-size: var(--text-base);
+    line-height: var(--leading-base);
+    text-align: center;
+  }
+
+  .exchange-frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 92px;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: var(--radius-xl);
+    background-color: rgb(0 0 0 / 0.2);
+    transition: background-color var(--transition);
+  }
+
+  .exchange-card:hover .exchange-frame {
+    background-color: rgb(0 0 0 / 0.3);
+  }
+
+  /* Post grids */
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 2.25rem;
+  }
+
+  .render-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .psd-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .caption-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 400px));
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .swatches,
+    .filter-grid,
+    .button-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card-grid,
+    .render-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .post-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .span-full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .swatches {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .card-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .render-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .psd-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.25rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .psd-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

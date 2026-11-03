@@ -8,15 +8,15 @@ import Header1200 from '@/assets/header-1200.png';
 import Header768 from '@/assets/header-768.png';
 ---
 
-<header class="Header h-[43.75rem] w-full relative pt-1 pb-6">
-	<div class="text-center mt-6 md:mt-2">
-		<span class="text-white font-extralight text-4xl md:text-6xl uppercase tracking-widest">Vizune</span>
-		<span class="text-white font-light text-xl uppercase tracking-widest">· The Dusken Glow</span>
+<header class="Header">
+	<div class="branding">
+		<span class="title">Vizune</span>
+		<span class="tagline">· The Dusken Glow</span>
 			<div style="margin-top: -20rem; width: 1900px; position: absolute; left: 50%; transform: translateX(-50%);">
 				<Mandala />
 			</div>
 	</div>
-	<div class="absolute w-full top-2/4 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 border-black border-t-20 border-b-20">
+	<div class="banner">
 		<picture>
 			<source srcset={Header2560.src} media="(min-width: 2000px)" />
 			<source srcset={Header1920.src} media="(max-width: 1999px)" />
@@ -26,7 +26,7 @@ import Header768 from '@/assets/header-768.png';
 			<img
 				src={Header768.src}
 				alt="Vizune banner"
-				class="h-[500px] w-full object-cover"
+				class="banner-image"
 				loading="eager"
 				fetchpriority="high"
 				decoding="async"
@@ -36,6 +36,67 @@ import Header768 from '@/assets/header-768.png';
 </header>
 
 <style scoped>
+.Header {
+	position: relative;
+	width: 100%;
+	height: 43.75rem;
+	padding-top: 0.25rem;
+	padding-bottom: 1.5rem;
+}
+
+.branding {
+	margin-top: 1.5rem;
+	text-align: center;
+}
+
+@media (min-width: 768px) {
+	.branding {
+		margin-top: 0.5rem;
+	}
+}
+
+.title,
+.tagline {
+	color: #fff;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+}
+
+.title {
+	font-size: var(--text-4xl);
+	line-height: var(--leading-4xl);
+	font-weight: 200;
+}
+
+@media (min-width: 768px) {
+	.title {
+		font-size: var(--text-6xl);
+		line-height: var(--leading-6xl);
+	}
+}
+
+.tagline {
+	font-size: var(--text-xl);
+	line-height: var(--leading-xl);
+	font-weight: 300;
+}
+
+.banner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 10;
+	width: 100%;
+	translate: -50% -50%;
+	border-block: 20px solid #000;
+}
+
+.banner-image {
+	width: 100%;
+	height: 500px;
+	object-fit: cover;
+}
+
 .Header:before {
     content: '';
     width: 750px;

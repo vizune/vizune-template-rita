@@ -11,9 +11,7 @@
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^16.6.10",
     "@contentful/rich-text-types": "^16.8.3",
-    "@tailwindcss/vite": "^4.1.13",
     "astro": "^7.2.0",
-    "astro-critters": "^2.2.1",
-    "tailwindcss": "^4.1.13"
+    "astro-critters": "^2.2.1"
   }
 }

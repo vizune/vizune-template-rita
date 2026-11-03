@@ -2,7 +2,7 @@
 
 ---
 
-<ui-tabs class="tabs block">
+<ui-tabs class="tabs">
   <slot />
 </ui-tabs>
 
@@ -20,7 +20,7 @@
           tablist = document.createElement('div');
           tablist.setAttribute('role', 'tablist');
           tablist.setAttribute('aria-orientation', 'horizontal'); // a11y
-          tablist.className = 'tablist flex items-center gap-8 mb-6 px-6';
+          tablist.className = 'tablist';
           this.prepend(tablist);
         }
 
@@ -32,8 +32,7 @@
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.id = `ui-tab-${i + 1}`; // ensure aria-labelledby works
-          btn.className =
-            'tab inline-flex items-center h-10 px-4 rounded-full border';
+          btn.className = 'tab';
           btn.setAttribute('role', 'tab');
           btn.setAttribute('aria-controls', panelId);
           btn.setAttribute('aria-selected', String(i === 0));
@@ -41,7 +40,7 @@
           btn.innerHTML = `<span>${label}</span>`;
 
           const li = document.createElement('div');
-          li.className = 'grow w-full lg:w-auto flex justify-center';
+          li.className = 'tab-item';
           li.appendChild(btn);
           tablist.appendChild(li);
 
@@ -104,13 +103,32 @@ ui-tabs {
   --underline: rgb(99, 102, 241); /* indigo-ish */
   --ring: rgba(160, 130, 255, 0.6);
   --ease: cubic-bezier(.2,.7,.2,1);
+
+  display: block;
 }
 
 /* the “bar” container */
 ui-tabs .tablist {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
   width: 100%;
+  margin-bottom: 1.5rem;
   padding: 16px 20px;
   position: relative;
+}
+
+ui-tabs .tab-item {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  ui-tabs .tab-item {
+    width: auto;
+  }
 }
 
 ui-tabs .tablist::after {
@@ -127,6 +145,10 @@ ui-tabs .tablist::after {
 ui-tabs [role="tab"] {
   -webkit-tap-highlight-color: transparent;
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
+  border-radius: 9999px;
 
   background: transparent;
   border: 0;

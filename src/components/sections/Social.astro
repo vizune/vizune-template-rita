@@ -16,14 +16,14 @@ const socials = [
 ]
 ---
 
-<div class="flex justify-center items-center relative w-[375px] h-[375px] sm:w-[400px] sm:h-[400px] my-6 mx-auto">
+<div class="social">
   <ul>
     {socials.map((s) => 
-      <li class="absolute">
+      <li>
         <a
           href={s.href}
           target="_blank" rel="noopener noreferrer"
-          class="inline-flex h-10 w-10 items-center justify-center rounded-full sm:ring-2 sm:ring-lavender transition-colors text-white hover:text-lavender"
+          class="social-link"
           aria-label={s.label}
           title={s.name}>
           <Icon name={s.name} title={s.label} />
@@ -37,13 +37,60 @@ const socials = [
     role="presentation"
     width={300}
     height={300}
-    class="h-[300px] w-[300px]"
+    class="social-image"
     loading="lazy"
     decoding="async"
   />
 </div>
 
 <style>
+  .social {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 375px;
+    height: 375px;
+    margin: 1.5rem auto;
+  }
+
+  @media (min-width: 640px) {
+    .social {
+      width: 400px;
+      height: 400px;
+    }
+  }
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    color: #fff;
+    transition: color var(--transition);
+  }
+
+  .social-link:hover {
+    color: var(--color-lavender);
+  }
+
+  @media (min-width: 640px) {
+    .social-link {
+      box-shadow: 0 0 0 2px var(--color-lavender);
+    }
+  }
+
+  .social-image {
+    width: 300px;
+    height: 300px;
+  }
+
+  li {
+    position: absolute;
+  }
+
   li:first-child {
     top: 0;
     left: 50%;

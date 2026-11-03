@@ -22,10 +22,7 @@ const hasCaption = Astro.slots.has('default') || caption;
 ---
 
 <figure
-  class:list={[
-    'image-caption overflow-hidden rounded-b-xl border border-white/10 bg-white/5 backdrop-blur-md',
-    className,
-  ]}
+  class:list={['image-caption', className]}
   style={`max-width: ${width}px`}
 >
   <img
@@ -35,13 +32,36 @@ const hasCaption = Astro.slots.has('default') || caption;
     height={height}
     loading="lazy"
     decoding="async"
-    class="block w-full h-auto object-cover"
+    class="image"
     style={`aspect-ratio: ${width} / ${height}`}
   />
 
   {hasCaption && (
-    <figcaption class="p-3 text-center text-white/80">
+    <figcaption class="caption">
       <slot>{caption}</slot>
     </figcaption>
   )}
 </figure>
+
+<style>
+.image-caption {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  background-color: rgb(255 255 255 / 0.05);
+  backdrop-filter: blur(var(--blur-md));
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.caption {
+  padding: 0.75rem;
+  color: rgb(255 255 255 / 0.8);
+  text-align: center;
+}
+</style>

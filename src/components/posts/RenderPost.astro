@@ -80,28 +80,26 @@ function formatUkDate(iso?: string) {
 const publishDateUk = formatUkDate(publishDate);
 ---
 <article
-  class="render-card bg-white/5 border border-white/10 rounded-2xl overflow-hidden
-         backdrop-blur-md shadow-lg hover:border-white/20 transition"
+  class="render-card glass"
   data-tags={filterableTags.join(' ')}
 >
   {imgUrl ? (
-    <div class="h-[250px] bg-black/20 overflow-hidden">
+    <div class="thumb">
       <img
         src={imgUrl}
         alt={alt}
         loading="lazy"
         decoding="async"
-        class="w-full h-full object-cover"
       />
     </div>
   ) : (
-    <div class="h-[250px] bg-black/20 flex items-center justify-center text-white/50 text-sm">
+    <div class="thumb thumb--empty">
       No thumbnail
     </div>
   )}
 
-  <div class="p-4">
-    <h3 class="text-white text-xl font-bold leading-snug text-center mb-6">
+  <div class="body">
+    <h3 class="title">
       {prefix ? (
         <>
           <span>{prefix}</span>
@@ -113,17 +111,17 @@ const publishDateUk = formatUkDate(publishDate);
       )}
     </h3>
 
-    <div class="text-white/90 space-y-1 border-t-1 pt-5">
+    <div class="meta">
       {publishDateUk ? (
-        <p><span class="font-semibold">📅 Publish Date:</span> {publishDateUk}</p>
+        <p><span class="meta-label">📅 Publish Date:</span> {publishDateUk}</p>
       ) : null}
 
       {dimensions ? (
-        <p><span class="font-semibold">📐 Dimensions:</span> {dimensions}</p>
+        <p><span class="meta-label">📐 Dimensions:</span> {dimensions}</p>
       ) : null}
 
       {fileSize ? (
-        <p><span class="font-semibold">💾 File Size:</span> {fileSize}</p>
+        <p><span class="meta-label">💾 File Size:</span> {fileSize}</p>
       ) : null}
     </div>
 
@@ -133,9 +131,7 @@ const publishDateUk = formatUkDate(publishDate);
       rel="noopener noreferrer"
       data-render-download
       data-render-title={title}
-      class="Button mt-4 text-lg uppercase inline-flex w-full items-center justify-center gap-2
-            h-10 rounded-xl px-4 bg-white/10 text-white/90 border border-white/10
-            hover:bg-white/15 hover:border-white/20 transition"
+      class="Button download-button download"
     >
       Download
       <Icon name="newTab" title="Opens url in a new tab" size="small" />
@@ -160,3 +156,61 @@ const publishDateUk = formatUkDate(publishDate);
     });
   });
 </script>
+
+<style>
+.render-card {
+  overflow: hidden;
+  transition: border-color var(--transition);
+}
+
+.render-card:hover {
+  border-color: rgb(255 255 255 / 0.2);
+}
+
+.thumb {
+  height: 250px;
+  overflow: hidden;
+  background-color: rgb(0 0 0 / 0.2);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255 255 255 / 0.5);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+}
+
+.body {
+  padding: 1rem;
+}
+
+.title {
+  margin-bottom: 1.5rem;
+  color: #fff;
+  font-size: var(--text-xl);
+  line-height: 1.375;
+  text-align: center;
+}
+
+.meta {
+  padding-top: 1.25rem;
+  border-top-width: 1px;
+  color: rgb(255 255 255 / 0.9);
+}
+
+.meta-label {
+  font-weight: 600;
+}
+
+.download {
+  margin-top: 1rem;
+}
+</style>

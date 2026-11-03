@@ -2,24 +2,66 @@
 import { Social, Affiliates, Button } from '@/components';
 ---
 
-<footer class="relative bg-raven">
-  <div class="container mx-auto px-4 py-6 items-center gap-8 xl:grid xl:grid-flow-row xl:grid-cols-3 lg:justify-center">
+<footer class="footer">
+  <div class="footer-inner container">
     <Affiliates />
     <Social />
-    <section aria-labelledby="footer-about" class="max-w-md mx-auto">
-      <h2 id="footer-about" class="my-5 tracking-[.08em] font-extralight text-2xl text-center lowercase">✨ About 🌙</h2>
-      <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg p-6 text-white/80">
+    <section aria-labelledby="footer-about" class="about">
+      <h2 id="footer-about" class="about-heading">✨ About 🌙</h2>
+      <div class="about-card glass">
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec lobortis ipsum, ac rhoncus ante.
           Nullam auctor mi sit amet enim lacinia viverra. Etiam fringilla sapien ut vehicula molestie.
         </p>
-        <p class="mb-6">
+        <p>
           Ut feugiat enim velit, vitae mattis diam tincidunt id. Quisque et enim ut magna venenatis aliquet.
         </p>
-        <div class="flex justify-center">
+        <div class="about-actions">
           <Button href="/style-guide/">Find out more</Button>
         </div>
       </div>
     </section>
   </div>
 </footer>
+
+<style>
+.footer {
+  position: relative;
+  background-color: var(--color-raven);
+}
+
+.footer-inner {
+  padding: 1.5rem 1rem;
+}
+
+@media (min-width: 1280px) {
+  .footer-inner {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    gap: 2rem;
+  }
+}
+
+.about {
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+.about-heading {
+  margin-block: 1.25rem;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+  text-align: center;
+}
+
+.about-card {
+  padding: 1.5rem;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.about-actions {
+  display: flex;
+  justify-content: center;
+}
+</style>

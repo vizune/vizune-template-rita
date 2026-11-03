@@ -3,43 +3,69 @@ const { heading } = Astro.props;
 import Divider from '@/assets/divider.svg';
 ---
 
-<main
-  class="page py-[4rem] px-4
-         bg-[radial-gradient(1200px_680px_at_50%_120%,_rgba(59,47,99,0.95)_0%,_rgba(0,0,0,0.55)_45%,_transparent_75%),linear-gradient(to_bottom,_transparent,_rgba(0,0,0,0.55)_60%,_rgba(0,0,0,0.8))]"
->
-  <section
-    class="container mx-auto
-           p-8
-           bg-[rgba(14,14,26,0.6)]
-           border border-[rgba(214,201,255,0.14)]
-           rounded-[22px]
-           backdrop-blur-[6px] backdrop-saturate-[1.2]
-           shadow-[0_10px_30px_rgba(0,0,0,0.45),_inset_0_1px_0_rgba(255,255,255,0.05)]"
-  >
-    <header class="relative pt-4 pb-8 mb-6">
-      <h1
-        class="mt-5 mb-10
-               tracking-[.08em]
-               text-clay
-               [text-shadow:0_0_18px_rgba(134,94,255,0.25)]
-               font-extralight text-4xl sm:text-5xl"
-      >
+<main class="page">
+  <section class="panel container">
+    <header class="panel-header">
+      <h1 class="heading">
         {heading}
       </h1>
       <img
         src={Divider.src}
         alt=""
         aria-hidden="true"
-        class="pointer-events-none mx-auto mt-2
-               w-[min(55rem,88%)]
-               opacity-90
-               [filter:drop-shadow(0_0_10px_rgba(134,94,255,0.25))]"
+        class="divider"
         loading="eager"
       />
     </header>
 
-    <div class="content text-xl">
+    <div class="content">
       <slot />
     </div>
   </section>
 </main>
+
+<style>
+.page {
+  padding: 4rem 1rem;
+  background-image:
+    radial-gradient(1200px 680px at 50% 120%, rgba(59, 47, 99, 0.95) 0%, rgba(0, 0, 0, 0.55) 45%, transparent 75%),
+    linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.55) 60%, rgba(0, 0, 0, 0.8));
+}
+
+.panel {
+  padding: 2rem;
+  border: 1px solid rgba(214, 201, 255, 0.14);
+  border-radius: 22px;
+  background-color: rgba(14, 14, 26, 0.6);
+  backdrop-filter: blur(6px) saturate(1.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.panel-header {
+  position: relative;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.heading {
+  margin-top: 1.25rem;
+  margin-bottom: 2.5rem;
+  color: var(--color-clay);
+  text-shadow: 0 0 18px rgba(134, 94, 255, 0.25);
+}
+
+.divider {
+  width: min(55rem, 88%);
+  margin-top: 0.5rem;
+  margin-inline: auto;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 10px rgba(134, 94, 255, 0.25));
+  pointer-events: none;
+}
+
+.content {
+  font-size: var(--text-xl);
+  line-height: var(--leading-xl);
+}
+</style>

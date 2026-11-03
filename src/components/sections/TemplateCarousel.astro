@@ -21,53 +21,47 @@ interface Props {
 const { posts, assetsById, startIndex = 0, location = 'templates_page' } = Astro.props as Props;
 ---
 
-<section class="relative pb-10" data-tarot-root data-start-index={startIndex} data-location={location}>
-  <div class="text-center mb-8">
-    <p class="mb-3 text-white/70 text-sm">Explore the template spread • Select a card to reveal its details</p>
+<section class="carousel" data-tarot-root data-start-index={startIndex} data-location={location}>
+  <div class="intro">
+    <p class="intro-text">Explore the template spread • Select a card to reveal its details</p>
   </div>
 
-  <div class="mx-auto max-w-6xl px-4">
-    <div class="relative min-h-[560px] flex flex-col items-center justify-center gap-2">
-      <div class="tarot-spread relative w-full max-w-5xl h-[420px] sm:h-[460px] md:h-[520px]" data-spread>
+  <div class="inner">
+    <div class="stage">
+      <div class="tarot-spread" data-spread>
         {posts.map((post, idx) => (
           <TemplatePost post={post} assetsById={assetsById} index={idx} />
         ))}
       </div>
 
-      <div class="flex items-center gap-8 mb-8">
+      <div class="controls">
         <button
           type="button"
           aria-label="Previous templates"
           data-prev
-          class="h-18 w-18 rounded-full border border-white/20 bg-black/40
-                 text-white/90 backdrop-blur-md hover:border-white/50 transition
-                 disabled:opacity-40 disabled:cursor-not-allowed
-                 flex items-center justify-center"
+          class="round-button round-button--prev"
         >
-          <img src={arrowPng.src} alt="" aria-hidden="true" class="w-[45px] h-[30px] rotate-180" />
+          <img src={arrowPng.src} alt="" aria-hidden="true" />
         </button>
 
         <button
           type="button"
           aria-label="Next templates"
           data-next
-          class="h-18 w-18 rounded-full border border-white/20 bg-black/40
-                 text-white/90 backdrop-blur-md hover:border-white/50 transition
-                 disabled:opacity-40 disabled:cursor-not-allowed
-                 flex items-center justify-center"
+          class="round-button"
         >
-          <img src={arrowPng.src} alt="" aria-hidden="true" class="w-[45px] h-[30px]" />
+          <img src={arrowPng.src} alt="" aria-hidden="true" />
         </button>
       </div>
     </div>
 
     <div
-      class="mx-auto max-w-6xl rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg shadow-black/30 overflow-hidden"
+      class="details glass"
       data-template-details
     >
-      <div class="grid md:grid-cols-[1fr_360px]">
-        <div class="p-5 md:p-6 text-white/90 space-y-2" data-template-meta></div>
-        <div class="border-t md:border-t-0 md:border-l border-white/10 grid gap-px bg-white/10" data-template-links></div>
+      <div class="details-grid">
+        <div class="meta" data-template-meta></div>
+        <div class="links" data-template-links></div>
       </div>
     </div>
   </div>
@@ -129,12 +123,10 @@ const { posts, assetsById, startIndex = 0, location = 'templates_page' } = Astro
           target="_blank"
           rel="noopener noreferrer"
           data-template-action="${item.action}"
-          class="flex items-center justify-between gap-4
-                 bg-white/5 px-4 py-5 text-white/90
-                 hover:bg-white/15 hover:text-white transition"
+          class="template-link"
         >
           <span>${item.label}</span>
-          <span aria-hidden="true" class="text-white/60 [&_svg]:h-5 [&_svg]:w-5">${newTabIcon}</span>
+          <span aria-hidden="true" class="template-link-icon">${newTabIcon}</span>
         </a>
       `).join('');
 
@@ -194,3 +186,127 @@ const { posts, assetsById, startIndex = 0, location = 'templates_page' } = Astro
     render();
   });
 </script>
+
+<style>
+.carousel {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+.intro {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.intro-text {
+  color: rgb(255 255 255 / 0.7);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+}
+
+.inner {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 560px;
+}
+
+.tarot-spread {
+  position: relative;
+  width: 100%;
+  max-width: 64rem;
+  height: 420px;
+}
+
+@media (min-width: 640px) {
+  .tarot-spread {
+    height: 460px;
+  }
+}
+
+@media (min-width: 768px) {
+  .tarot-spread {
+    height: 520px;
+  }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.details {
+  max-width: 72rem;
+  margin-inline: auto;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+}
+
+.details-grid {
+  display: grid;
+}
+
+.meta {
+  padding: 1.25rem;
+  color: rgb(255 255 255 / 0.9);
+}
+
+.links {
+  display: grid;
+  gap: 1px;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  background-color: rgb(255 255 255 / 0.1);
+}
+
+@media (min-width: 768px) {
+  .details-grid {
+    grid-template-columns: 1fr 360px;
+  }
+
+  .meta {
+    padding: 1.5rem;
+  }
+
+  .links {
+    border-top-width: 0;
+    border-left: 1px solid rgb(255 255 255 / 0.1);
+  }
+}
+
+/* Links are rendered by the script below, so they need :global() */
+.links :global(.template-link) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1rem;
+  background-color: rgb(255 255 255 / 0.05);
+  color: rgb(255 255 255 / 0.9);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.links :global(.template-link:hover) {
+  background-color: rgb(255 255 255 / 0.15);
+  color: #fff;
+}
+
+.links :global(.template-link-icon) {
+  color: rgb(255 255 255 / 0.6);
+}
+
+.links :global(.template-link-icon svg) {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+</style>

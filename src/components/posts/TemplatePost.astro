@@ -57,10 +57,7 @@ const alt = asset?.fields?.description || asset?.fields?.title || title;
   data-demo-url={post.fields.demoUrl ?? ''}
   data-repo-url={post.fields.repoUrl ?? ''}
   data-download-url={post.fields.downloadUrl ?? ''}
-  class="tarot-card absolute left-1/2 top-1/2 w-[180px] sm:w-[230px] md:w-[262px]
-         aspect-[0.62] rounded-[22px] overflow-hidden
-         border border-white/15 bg-white/5 backdrop-blur-md shadow-2xl
-         transition-all duration-500 ease-out"
+  class="tarot-card"
 >
   {imgUrl ? (
     <img
@@ -68,22 +65,33 @@ const alt = asset?.fields?.description || asset?.fields?.title || title;
       alt={alt}
       loading="lazy"
       decoding="async"
-      class="h-full w-full object-cover"
+      class="image"
     />
   ) : (
-    <div class="h-full w-full flex items-center justify-center bg-black/20 text-white/60 text-sm">
+    <div class="image image--empty">
       No banner
     </div>
   )}
 
-  <div class="absolute inset-x-0 bottom-0 px-3 py-4 bg-black/60 backdrop-blur-md">
-    <h3 class="text-white text-sm sm:text-lg font-semibold leading-snug">
+  <div class="caption">
+    <h3 class="title">
       {title}
     </h3>
   </div>
 </article>
 <style>
 .tarot-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180px;
+  aspect-ratio: 0.62;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.15);
+  border-radius: 22px;
+  background-color: rgb(255 255 255 / 0.05);
+  backdrop-filter: blur(var(--blur-md));
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0.85);
@@ -91,6 +99,55 @@ const alt = asset?.fields?.description || asset?.fields?.title || title;
     transform 0.45s cubic-bezier(.22,1,.36,1),
     opacity 0.35s ease,
     filter 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .tarot-card {
+    width: 230px;
+  }
+}
+
+@media (min-width: 768px) {
+  .tarot-card {
+    width: 262px;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(0 0 0 / 0.2);
+  color: rgb(255 255 255 / 0.6);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+}
+
+.caption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 1rem 0.75rem;
+  background-color: rgb(0 0 0 / 0.6);
+  backdrop-filter: blur(var(--blur-md));
+}
+
+.title {
+  color: #fff;
+  font-size: var(--text-sm);
+  line-height: 1.375;
+}
+
+@media (min-width: 640px) {
+  .title {
+    font-size: var(--text-lg);
+  }
 }
 
 .tarot-card.is-hidden {

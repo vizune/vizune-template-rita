@@ -31,17 +31,17 @@ const affiliates = [
 ---
 
 <div>
-  <h2 class="my-5 tracking-[.08em] font-extralight text-2xl text-center lowercase">💖 Affiliates 🌟</h2>
-  <div class="flex flex-wrap justify-center gap-4 my-4 mb-6 lg:px-6">
+  <h2 class="heading">💖 Affiliates 🌟</h2>
+  <div class="list">
     {affiliates.map((link) => (
       <a
         href={link.url}
         target="_blank"
         rel="noopener noreferrer"
-        class="Button group relative flex h-[39px] w-[96px] items-center justify-center border border-white text-center tracking-wide no-underline text-white transition-colors duration-300 ease-in-out hover:bg-lavender hover:text-raven"
+        class="Button affiliate-button"
         aria-label={`Affiliate: ${link.name}`}
       >
-        <span class="p-1 text-xs uppercase tracking-wider">{link.name}</span>
+        <span>{link.name}</span>
 
         {link.button && (
           <Image
@@ -49,7 +49,6 @@ const affiliates = [
             alt={`Affiliate: ${link.name} button`}
             width={88}
             height={31}
-            class="absolute left-[3px] top-[3px] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
             loading="lazy"
             decoding="async"
           />
@@ -58,3 +57,27 @@ const affiliates = [
     ))}
   </div>
 </div>
+
+<style>
+.heading {
+  margin-block: 1.25rem;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+  text-align: center;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .list {
+    padding-inline: 1.5rem;
+  }
+}
+</style>
